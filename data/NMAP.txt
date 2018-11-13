@@ -1,0 +1,1756 @@
+# Nmap service detection probe list -*- mode: fundamental; -*-
+# $Id: nmap-service-probes,v 1.46 2005/01/31 20:40:45 fyodor Exp $ 
+#
+# This is a database of custom probes and expected responses that the
+# Nmap Security Scanner ( http://www.insecure.org/nmap/ ) uses to
+# identify what services (eg http, smtp, dns, etc.) are listening on
+# open ports.  Contributions to this database are welcome.  We hope to
+# create an automated submission system (as with OS fingerprints), but
+# for now you can email fyodor any new probes you develop so that he
+# can include them in the main Nmap distributon.  By sending new
+# probe/matches to Fyodor or one the insecure.org development mailing
+# lists, it is assumed that you are transfering any and all copyright
+# interest in the data to Fyodor so that he can modify it, relicense
+# it, incorporate it into programs, etc. This is important because the
+# inability to relicense code has caused devastating problems for
+# other Free Software projects (such as KDE and NASM).  Nmap will
+# always be available Open Source.  If you wish to specify special
+# license conditions of your contributions, just say so when you send
+# them.
+#
+# This collection of probe data is (C) 2003 by Insecure.Com LLC It is
+# available for free use by open source software under the terms of
+# the GNU General Public License.  We also license the data to
+# selected commercial/proprietary vendors under less restrictive
+# terms.  Contact sales@insecure.com for more information.
+#
+# For details on how Nmap version detection works, why it was added,
+# the grammar of this file, and how to detect and contribute new
+# services, see our paper at
+# http://www.insecure.org/nmap/versionscan.html .
+# This is the NULL probe that just compares any banners given to us
+##############################NEXT PROBE##############################
+Probe TCP NULL q||
+# Wait for at least 5 seconds for data.  Otherwise an Nmap default is used.
+totalwaitms 5000
+match acap m|^* ACAP (IMPLEMENTATION "CommuniGate Pro ACAP (d[-.w]+)") | v/CommuniGate Pro ACAP server//for mail client preference sharing/
+match aim m|^*x01..x04x01$|s v/Pyboticide AIM chat filter/// 
+# AMANDA index server 2.4.2p2 on Linux 2.4
+match amanda m|^220 [-.w]+ AMANDA index server ((d[-.w ]+)) ready.rn| v/Amanda backup system index server/$1//
+# arkstats (part of arkeia-light 5.1.12 Backup server) on Linux 2.4.20
+match arkstats m|^`x03x1810x000x000x00852224| v/Arkeia arkstats///
+match backdoorjeam m|^220 jeem.mail.pv ESMTPrn| v/Jeem backdoor//**BACKDOOR**/
+# Bittorrent Client 3.2.1b on Linux 2.4.X
+match bittorent m|^x13BitTorrent protocol| v/Bittorrent P2P client///
+# BMC Software Patrol Agent 3.45
+match bmc-softwarepatrol m|^x17ix02x03..x05x02x04x02x04x03..x03x04x01x01| v/BMC Software Patrol Agent///
+match chargen m|^!"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghrn"#$%&'()*+,-./0123456789:;<=>?@ABCDEF| v/Linux chargen///
+# Redhat 7.2, xinetd 2.3.7 chargen
+match chargen m|^*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrn+,-./| v/xinetd chargen///
+# Sun Solaris 9; Windows
+match chargen m|^ !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_|
+# Mandrake Linux 9.2, xinetd 2.3.11 chargen
+match chargen m|NOPQRSTUVWXYZ[\]^_`abcdefghijklm|
+# Citrix, Metaframe XP on Windows
+match citrix-ica m|^x7fx7fICAx7fx7fICA| v/Citrix Metaframe XP ICA///
+match concertosendlog m|^Concerto SoftwarernrnEnsemblePro SendLog Server - Version (d[-.w]+)rnrnEnter Telnet Passwordrn#> | v/Concerto Software EnsemblePro CRM software SendLog Server/$1//
+match concertotimesync m|^Concerto SoftwarernrnContactPro TimeSync Server - Version (d[-.w]+)rnrnEnter Telnet Passwordrn#> | v/Concerto Software EnsemblePro CRM software TimeSync Server/$1//
+match cvspserver m|^no repository configured in /| v/CVS pserver//broken/
+match cvspserver m|^/usr/sbin/cvs-pserver: line d+: .*cvs: No such file or directoryn| v/CVS pserver//broken/
+match cvsup m|^OK d+ d+ ([-.w]+) CVSup server readyn| v/CVSup/$1//
+match damewaremr m|^0x11........r@x01x01.$|s v/DameWare Mini Remote Control//Windows/
+# Linux
+match daytime m|^[0-3]d [A-Z][A-Z][A-Z] 20dd dd:dd:dd S+rn|
+# OpenBSD 3.2
+match daytime m|^[A-Z][a-z]{2} [A-Z][a-z]{2} +d{1,2} +dd:dd:dd 20ddrn|
+# Solaris 8,9
+match daytime m|^[A-Z][a-z]{2} [A-Z][a-z]{2} +d{1,2} +dd:dd:dd 20ddnr| v/Sun Solaris daytime///
+# Windows daytime
+match daytime m|^d+:dd:dd [AP]M d+/d+/200dn$| v/Microsoft Windows USA daytime///
+# Windows daytime - UK english I think (no AM/PM)
+match daytime m|^d{1,2}:d{1,2}:d{1,2} d{1,2}/d{1,2}/200dn$| v/Microsoft Windows daytime///
+# Windows International daytime
+match daytime m|^dd:dd:dd dd.dd.200dn$| v/Microsoft Windows International daytime///
+# New Zealand format daytime - Windows 2000
+match daytime m|^[01]d:dd:dd [AP]M [0-3]d/[01]d/0dn$| v/Microsoft Windows daytime//New Zealand style/
+# HP-UX B.11.00 A inetd daytime
+match daytime m|^[A-Z][a-z]{2} [A-Z][a-z]{2} +d{1,2} dd:dd:dd [A-Z]+ 200drn$| v/HP-UX daytime///
+# Tardis 2000 v1.4 on NT
+match daytime m|^^[A-Z][a-z]{2} [A-Z][a-z]{2} +d{1,2} dd:dd:dd 200d $| v/Tardis 2000 daytime///
+match dict m|^530 access deniedrn$| v/dictd//access denied/
+match dict m|^220 [-.w]+ dictd ([-.w/]+) on ([-.+ w]+) <auth.mime>| v/dictd/$1/on $2/
+match directconnect m/^$MyNick ([-.w]+)|$Lock/ v/Direct Connect P2P//User: $1/
+match eggdrop m=^rnrn([-`|.w]+)  (Eggdrop v(d[-.w]+) +([cC]) *1997.*rnrn= v/Eggdrop irc bot console/$2/botname: $1/
+# This fallback is because many people customize their eggdrop
+# banners.  This rule should always be well below the detailed rule
+# above.
+match eggdrop m|Copyright (C) 1997 Robey Pointerrn.*Eggheads| v/Eggdrop IRC bot console///
+match finger m|rn {4}Line {5,8}User {6,8}Host(s) {13,18}Idle +Locationrn| v/Cisco fingerd///
+match ftp m|^220 [-/.+w]+ FTP server (SecureTransport (d[-.w]+)) ready.rn| v/Tumbleweed SecureTransport ftpd/$1//
+match ftp m|^220 3Com 3CDaemon FTP Server Version (d[-.w]+)rn| v/3Com 3CDaemon ftpd/$1//
+# GuildFTP 0.999.9 on Windows
+match ftp m|^220-GuildFTPd FTP Server (c) 1997-2002rn220-Version (d[-.w]+)rn220 Please enter your name:rn| v/Guild ftpd/$1/Windows/
+# Medusa Async V1.21 [experimental] on Linux 2.4
+match ftp m|^220 [-/.+w]+ FTP server (Medusa Async V(d[^)]+)) ready.rn| v/Medusa Async ftpd/$1//
+match ftp m|^220 [-/.+w]+((d[-.w]+)) FTP server (EPSON ([^)]+)) ready.rn| v/Epson printer ftpd/$1/Epson $2/
+match ftp m|^220 [-/.+w]+ IBM TCP/IP for OS/2 - FTP Server ver d+:d+:d+ on [A-Z]| v|IBM OS/2 ftpd|||
+match ftp m|^220 [-/.+w]+ Lexmark ([-/.+w]+) FTP Server (d[-.w]+) ready.rn| v/Lexmark printerftpd/$2/Lexmark $1/
+match ftp m|^220 Internet Rex (d[-.w ]+) (([-/.+w]+)) FTP server awaiting your command.rn| v/Internet Rex ftpd/$1/$2/
+match ftp m|^220 [-.+w]+ FTP server (Version (d[-.w]+)(([^)]+)) [A-Z][a-z][a-z] [A-Z].*200d) ready.rn| v/HP-UX ftpd/$1/$2/
+match ftp m|^530 Connection refused, unknown IP address.rn$| v/Microsoft IIS ftpd//IP address rejected/
+match ftp m|^220 PizzaSwitch FTP server readyrn| v/Xylan PizzaSwitch ftpd///
+match ftp m|^220 [-.+w]+ IronPort FTP server (V(d[-.w]+)) ready.rn| v/IronPort mail appliance ftpd///
+match ftp m|^220 WFTPD (d[-.w]+) service (by Texas Imperial Software) ready for new userrn| v/Texas Imperial Software WFTPD/$1//
+match ftp m|^220 [-.+w]+ FTP server (Version (MICRO-[-.w:#+ ]+)) ready.rn| v/Bay Networks MicroAnnex terminal server ftpd/$1//
+match ftp m|^220 [-.+w]+ FTP server (Digital UNIX Version (d[-.w]+)) ready.rn| v/Digital UNIX ftpd/$1//
+match ftp m|^220 [-.+w]+ FTP server (Version [d.]++Heimdal (d[-+.w ]+)) ready.rn|  v/Heimdal Kerberized ftpd/$1//
+match ftp m|^500 OOPS: (could not bind listening IPv4 socket)rn$| v/vsftpd//broken: $1/
+match ftp m|^500 00PS: vsftpd: (.*)rn| v/vsftpd//broken: $1/
+match ftp m|^220-QTCP at [-.w]+rn220| v|IBM OS/400 FTPd|||
+match ftp m|^220-FileZilla Server version (d[-.w ]+)rn| v/FileZilla ftpd/$1//
+# Netgear RP114 switch with integrated ftp server
+# Netgear RP114
+match ftp m|^220 ([-w]+)? FTP version 1.0 ready at | v/Netgear broadband router ftpd/1.0//
+match ftp m|^220 [-.w]+ FTP server (GNU inetutils (d[-.w ]+)) ready.rn| v/GNU Inetutils FTPd/$1//
+match ftp m|^220 .* (glftpd (d[-.0-9a-zA-Z]+)_(w+)(+TLS)?) ready.rn| v/glFtpD/$1/platform: $2/
+match ftp m|^220 [-.w]+ FTP server (FirstClass v(d[-.w]+)) ready.rn| v/FirstClass FTP server/$1//
+match ftp m|^220 [-.w]+ FTP server (Compaq Tru64 UNIX Version (d[-.w]+)) ready.rn| v/Compaq Tru64 ftp server/$1//
+match ftp m|^220 AXIS ([-.w]+) FTP Network Print Server V(d[-.w]+) [A-Z][a-z]| v/Axis network print server ftpd/$2/Model $1/
+match ftp m|^220-Cerberus FTP Server Personal Editionrn220-UNREGISTEREDrn| v/Cerberus FTP Server//Personal Edition; Unregistered/
+match ftp m|^220-GuildFTPd FTP Server (c) 2001rn220-Version (d[-.w]+)rn220 Please enter your name:rn| v/GuildFTPd/$1//
+match ftp m|^220 FTP print service:V-(d[-.w]+)/Use the network password for the ID if updating.rn| v/Brother printer ftpd/$1//
+match ftp m|^220- APC FTP server ready.rn220 rn$| v|APC ftp server||UPS/Power device|
+match ftp m|^220 [-w]+ FTP server (Version (d.[.d]+) ([A-Z][a-z]{2} [A-Z][a-z]{2} [0-9]+ [0-9:]+ .* [21][0-9]+)) ready.rn| v/HP-UX 10.x ftpd/$1//
+match ftp m|^220 [-w]+ FTP server (Version (d[-.w]+) [A-Z][a-z]{2} [A-Z][a-z]{2} .*) ready.rn| v/AIX ftpd/$1//
+match ftp m|^220[- ]Roxen FTP server running on Roxen (d[-.w]+)/Pike (d[-.w]+)rn| v/Roxen ftp server/$1/Pike $2/
+# Debian packaged oftpd 0.3.6-51 on Linux 2.6.0-test4 Debian
+match ftp m|^220 Service ready for new user.rn| v/oftpd///
+# ProFTPd 1.2.5
+match ftp m|^220  Server (ProFTPD) [[-.w]+]rn| v/ProFTPd///
+# Mac OS X Client 10.2.6 built-in ftpd
+match ftp m|^220[ -].*FTP server (lukemftpd (d[-. w]+)) ready.rn|s v/LukemFTPD/$1/Mac OS X uses lukemftpd derivative/
+match ftp m/^220.*Microsoft FTP Service (Version (d[^)]+)/ v/Microsoft ftpd/$1//
+# This lame version doesn't give a version number
+# Windows 2003
+match ftp m/^220[ -]Microsoft FTP Servicern/ v/Microsoft ftpd///
+match ftp m/^220 Serv-U FTP Server v(dS+) for WinSock ready/ v/Serv-U ftpd/$1//
+match ftp m/^220 Serv-U FTP-Server v(dS+) for WinSock ready/ v/Serv-U ftpd/$1//
+match ftp m/^220-Sambar FTP Server Version (dS+)x0dx0a/ v/Sambar ftpd/$1//
+# Sambar server V5.3 on Windows NT
+match ftp m|^220-FTP Server readyrn220-Use USER user@host for native FTP proxyrn220 Your FTP Session will expire after 300 seconds of inactivity.rn|  v/Sambar ftpd///
+match ftp m/^220 JD FTP Server Ready/ v/HP JetDirect ftpd///
+match ftp m/^220.*Check Point FireWall-1 Secure FTP server running on/s v/Check Point Firewall-1 ftpd///
+match ftp m/^220[- ].*FTP server (Version (wu-[-.w]+)/s v/WU-FTPD/$1//
+match ftp m|^220-rn220 [-.w]+ FTP server (Version ([-.+w()]+)) ready.rn$| v/WU-FTPD/$1//
+match ftp m|^220 [-.w]+ FTP server (Version ([-.+w()]+)) ready.rn$| v/WU-FTPD/$1//
+match ftp m/^220 ProFTPD (dS+) Server/ v/ProFTPD/$1//
+match ftp m/^220.*ProFTP[dD].*Server ready/ v/ProFTPD///
+match ftp m/^220.*NcFTPd Server / v/NcFTPd///
+match ftp m/^220.*FTP server (SunOS 5.([789])) ready/ v/Sun Solaris $1 ftpd///
+match ftp m/^220.*FTP server (SunOS (S+)) ready/ v/Sun SunOS ftpd/$1//
+match ftp m/^220-[-.w]+ IBM FTP.*(Vd+Rd+)/ v|IBM OS/390 ftpd|$1||
+match ftp m/^220 VxWorks ((d[^)]+)) FTP server ready/ v/VxWorks ftpd/$1//
+match ftp m/^220 VxWorks (VxWorks(d[^)]+)) FTP server ready/ v/VxWorks ftpd/$1//
+match ftp m/^220.*Welcome to .*Pure-?FTPd (dS+s*)/ v/PureFTPd/$1//
+match ftp m/^220.*Welcome to .*Pure-?FTPd[^(]+rn/ v/PureFTPd///
+match ftp m/^220.*Bienvenue sur .*Pure-?FTPd (d[-.w]+)/ v/PureFTPd/$1//
+match ftp m/^220 ready, dude (vsFTPd (d[0-9.]+): beat me, break me)rn/ v/vsFTPd/$1//
+match ftp m/^220 (vsFTPd ([-.w]+))rn$/ v/vsFTPd/$1//
+match ftp m/^220 TYPSoft FTP Server (dS+) ready...rn/ v/TYPSoft ftpd/$1//
+match ftp m/^220-MegaBit Gear (S+).*FTP server ready/ v/MegaBit Gear ftpd/$1//
+match ftp m/^220.*WS_FTP Server (dS+)/ v/WS FTPd/$1//
+match ftp m/^220 Features: a p .rn$/ v/Publicfile ftpd///
+match ftp m/^220 [-.w]+ FTP server (Version (S+) VFTPD, based on Version (S+)) ready.rn$/ v/Virtual FTPD/$1/based on $2/
+match ftp m|220 [-.w]+ FTP server (Version (S+)/OpenBSD, linux port (S+)) ready.rn| v/OpenBSD ftpd/$1/Linux port $2/
+match ftp m|^220 [-.w]+ FTP server (Version (S+)/OpenBSD/Linux-ftpd-([-.w]+)) ready.rn$| v/OpenBSD ftpd/$1/Linux port $2/
+match ftp m/^220 Interscan Version ([-w.]+)/i v/Interscan Viruswall ftpd/$1//
+match ftp m|^220 InterScan FTP VirusWall NT (d[-.w]+) (([-.w]+) Mode), Virus scan (w+)rn$| v/Interscan VirusWall NT/$1/Virus scan $3; $2 mode/
+match ftp m|^220 [-.w]+ FTP server (Version ([-.w]+)/OpenBSD) ready.rn$| v/OpenBSD ftpd/$1//
+match ftp m|^220-Welcome to [A-Z]+ FTP Service.rn220 All unauthorized access is logged.rn$| v/FileZilla ftpd///
+match ftp m|^220 [-.w]+ FTP server (Version (6.0w+)) ready.rn| v/FreeBSD ftpd/$1//
+# OpenBSD 3.4 beta running Pure-FTPd 1.0.16 with SSL/TLS
+match ftp m|^220---------- Welcome to Pure-FTPd [privsep] [TLS] ----------rn220-You are user number| v|Pure-FTPd||with SSL/TLS|
+match ftp m|^220---------- .* Pure-FTPd ----------rn220-| v/Pure-FTPd///
+# Trolltech Troll-FTPD 1.28 (Only runs on Linux)
+match ftp m|^220-Setting memory limit to 1024+1024kbytesrn220-Local time is now d+:d+ and the load is [.d]+.rn220 You will be disconnected after d+ seconds of inactivity.rn$| v/Trolltech Troll-FTPd//on Linux/
+match ftp m|^220  FTP server (Hummingbird Ltd. (HCLFTPD) Version (7.1.0.0)) ready.rn$| v/Hummingbird FTP server/$1//
+# Netware 6 - NWFTPD.NLM FTP Server Version 5.01w
+match ftp m|^220 Service Ready for new Userrn$| v/Netware NWFTPD///
+match ftp m|^220 ([-w]+) FTP server (NetWare (v[d.]+)) ready.rn$| v/Novell Netware ftpd/$2//
+match ftp m|220  FTP Server for NW 3.1x, 4.xx  ((v1.10)), (c) 199[0-9] HellSoft.rn$| v/HellSoft FTP server for Netware 3.1x, 4.x/$1//
+match ftp m|^220 [-.w]+ MultiNet FTP Server Process V(S+) at .+rn$| v/DEC OpenVMS MultiNet FTPd/$1//
+match ftp m|^220-rn220 [-.w]+ FTP server (NetBSD-ftpd ([-.w]+)) ready.rn$| v/NetBSD ftpd/$1//
+match ftp m|^220 ([-.w]+) Network Management Card AOS v([-.w]+) FTP server ready.rn$| v/APC AOS ftpd/$2/on APC $1 network management card/
+# G-Net BB0060 ADSL Modem - the ftpd might be by "GlobespanVirata" as that
+# is what the telnetd on this device said.
+match ftp m|^220 FTP Server (Version 1.0) ready.rn$| v/G-Net DSL Modem ftpd/1.0//
+# HP-UX B.11.00
+match ftp m|^220 [-.w ]+ FTP server (Version (1.1.2[.d]+) [A-Z][a-z]{2} [A-Z][a-z]{2} .*) ready.rn| v/HP-UX ftpd/$1//
+# 220 mirrors.midco.net FTP server ready.
+match ftp m|^220-.*rn    WarFTPd (d[-.w]+) ([w ]+) Readyrn|s v/WarFTPd/$1//
+match ftp m|^220 Welcome to Windows FTP Server| v|Windows Ftp Server||Not from Microsoft - http://srv.nease.net/|
+match ftp-proxy m|^220 Ftp service of Jana-Server readyrn| v/JanaServer ftp proxy///
+match ftp-proxy m|^220 [-.w]+ FTP proxy (Version (d[-.w]+)) ready.rn| v/Guantlet FTP proxy/$1//
+# Frox FTP Proxy (frox-0.6.5) on Linux 2.2.X - http://frox.sourceforge.net/
+match ftp-proxy m|^220 Frox transparent ftp proxy. Login with username[@host[:port]]rn| v/Frox ftp proxy///
+match ftp-proxy m|^501 Proxy unable to contact ftp serverrn| v/Frox ftp proxy///
+match ftp-proxy m|^220 [-.+w]+ FTP AnalogX Proxy (d[-.w]+) (Release) readyrn| v/AnalogX FTP proxy/$1//
+match ftp-proxy m|^220 Secure Gateway FTP server ready.rn| v/Symantec Enterprise Firewall FTP proxy///
+match ftp-proxy m/^220-Sidewinder ftp proxy.  You must login to the proxy first/ v/Sidewinder FTP proxy///
+match ftp-proxy m/^220-rx0a220-Sidewinder ftp proxy/s v/Sidewinder FTP proxy///
+# TODO kerio?
+#match ftp m|^421 Service not available (The FTP server is not responding.)n$| v/unknown FTP server//service not responding/
+softmatch ftp m/^220 [-.w ]+ftp.*rn$/i
+softmatch ftp m/^220-[-.w ]+ftp.*rn220/i
+softmatch ftp m/^220[- ].*ftp server.*rn/i
+match fw1-rlogin m|^Check Point FireWall-1 authenticated RLogin server running on [-.w]+rnr| v/Check Point FireWall-1 authenticated RLogin server///
+match gnats m|^200 [-.w]+ GNATS server (d[-.w]+) ready.rn| v/GNATS bugtracking system/$1//
+# Returns ASCII data in the following format:
+# |HardDrive1DevName|HardDrive1HardwareID|HardDrive1Temp|TempUnit|
+# |HardDrive2DevName|HardDrive2HardwareID|HardDrive2Temp|TempUnit|
+match hddtemp m+^|/dev/hdw|+ v/hddtemp hard drive info server///
+# And now for some SORRY web servers that just blurt out an http "response" upon connection!!!
+match http m|^HTTP/1.1 200 OKrnContent-type: text/htmlrnExpires: .*rnDate: .*rnPragma: no-cachernCache-Control: no-cachernrn<HTML><TITLE>JAP</TITLE>n| v/Java Anonymous Proxy///
+match http m|^HTTP/1.0 500rnContent-type: text/plainrnrnNo Scan Capable Devices Foundrn| v/HP Embedded Web Server remote scan service//no scanner found/
+# SMC Barricade 7004ABR
+match http m|^HTTP/1.0 301 MovedrnLocation: http://d+.d+.d+.d+:88rn| v/SMB Barricade broadband router//simply redirects to real web admin port 88/
+match hp-gsg m|^220 JetDirect GGW server (version (d[.d]+)) readyrn| v/HP JetDirect Generic Scan Gateway/$1//
+match hylafax m|^220 [-.w]+ server (HylaFAX (tm) Version (d[-.w]+)) ready.rn$| v/HylaFAX/$1//
+# Hylafax 4.1.6 on Linux 2.4
+match hylafax m|^130 Warning, client address "[d.]+" is not listed for host name "[-.w]+".rn| v/HylaFAX//IP unauthorized/
+match ichat m|^rn                                Welcome Torn                             ichat ROOMS (d[-.w]+)rn==| v|^iChat Rooms|$1||
+match ident m|^flock() on closed filehandle .*midentd| v/midentd//broken/
+match ident m|^nullidentd -- version (d[-.w]+)nCopyright | v/Nullidentd/$1/broken/
+match imap m|^* OK [-/.+w]+ Solstice (tm) Internet Mail Server (tm) (d[-.w]+) IMAP4 service - at | v/Sun Solstice Internet Mail Server imapd/$1//
+match imap m|^* OK GroupWise IMAP4rev1 Server Readyrn| v/Novell GroupWise imapd///
+match imap m|^* OK dbmail imap (protocol version 4r1) server (d[-.w]+) ready to runrn| v/DBMail imapd/$1/imapd version may differ from overal dbmail version number/
+match imap m|^* OK [-.+w]+ NetMail IMAP4 Agent server ready | v/Novell NetMail imapd///
+match imap m|^* OK IMAP4 Server (IMail (d[-.w]+))rn| v/IMail imapd/$1//
+match imap m|^* OK Merak (d[-.w]+) IMAP4rev1 | v/Merak Mail Server imapd/$1/Windows/
+match imap m|^* OK [-.+w]+ IMAP4rev1 Mercury/32 v(d[-.w]+) server ready.rn| v|Mercury/32 imapd|$1|Win32|
+match imap m|^* OK [-.w]+ IMAP4 service (Netscape Messaging Server (d[-.w ]+) (built ([w ]+)))rn| v/Netscape Messaging Server Imapd/$1/built $2/
+match imap m|^* OK [CAPABILITY .*] [-.w]+ IMAP4rev1 (20[w.]+) at | v/UW imapd/$1//
+match imap m|^* OK eXtremail V(d[-.w]+) release (d+) IMAP4 server startedrn| v/eXtremail IMAP server/$1.$2//
+match imap m|^* OK [-.w]+ NetMail IMAP4 Agent server ready <.*>rn| v/Novell Netmail imapd///
+# Alt-N MDaemon 6.5.1 imap server on Windows XP
+match imap m|^* OK [-.w]+ IMAP4rev1 MDaemon (d[-.w]+) readyrn| v/Alt-N MDaemon imapd/$1//
+# Dovecot IMAP Server - http://dovecot.procontrol.fi/
+match imap m|^* OK dovecot ready.rn| v/Dovecot imapd///
+# courier-0.36.1
+match imap m|^* OK Courier-IMAP ready. Copyright 1998-2001 Double Precision, Inc.  See COPYING for distribution information.rn| v/Courier Imap/0.36 - 1.4//
+# Courier-Imap 1.4.3-2.3
+match imap m|^* OK Courier-IMAP ready. Copyright 1998-2002 Double Precision, Inc.  See COPYING for distribution information.rn| v/Courier Imap/1.4 - 2.3//
+# Courier Imap 1.7.0 on Linux
+# Courier IMAP server 1.6.2 on Linux
+match imap m|* OK Courier-IMAP ready. Copyright 1998-2003 Double Precision, Inc.  See COPYING for distribution information.rn| v/Courier Imap/1.6.X - 1.7.X//
+# Courier IMAP courier-imapd-0.42.0-1.7.3
+# Courier IMAP 1.7.2
+match imap m|^* OK [CAPABILITY IMAP4rev1 .*Courier-IMAP ready. Copyright 1998-2003 Double Precision, Inc.  See COPYING for distribution information.rn| v/Courier IMAP4rev1/1.7.X//
+# courier-imap 2.0.0.20030809
+match imap m|^* OK [CAPABILITY IMAP4rev1].*Courier-IMAP ready. Copyright 1998-2003 Double Precision, Inc.  See COPYING for distribution information.rn| v/Courier IMAP4rev1/2.0.X//
+# Courier IMAP 1.7.2
+match imap m|* OK [CAPABILITY IMAP4rev1 CHILDREN NAMESPACE THREAD=ORDEREDSUBJECT THREAD=REFERENCES SORT QUOTA] Courier-IMAP ready. Copyright 1998-2003 Double Precision, Inc.  See COPYING for distribution information.rn$| v/Courier IMAP4rev1/1.7.2//
+match imap m|^* OK CommuniGate Pro IMAP Server ([-.w]+) at [-.w]+ readyrn$| v/CommuniGate Pro imapd/$1//
+# W-Imapd-SSL v2001adebian-6
+match imap m|^* OK [CAPABILITY IMAP4REV1 X-NETSCAPE LOGIN-REFERRALS STARTTLS AUTH=LOGIN] S+ IMAP4rev1 ([-.w]+) at| v/UW-Imapd-SSL/$1//
+match imap m|^* OK Domino IMAP4 Server Release (d[-.w]+) +ready| v/Lotus Domino imapd/$1//
+match imap m|^* OK Microsoft Exchange IMAP4rev1 server version ([-.w]+) | v/Microsoft Exchange IMAP4rev1 server/$1//
+match imap m|^* OK Microsoft Exchange 2000 IMAP4rev1 server version (d[-.w]+) ([-.w]+) ready.rn| v/Microsoft Exchange 2000 IMAP4rev1 server/$1//
+match imap m|^* OK [CAPABILITY IMAP4REV1 .*IMAP4rev1 (200d.[-.w]+) at| v/UW Imapd/$1//
+match imap m|^* OK [-.w]+ Cyrus IMAP4 v([-.w]+) server readyrn| v/Cyrus IMAP4 server/$1//
+match imap m|^* OK Welcome to Binc IMAP v(d[-.w]+)| v/Binc IMAPd/$1//
+match imap m|^* OK [-.w]+ IMAP4rev1 AppleMailServer (d[-.w]+) readyrn| v/AppleMailServer imapd/$1//
+match imap m|^* BYE Connection refusedrn| v/Microsoft Exchange IMAP server//refused/
+softmatch imap m/^* OK [-.w,:+ ]+imap[-.w,:+ ]+rn$/i
+# Cyrus IMSPD
+match imsp m|^* OK Cyrus IMSP version (d[-.w]+) readyrn$| v/Cyrus IMSPd/$1//
+# ircd-hybrid 7 on Linux
+match irc m|^NOTICE AUTH :*** Looking up your hostname...rnNOTICE AUTH :*** Checking IdentrnNOTICE AUTH :*** Got Ident responsernNOTICE AUTH :*** Couldn't look up your hostnamern$| v/Hybrid ircd///
+# Hybrid6/PTlink6.15.0 ircd on Linux
+match irc m|^NOTICE AUTH :*** Looking up your hostname...rnNOTICE AUTH :*** Found your hostnamern$| v/Hybrid ircd///
+# ircd 2.8/hybrid-6.3.1 on Linux
+match irc m|^NOTICE AUTH :*** Looking up your hostname...rnNOTICE AUTH :*** Checking IdentrnNOTICE AUTH :*** No Ident responsernNOTICE AUTH :*** Found your hostnamern$| v/Hybrid ircd///
+# ircd-hybrid-7.0 - apparently upset because Nmap reconnected too fast
+match irc m|^ERROR :Trying to reconnect too fast.rn| v/Hybrid ircd///
+# Hybrid-IRCD 7.0 on Linux 2.4
+match irc m|^NOTICE AUTH :*** Looking up your hostname...rnNOTICE AUTH :*** Checking IdentrnNOTICE AUTH :*** Found your hostnamernNOTICE AUTH :*** Got Ident responsern| v/Hybrid ircd///
+# dircproxy 1.0.3 on Linux 2.4.x
+match irc-proxy m|^:dircproxy NOTICE AUTH :Looking up your hostname...rn:dircproxy NOTICE AUTH :Got your hostname.rn| v/dircproxy///
+# Unreal IRCD Server version 3.2 beta 17
+match irc m|^:[-.w]+ NOTICE AUTH :*** Looking up your hostname...rn| v/Unreal ircd///
+# dancer-ircd 1.0.31+maint8-1
+match irc m|^NOTICE AUTH :*** Looking up your hostname...rnNOTICE AUTH :*** Checking identrnNOTICE AUTH :*** No identd (auth) responsernNOTICE AUTH :*** Found your hostnamern$| v/Dancer ircd///
+match irc m|^NOTICE AUTH :*** Looking up your hostname...rnNOTICE AUTH :*** Found your hostname, welcome backrnNOTICE AUTH :*** Checking identrnNOTICE AUTH :*** No identd (auth) responsern| v/Dancer ircd///
+match irc m|^NOTICE AUTH :*** Checking IdentrnNOTICE AUTH :*** Got ident responsern| v/ircu Undernet IRCd///
+# Bitlbee ircd 0.80
+match irc m|^:[-.w]+ NOTICE AUTH :BitlBee-IRCd initialized, please go onrn| v/BitlBee IRCd///
+# PTlink6.15.2 on Linux 2.4
+match irc m|^NOTICE AUTH :*** Hostname lookup disabled, using your numeric IPrnNOTICE AUTH :*** Checking Identrn| v/PTlink ircd///
+match irc m|^:[-.+w]+ NOTICE AUTH :*** Looking up your hostname...n:[-.+w]+ NOTICE AUTH :*** Checking Identn:[-.+w]+ NOTICE AUTH :*** Found your hostnamen| v/Bahamut Dalnet ircd//derived from DreamForge and Hybrid/
+match irc-proxy m|^:Welcome!psyBNC@lam3rz.de NOTICE * :psyBNC([-.w]+)rn| v/psyBNC/$1//
+match issrealsecure m|^.x08x01x03x01.x02.....x80x04...xa0|s v/ISS RealSecure IDS//for Windows/
+# ISS RealSecure Server Sensor for Windows 6.5 on Windows NT 4.0 Server SP6a
+# ISS RealSecure ServerSensor 7.0 on Windows 2000 Server
+# ISS RealSecure Server Sensor 6.0 on Windows NT 4.0 Server SP6a
+# ISS RealSecure Server Sensor 7.0 issdaemon on Microsoft Windows NT Workstation with SP6a
+match issrealsecure m|^.x08x01x04x01.....f.x80x04...xa0.xa4|s v/ISS RealSecure IDS ServerSensor/6.0 - 7.0/for Windows/
+match klogin m|^x01klogind: (All authentication systems disabled; connection refused)..rn| v/MIT Kerberos klogin//broken - $1/
+match lmtp m|^220 [-.w]+ LMTP Cyrus v(d[-.w]+) readyrn| v/Cyrus Imap Daemon LMTP/$1//
+# LSMS VPN Firewall GUI admin port
+# LSMS Redundancy port
+match lucent-fwadm m|^0001;2$| v/Lucent Secure Management Server///
+match meetingmaker m/^xc1,$/ v/Meeting Maker calendaring///
+match melange m|^+++Onlinern>> Melange Chat Server (Version (d[-.w]+)), Apr-25-1999rnnWelcome | v/Melange Chat Server/$1//
+# lopster 1.2.0.1 on Linux 1.1
+match mserv m|^200 Mserv (d[-.w]+) (c) James Ponder 2000 - Type: USER <username>rn.rn| v/Mserv music server/$1//
+softmatch napster m|^1$|
+match netrek m|^<>=======================================================================<>n  Pl: Rank       Name             Login      Host name                Typen| v/Netrek game server player information interface///
+match mldonkey m|^x06x10-x14x02x06Donkeyx01x0c./donkey.inix11x02x13rx02nn***************************************************************************nn                         Welcome to MLdonkey          n| v/MLdonkey multi-network P2P GUI port///
+match mldonkey m|^xffxfdx1frrrrrrrrrrrrrnrrrrrrrrrrrrrn***************************************************************************rrrrrrrrrrrrrnrrrrrrrrrrrrrn                         Welcome to MLdonkey          rrrrrrrrrrrrrn| v/MLdonkey multi-network P2P GUI port///
+match mldonkey m|^xffxfdx1fWelcome to MLdonkeynx1b[34mWelcome on mldonkey command-linex1b[2;37;0mnnUse x1b[31m?x1b[2;37;0m for helpnnx1b[7mMLdonkey command-line:x1b[2;37;0mn> | v/MLdonkey multi-network P2P server control port///
+# Microsoft ActiveSync Version 3.7 Build 3083 (It's used for syncing
+# my ipaq it disapears when you remove the ipaq.)
+match msactivesync m|^x16x01$UPTODATE$$| v/Microsoft ActiveSync///
+match mud m|^nrxffxfbUDo you want ANSI color? (Y/n) $| v|ROM-based MUD||http://rrp.rom.org/|
+match mysql m/^.xffjx04Host .* is not allowed to connect to this MySQL server$/ v/MySQL//unauthorized/
+match mysql m|^.xffix04Host .* is blocked because of many connection errors.| v/MySQL//blocked - too many connection errors/
+# MySQL 4.0.13
+match mysql m/^....Al sistema '[-.w]+' non e` consentita la connessione a questo server MySQL$/ v/MySQL///
+match mysql m/^..(3.[-.w]+).*x08x02$/s v/MySQL/$1//
+match mysql m/^.n(3.[-.w]+).../s v/MySQL/$1//
+# r(NULL,2B,"'n4.0.13xdfxbcx02SC7)fHu5, x08x02")
+match mysql m/^.n(4.[-.w]+).../s v/MySQL/$1//
+# Hmmm ... http://seclists.org/lists/incidents/2002/Mar/0047.html
+# So "ncacn_http" may be used by multiple services.  I'll take this
+# one out for now.
+# match ncacn_http m|^ncacn_http/([d.]+)$| v/ncacn_http/$1//
+# NCD Thinstar 300 running NCD Software 2.31 build 6
+match ncd-diag m|^WinCE/WBT Diagnostic portnrSerial Number: (w+)  MAC Address: 0000(w+)s+.*CPU info: ([ -.+w/ ]+)rn.*(Windows CE Kernel[-.+:w ]+)r|s v|NCD Thinster Terminal Diagnostic port||Serial# $1; MAC: $2; CPU: $3; $4|
+match netdevil m|^pass_pleaz$| v/Net-Devil backdoor//Windows **TROJAN**/
+match netsaint m|^Sorry, you (d{1,3}.d{1,3}.d{1,3}.d{1,3}) are not among the allowed hosts...n$| v/Netsaint status daemon///
+# I love this service:
+match netstat m|^Active Internet connections (servers and established)nProto Recv-Q Send-Q Local Address           Foreign Address         State      n| v/Linux Netstat///
+match netstat m|^netstat: invalid option -- fnusage: netstat [-veenNcCF]| v/Linux netstat//broken/
+match nntp m|^nnrpd: invalid option -- SnUsage error.n| v/INN NNTPd//broken/
+match nntp m|^200 [-.w]+ NNTP Service Ready - ([-.w]+@[-.w]+) (DIABLO (d[-.w ]+))rn| v/Diablo NNTP service/$2/Admin: $1/
+match nntp m|^200 NNTP Service (d[-.w ]+) Version: (d[-.w ]+) Posting Allowed rn| v/Microsoft NNTP Service/$2/posting ok/
+match nntp m|^200 [-.w]+ DNEWS Version  (d[-.w]+).*posting OK rn| v/Netwinsite DNEWS/$1/posting OK/
+match nntp m|^200 Leafnode NNTP Daemon, version (d[-.w]+) running at| v/Leafnode NNTPd/$1//
+match nntp m|^200 Lotus Domino NNTP Server for ([-./w]+) (Release (d[-.w]+), .*) - Not OK to postrn$| v/Lotus Domino nntpd/$2/on $1; posting denied/
+match nntp m|^200 Lotus Domino NNTP Server for ([-./w]+) (Release (d[-.w]+), .*) - OK to postrn$| v/Lotus Domino nntpd/$2/on $1; posting ok/
+softmatch nntp m|^200 [-[]()!,/+:<>@.w ]*nntp[-[]()!,/+:<>@.w ]*rn$|
+# Windows 2000 Server read:
+match nntp m|^200 NNTP Service 5.00.0984 Version: (5.0.2159.1) Posting Allowed rn| v/Microsoft NNTP Service/$1/posting OK/
+match nntp m|^200 NNTP Service Microsoftxae Internet Services d[-.w]+ Version: (d[-.w]+) Posting Allowed rn| v/Microsoft NNTP Service/$1/posting OK/
+match nntp m|^502 Connection refusedrn| v/Microsoft NNTP Service//refused/
+# Windows NT 4.0 SP5-SP6 
+match nntp m|^200 Microsoft Exchange Internet News Service Version (5.5.[.d]+) (posting allowed)rn| v/Microsoft Exchange Internet News Service/$1/posting allowed/
+#match nntp m|^200 [-.w]+ InterNetNews NNRP server INN (d[-.w]+) ready (posting ok).rn| v/InterNetNews (INN)/$1/posting ok/
+match nntp m|^200 [-.w]+ InterNetNews NNRP server INN (d[-.w ]+) ready (posting ok).rn| v/InterNetNews (INN)/$1/posting ok/
+match nntp m|^200 NNTP-Server Classic Hamster Vr. d[-.w ]+ (Build (d[-.w ]+)) (post ok) says: Hi!rn| v/Classic Hamster NNTPd/$1/for Windows; posting ok/
+# Windows 2000 Server Windows Media Unicast Service (NsUnicast) - Nsum.exe
+match nsunicast m|^4V4x12x004x04xf0xd3x07t.........x02|s v/Microsoft Windows Media Unicast Service//nsum.exe/
+match nsunicast m|^[4f]V4x12x00[4f].xf0xd3x07t...........|s v/Microsoft Windows Media Unicast Service//nsum.exe/
+match pcanywheredata m/^Xx08}x08rn.x08.*...rn/s v/PCAnywhere///
+match pbmasterd m|^pbmasterd(d[-.w]+)@[-.+w]+: | v/Symark Power Broker pbmasterd/$1/privilege separation software/
+match pblocald m|^pblocald(d[-.w]+)@[-.+w]+: | v/Symark Power Broker pblocald/$1/privilege separation software/
+match pksd m|^usage: [/w]*/etc/pksd.conf conf_filen$| v/PGP Public Key Server//broken/
+# UW POP2 server on Linux 2.4.18
+match pop2 m|^+ POP2 [-[].w]+ v(20[-.w]+) server readyrn$| v/UW POP2 server/$1//
+match pop3 m|^+OK POP3 AnalogX Proxy (d[-.w]+) (Release) ready.n$| v/AnalogX POP3 proxy/$1//
+# Novell Groupwise 6.0.1
+match pop3 m|^+OK GroupWise POP3 server readyrn$| v/Novell GroupWise pop3d///
+match pop3 m|^+OK Ready when you are <200d+.| v/Hotmail Popper hotmail to pop3 gateway///
+match pop3 m|^+OK Internet Rex POP3 server ready <| v/Internet Rex Pop3 server///
+match pop3 m|^+OK DBMAIL pop3 server ready to rock <| v/DBMail pop3d///
+match pop3 m|^+OK POP3 POPFile (v(d[-.w]+)) server readyrn| v/popfile pop3d/$1//
+# Dots in Revision to prevent MY CVS from screwing it up
+match pop3 m|^+OK [-.+w]+ NetMail POP3 Agent $Re..sion: ([d.]+) $rn| v/Novell NetMail pop3d//File revision: $1/
+match pop3 m|^+OK [-.+w]+ Merak (d[-.w]+) POP3 | v/Merak mail server pop3d/$1//
+# Mercury/32 3.32 pop3 Server module on Windows XP
+match pop3 m|^+OK <d{6,10}.d{4,6}@[-.+w]+>, POP3 server ready.rn| v|Mercury/32 pop3d||Win32|
+# gnu/mailutils pop3d 0.3.2 on Linux
+match pop3 m|^+OK POP3 Ready <d{3,6}.1[012]d{8}@[-.w]+>rn| v|GNU mailutils pop3d|||
+# Solid POP3 Server 0.15 on Linux 2.4
+match pop3 m|^+OK Solid POP3 server ready <d{3,6}.1[012]d{8}@[-.w]+>rn| v/Solid pop3d///
+# Cyrus POP3 v2.0.16
+match pop3 m|^+OK [-.w]+ Cyrus POP3 v(d[-.w]+) server readyrn| v/Cyrus pop3d/$1//
+#  pop3d (GNU Mailutils 0.3) on Linux 2.4
+match pop3 m|^+OK POP3 Ready <d{3,6}.1[012]d{8}@w+>rn| v/GNU Mailutils pop3d///
+# dovecot 0.99.10 on Linux 2.4
+match pop3 m|^+OK dovecot ready.rn| v/Dovecot pop3d///
+# teapop 0.3.5 on Linux 2.4
+match pop3 m|^+OK Teapop [v(d[-.w ]+)] - Teaspoon stirs around again .*rn| v/Teapop pop3d/$1//
+# Qpopper v4.0.5 on Linux 2.4.19
+match pop3 m|^+OK ready  rn$| v/Qpopper pop3d///
+# Jana Server 1.45 on WIn98
+match pop3 m|^+OK POP3 server ready <Jana-Server>rn| v/Jana POP3 server//Windows/
+match pop3 m|^+OK AppleMailServer (d[-.w]+) POP3 server at [-.w]+ ready <d| v/AppleMailServer pop3d/$1//
+match pop3 m|+OK <10d+.d+@[-.w]+> [XMail (d[-.w]+) (([-./w]+)) POP3 Server] service ready; | v/XMail pop3 server/$1/on $2/
+# Mail-Enable pop3 server 1.704
+match pop3 m|^+OK Welcome to MailEnable POP3 Serverrn| v/MailEnable POP3 Server///
+match pop3 m|^+OK [-.w]+ running Eudora Internet Mail Server (d[-.w]+) <.*>rn| v/Eudora Internet Mail Server pop3d/$1//
+# Qpopper 4.0.3 on Linux
+# QPopper 4.0.4 FreeBSD
+match pop3 m|^+OK ready  <d{1,5}.10d{8}@[-.w]+>rn| v/Qualcomm Qpopper pop3d///
+match pop3 m|^+OK POP3 Welcome to GNU POP3 Server Version (d[-.w]+) <.*>rn| v/GNU POP3 Server/$1//
+match pop3 m|^+OK eXtremail V(d[-.w]+) release (d+) POP3 server ready <.*>rn| v/eXtremail pop3d/$1.$2//
+match pop3 m|^+OK POP3 Welcome to vm-pop3d (d[-.w]+) <.*>rn| v/vm-pop3d/$1/derived from gnu-pop3d/
+# tpop3d v1.4.2 on Linux - http://www.ex-parrot.com/~chris/tpop3d/
+match pop3 m|^+OK <[da-f]{32}@[-.w]+>rn| v/tpop3d///
+match pop3 m|^+OK UCB based pop server (version (d[-.w]+) at sionisten) starting.rn| v/Heimdal kerberized pop3/$1/UCB-pop3 derived/
+# VPOP3 (Virtual POP3 server) 2.0.0d on Windows 2000
+match pop3 m|^+OK VPOP3 Server Ready <.*>rn| v/PSCS VPop3///
+match pop3 m|^+OK Lotus Notes POP3 server version ([-.w]+) ready .* on ([^/]+)/([^.]+).rn| v/Lotus Domino POP3 server/$1/CN=$2;Org=$3/
+match pop3 m|^+OK Lotus Notes POP3 server version ([-.w]+) ready on | v/Lotus Domino POP3 server/$1//
+match pop3 m|^+OK POP3 hotwayd v(d[-.w]+) -> The POP3-HTTPMail Gateway.| v/hotwayd pop3d/$1//
+match pop3 m|^+OK [-.w]+ POP3 service (Netscape Messaging Server (d[^(]+) (built ([w ]+)))rn| v/Netscape Messenging Server pop3/$1/built on $2/
+match pop3 m/^+OK [-.w]+ Cyrus POP3 v(d[-.w]+) server ready </ v/Cyrus pop3d/$1//
+match pop3 m/^+OK X1 NT-POP3 Server [-w.]+ (IMail ([^)]+))rn/ v/IMail pop3d/$1//
+match pop3 m/^+OK POP3 [cppop (d[^]]+)] at [/ v/cppop pop3d/$1//
+match pop3 m/^+OK Microsoft Exchange 2000 POP3 server version (S+).* ready.rn/ v/MS Exchange 2000 pop3d/$1//
+match pop3 m/^+OK Microsoft Exchange POP3 server version (S+) readyrn/ v/MS Exchange pop3d/$1//
+match pop3 m/^+OK QPOP (version ([^)]+)) at .*starting./ v/Qpop pop3d/$1//
+match pop3 m/^+OK QPOP Modified by Compaq (version ([^)]+)) at .*starting./ v/QPop pop3d/$1//
+match pop3 m/^+OK Qpopper .*(version ([^)]+)) at .*starting./ v/Qpopper pop3d/$1//
+match pop3 m/^+OK [-.w]+ POP3 server (Netscape Mail Server v(d[-.w])) ready/ v/Netscape Mail Server pop3d/$1//
+match pop3 m/^+OK Cubic Circle's v(d[-.w]+) .* POP3 ready/ v/Cubic Circle Cucipop pop3d/$1//
+match pop3 m/^+OK CCProxy (S+) POP3 Service Readyrn/ v/CCProxy pop3d/$1//
+match pop3 m/^+OK ArGoSoft Mail Server Freeware, Version S+ (([^)]+))rn/ v/ArGoSoft freeware pop3d/$1//
+match pop3 m/^+OK [-.w]+ Execmail POP3 ((d[^)]+))/ v/Execmail pop3d/$1//
+match pop3 m/^+OK MailSite POP3 Server (S+) Ready </ v/MailSite pop3d/$1//
+match pop3 m/^Proxy+ POP3 server. Insecure access - terminating.rn/ v/Proxy+ pop3d///
+match pop3 m/^+OK [-.w]+ POP MDaemon (S+) ready <MDAEMON/ v/MDaemon pop3d/$1//
+# qmail-pop3d 1.03-1
+match pop3 m/^+OK <d{1,5}.10d{8}@[-.w]+>rn$/ v/qmail-pop3d///
+# Courier Pop3 courier-pop3d-0.42.0-1.7.3
+match pop3 m|^+OK Hello there.rn$| v/Courier pop3d///
+match pop3 m|^+OK ArGoSoft Mail Server Pro for WinNT/2000/XP, Version [-.w]+ (([-.w]+))rn$| v/ArGoSoft Mail Server Pro pop3d/$1//
+match pop3 m/^+OK [-.w]+ VisNetic.MailServer.v([-.w]+) POP3 / v/VisNetic MailServer pop3d/$1//
+match pop3 m/^+OK [-.w]+ POP3 server (Post.Office v([-.w]+) release ([-.w]+) with ZPOP version ([-.w]+)) ready / v|Post.Office pop3d|$1 release $2|w/ZPOP $3|
+match pop3 m/^+OK CommuniGate Pro POP3 Server ([-.w]+) ready/ v/CommuniGate Pro/$1//
+match pop3 m/^+OKrn$/ v/Openwall popa3d///
+match pop3 m|^+OK [-.w]+ MultiNet POP3 Server Process V(S+) at| v/DEC OpenVMS MultiNet pop3d/$1//
+match pop3 m|^+OK <.*>, MercuryP/NLM v(d[-.w]+) ready.rn$| v/Mercury POP3 server/$1/on Novell Netware/
+match pop3 m|^+OK Microsoft Windows POP3 Service Version 1.0 <| v/Microsoft Windows 2003 POP3 Service/1.0//
+match pop3 m|^+OK POP3 [-.w]+ v?(200d.[-.w]+) server readyrn| v/UW Imap pop3 server/$1//
+match pop3 m|^+OK POP3 server ready <w{11}>rn$| v/WebSTAR pop-3 server///
+match pop3 m|^+OK TrendMicro IMSS (d[-.w ]+) POP3 Proxy at [-.w]+rn| v/TrendMicro IMSS virus scanning POP3 proxy/$1//
+match pop3 m|^+OK Kerio MailServer (d[-.w]+) POP3 server ready <([-.w@:]+)>rn$| v/Kerio MailServer POP3 Server/$1/$2/
+softmatch pop3 m|^+OK [-[]()!,/+:<>@.w ]+rn$|
+# http://echelon.pl/pubs/poppassd.html
+# you give it username, present password and new password, and
+# it changes the password of the user.
+# poppassd 1.8.1
+match pop3pw m|^200 ([-.w]+ )?poppassd v(d[-.w]+) hello, who are you?rn| v|Poppassd|$2|http://echelon.pl/pubs/poppassd.html|
+match pop3pw m|^200 courierpassd v(d[-.w]+) hello, who are you?rn| v/Courierpassd pop3 password change daemon///
+match pop3pw m|^200 [-.+w]+ MercuryW PopPass server ready.rn| v|Mercury/32 poppass service||Win32|
+match pop3pw m|^200 X1 NT-PWD Server [-.+w]+ (IMail (d[-.w]+))rn| v/IPSwitch Imail pop3 password change daemon/$1/Windows/
+match pop3pw m|^200 CommuniGate Pro PWD Server (d[-.w]+) ready <| v/CommuniGate Pro pop3 password change daemon/$1//
+match pop3pw m|^+OK ApplePasswordServer (d[-.w]+) password server at | v/ApplePasswordServer pop3 password change daemon/$1//
+match pmud m|^pmud (d[-.w]+) d+n| v|pmud||http://sf.net/projects/apmud|
+match printer m|^lpd [@[-.w]+]: Print-services are not available to your host ([-.w]+).n| v/BSD lpd//Unauthorized host/
+# BSD lpr/lpd line printer spooling system (lpr v1:2000.05.07) on Linux 2.6.0-test5
+match printer m|[-.w]+: lpd: Your host does not have line printer accessn| v|BSD/Linux lpd||access denied|
+# Linux 2.4.18 lpr 2000.05.07-4.2
+match printer m|^lpd: Host name for your address (d+.d+.d+.d+) unknownn$| v/Linux lpd//client IP must resolve/
+match printer m|^([/w]+/)?lpd: (.*)n| v/lpd//error: $2/
+# Windows QOTD service only has 12 services.  Found on Windows XP in
+# %systemroot%system32driversetcquotes
+match qotd m/^"(My spelling is Wobbly.|Man can climb to the highest summits,|In Heaven an angel is nobody in particular.|Assassination is the extreme form of censorship.|When a stupid man is doing|We have no more right to consume happiness without|We want a few mad people now.|The secret of being miserable is to have leisure to|Here's the rule for bargains:|Oh the nerves, the nerves; the mysteries of this machine called man|A wonderful fact to reflect upon,|It was as true as taxes is.)/ v/Windows qotd///
+match quagga m|^rnHello, this is quagga (version (d[-.w]+)).rnCopyright 1996-200| v/Quagga routing software/$1/Derivative of GNU Zebra/
+match razor2 m|^sn=w&srl=d+&ep4=[-w]+&a=w&a=w+rn$| v/Vipul's Razor2 anti-spam service///
+# Remote Console via RCONJ - RCONJ is a java utility that allows one
+# to remote console into a Novell server. It uses 2034 (unsecure) or
+# 2036 (secure) by default but can be changed.
+match rconj m|x04x01'_i?x08x0bWABOx00437| v/Novell rconj///
+match resvc m|^{0000004c} NODEINFO (5) {38}Version: (d[-.w ]+) Microsoft Routing Server readyrn  | v/Microsoft Exchange routing server/$1//
+# RedHat 7.3 - rsync server version 2.5.4  protocol version 26
+# Redhat Linux 7.1
+# rsync 2.5.5-0.1 with custom banner on Debian Woody
+match rsync m|^@RSYNCD: (d+)| v///protocol version $1/
+match sdmsvc m|^[xaaxff]$| v/LANDesk Software Distribution//sdmsvc.exe/
+# Tumbleweed SecureTransport 4.1.1 Transaction Manager Secure Port on Solaris
+match securetransport m|^x15x03x01x02x01$| v/Tumbleweed SecureTransport Transaction Manager Secure Port///
+# http://www.ietf.org/internet-drafts/draft-martin-managesieve-04.txt
+match sieve m|^NO Fatal error: Error initializing actionsrn$| v|Cyrus timsieved||included w/cyrus imap|
+match sieve m|^"IMPLEMENTATION" "Cyrus timsieved v(d[-.w]+)"rn| v|Cyrus timsieved||included w/cyrus imap|
+match sftp m|^+Shiva SFTP Service$| v/Shiva LanRover SFTP service///
+# HP-UX B.11.00 A 9000/785
+match shell m|^x01remshd: getservbynamen$| v/HP-UX Remshd///
+match smtp m|^220 [-/.+w]+ SMTP AnalogX Proxy (d[-.w]+) (Release) readyrn| v/AnalogX SMTP proxy/$1//
+match smtp m|^220 [-/.+w]+ MailGate ready for ESMTP on | v/MailGate smtpd//Windows/
+match smtp m|^220 [-/.+w]+ SMTP ready to rollrn| v/Hotmail Popper hotmail to smtp gateway///
+match smtp m|^220 [-/.+w]+ AvMailGate-(d[-.w]+)rn| v/AvMailGate smtp anti-virus mail gateway/$1//
+match smtp m|^220 ([-/.+w]+) Internet Rex ESMTP daemon at your service.rn| v/Internet Rex smtpd///
+match smtp m|^220 [-.+w]+ ESMTP NetIQ MailMarshal (v(d[-.w]+)) Readyrn| v/MailMarshal/$1//
+# I think the revision number is different than the official product version number
+# Dots in Revision to prevent MY CVS from screwing it up
+match smtp m|^220 [-.+w]+ Novonyx SMTP ready $Re..sion: ([d.]+) $rn| v|Novonyx Novell NetMail smtpd||Revision $1|
+match smtp m|^554-[-.+w]+.usrn554 Access deniedrn$| v/IronPort appliance mail rejector///
+match smtp m|^220 eSafe@[-.+w]+ Service readyrn| v/eSafe anti-virus mail gatewal///
+match smtp m|^220 [-.+w]+ ESMTP Merak (d[-.w]+);| v/Merak Mail Server smtpd/$1/Windows/
+match smtp m|^220 MERCUR SMTP-Server (v([^)]+)) for ([-.w ]+) ready at | v/LAN-ACES MERCUR smtp server/$1/$2/
+match smtp m|^220 [-.+w]+ MasqMail (d[-.w]+) ESMTPrn| v/MasqMail smtpd/$1//
+# Cisco NetWorks ESMTP server IOS (tm) 5300 Software (C5300-IS-M) on Cisco 5300 Access Server
+match smtp m|^220 [-.+w]+ Cisco NetWorks ESMTP serverrn| v/Cisco IOS NetWorks smtp server///
+match smtp m|^220 [-.+w]+ Mercury/32 v(d[-.w]+) ESMTP server ready.rn| v|Mercury/32 smtpd|$1|Win32|
+# Canon ImageRunner SMTP server (network scanner/copier/printer)
+match smtp m|^220 Canon[-.w]+ ESMTP Readyrn| v/Canon printer smtp server///
+# Exim 3.36 on Linux 2.4 blocking the given IP
+match smtp m|^554 SMTP service not availablern$| v/Exim smtpd//Serviced refused (IP block)/
+# Jana Server 1.45 on Win98
+match smtp m|^220 Jana-Server Simple Mail Transfer Service readyrn| v/Jana mail server//Windows/
+match smtp m|^220 <10d+.d+@[-.w]+> [XMail (d[-.w]+) (([-./w]+)) ESMTP Server] service ready; | v/XMail SMTP server/$1/on $2/
+match smtp m|^220 [-.w]+ FirstClass ESMTP Mail Server v(d[-.w]+) readyrn| v/FirstClass SMTP server/$1//
+match smtp m|^220 [-.w]+ AppleMailServer (d[-.w]+) SMTP Server Readyrn| v/AppleMailServer/$1//
+match smtp m|^220 [-.w]+ ESMTP CommuniGate Pro (d[-.w]+)rn| v/Communigate Pro SMTP/$1//
+match smtp m|^220[- ][-.w]+  MailSite ESMTP Receiver Version (d[-.w]+) Readyrn| v/Rockliffe MailSite/$1//
+match smtp m|^220 [-.w]+ eXtremail V(d[-.w]+) release (d+) ESMTP server ready ...rn| v/eXtremail smtpd/$1.$2//
+match smtp m|^220 Welcome to [-.w]+ - VisNetic MailScan ESMTP Server BUILD (d[-.w]+)rn| v/VisNetic MailScan ESMTP server/$1//
+# HP Service Desk 4.5 SMTP Server
+match smtp m|^220 [-.w]+ service desk (d[-.w]+) SMTP Service Ready for input.rn| v/HP Service Desk SMTP server/$1//
+# VPOP3 SMTP server 2.0.0d
+match smtp m|^220 [-.w]+ VPOP3 SMTP Server Readyrn| v/PSCS VPOP3 mail server///
+# CommuniGate Pro 4.1.3 on Mac OS X 10.2.6
+match smtp m|^220 [-.w]+ ESMTP CommuniGate Pro (d[-.w]+) is glad to see you!rn| v/CommuniGate Pro mail server/$1//
+match smtp m|^220[ -][-.w]+ ESMTP MDaemon (d[-.w]+); | v/Alt-N MDaemon mail server/$1//
+match smtp m/^220 [-.+w]+ (IMail ([^)]+)) NT-ESMTP Server/ v/IMail NT-ESMTP/$1//
+match smtp m/^220 X1 NT-ESMTP Server [-.+w]+ (IMail ([^)]+))rn/ v/IMail NT-ESMTP/$1//
+match smtp m/^220-[-.+w]+ Microsoft SMTP MAIL ready at.*Version: ([-w.]+)rn/ v/Microsoft SMTP/$1//
+match smtp m/^220 [-.+w]+ Microsoft ESMTP MAIL Service, Version: ([-w.]+) ready/ v/Microsoft ESMTP/$1//
+match smtp m/^220 [-.+w]+ ESMTP Server (Microsoft Exchange Internet Mail Service ([-w.]+)) ready/ v/Microsoft Exchange/$1//
+match smtp m/^220 [-.+w]+ ESMTP Sendmail (d[^;]+);/ v/Sendmail/$1//
+match smtp m|^220 [-.+w]+ SMTP Sendmail ([-/.+w]+)rn| v/Sendmail/$1//
+match smtp m|^220 [-.+w]+ Sendmail (SMI-S+) ready at .*rn$| v/Sendmail/$1//
+match smtp m/^220[- ][-.+w]+ ESMTP Exim (dS+)/ v/Exim smtpd/$1//
+match smtp m/Failed to open configuration file.*exim/ v/Exim smtpd///
+match smtp m/^220 CheckPoint FireWall-1 secure ESMTP serverrn$/ v/Checkpoint FireWall-1 smtpd///
+match smtp m/^220 CheckPoint FireWall-1 secure SMTP serverrn$/ v/Checkpoint FireWall-1 smtpd///
+match smtp m|^220 [-.+w]+ running IBM AS/400 SMTP V([w]+)| v|IBM AS/400 smtpd|$1||
+match smtp m/^220 Trend Micro ESMTP ([-.+w]+) ready.rn$/ v/Trend Micro ESMTP/$1//
+match smtp m|^220 [-.+w]+ ESMTP MailEnable Service, Version: (d[.w]+)-- ready at | v/MailEnable smptd/$1//
+match smtp m/^220 [-.+w]+ ESMTP Mail Enable SMTP Service, Version: (d[w.]+)-- ready at/ v/MailEnable smptd/$1//
+match smtp m/^220 [-.+w]+ ESMTP CPMTA-([-.+w]+) - NO UCErn/ v/CPMTA/$1/qmail-derived/
+match smtp m|^220 [-.+w]+ SMTP/smap Ready.rn| v/Smap//from firewall toolkit/
+match smtp m|^220 [-.+w]+ ESMTP service (Netscape Messaging Server ([-.+ w]+) (built| v/Netscape Messaging Server/$1//
+match smtp m|^220-InterScan Version (S+) .*Readyrn220 [-.+w]+ NTMail (v([-.+w]+)/.* ready| v/Trend Micro InterScan/$1/on NTMail $2/
+match smtp m|^220 [-.w]+ InterScan VirusWall NT ESMTP (d[-.w]+) (build (d+)) ready at | v/Trend Micro InterScan VirusWall SMTP/$1 build $2//
+match smtp m|^220 [-.+w]+ GroupWise Internet Agent (S+) .*Novell, Inc..*Readyrn| v/Novell GroupWise/$1//
+match smtp m|^220 Matrix SMTP Mail Server v([w.]+) on <MATRIX_([w]+)> Simple Mail Transfer Service Readyrn| v/Matrix SMTP Mail Server/$1/on Matrix $2/
+match smtp m|^220 Net_sec WebShield SMTP V(S+) Network Associates, Inc. Ready at| v/Network Associates WebShield/$1//
+match smtp m|^220 [-.+w]+ ESMTP MailMasher ready to boogiern| v/MailMasher smtpd///
+# 220 example.com ESMTP Postfix (2.0.13) (Mandrake Linux)
+match smtp m|^220 [-.w]+ ESMTP Postfix (([-.w]+)) (([-.w ]+))| v/Postfix smtpd/$1/$2/
+# postfix 1.1.11-0.woody2
+match smtp m|^220 [-.w]+ ESMTP Postfix| v/Postfix smtpd///
+match smtp m|^220 *{10,40}rn| v|Cisco PIX sanatized smtpd|||
+match smtp m|^220 ArGoSoft Mail Server Pro for WinNT/2000/XP, Version [-.w]+ (([-.w]+))rn| v/ArGoSoft Mail Server Pro/$1//
+match smtp m|^220 [-.w]+ ESMTP server (Post.Office v([-.w]+) release ([-.w]+) ID# | v/Post.Office/$1 release $2//
+match smtp m|^220 [-.w]+ ESMTP VisNetic.MailServer.v([-.w]+); | v/VisNetic MailServer/$1//
+# CommuniGate Pro 4.0.5
+match smtp m|^220 [-.w]+ ESMTP Service. Welcome.rn$| v/CommuniGate Pro smtpd///
+match smtp m|^220 [-.w]+ Process Software ESMTP service V([-.w]+) ready| v/Process Software smtpd/$1/on OpenVMS/
+match smtp m|^220 [-.w]+ Mercury (d[-.w]+) ESMTP server ready.rn$| v/Mercury Mail smtpd/$1//
+match smtp m|^220 [-.w]+ ESMTP Service (Lotus Domino Release (d[-.w]+)) ready at | v/Lotus Domino smtpd/$1//
+match smtp m|^relaylock: Error: PRODUCT_ROOT_D not definednrelaylock: Error: PRODUCT_ROOT_D not definedn1n$| v/Plesk relaylock smtp wrapper//broken/
+match smtp m|^220 [-.w]+ WebSTAR Mail Simple Mail Transfer Service Readyrn| v/WebSTAR SMTP server///
+match smtp m|^220 [-.w]+ Lotus SMTP MTA Service Readyrn$| v/Lotus Notes SMTP///
+match smtp m|^220 [-.w]+ SMTP NAVGW (d[-.w]+);| v/Norton Antivirus Gateway NAVGW/$1//
+match smtp m|^220 ([-.w]+) Kerio MailServer (d[-.w]+) ESMTP readyrn$| v/Kerio MailServer/$1/$2/
+softmatch smtp m|^220 [-.w ]+SMTP.*rn|
+match snpp m|^220 [-.w]+ SNPP server (HylaFAX (tm) Version ([-.w]+)) ready.rn| v/HylaFAX SNPP/$1//
+match snpp m|^220 QuickPage v(d[-.w]+) SNPP server ready at | v/QuickPage SNPP/$1//
+match sourceoffice m|^200rnProtocol-Version:(d[.d]+)rnMessage-ID:d+rnDatabase .*rnContent-Length:d+rnrn(w:\.*ini)rnrn| v/Sourcegear SourceOffSite//Protocol $1; INI file: $2/
+match ssh m|^$x01x1bNo host key is configured!nr!"v| v/Foundry Networks switch sshd//broken: No host key configured/
+match ssh m|^SSH-(d[d.]+)-SSF-(d[-.w]+)n| v/SSF French SSH/$2/protocol $1/
+match ssh m|^SSH-(d[d.]+)-lshd_(d[-.w]+) lsh - a free sshrn| v/lshd secure shell/$2/protocol $1/
+match ssh m/^SSH-([.d]+)-OpenSSH[_-]([S ]+)/ v/OpenSSH/$2/protocol $1/
+match ssh m/^SSH-([.d]+)-Sun_SSH_(S+)/ v/SunSSH/$2/protocol $1/
+match ssh m/^SSH-([.d]+)-meow roototkt by rebel/ v/meow SSH ROOTKIT//protocol $1/
+match ssh m/^SSH-([.d]+)-(d+.d+.d+) SSH Secure Shell/ v/F-Secure SSH Secure Shell/$2/protocol $1/
+match ssh m|^sshd: SSH Secure Shell (d[-.w]+) on ([-.w]+)nSSH-(d[.d]+)-| v/F-Secure SSH Secure Shell/$1/on $2; protocol $3/
+match ssh m|^sshd: SSH Secure Shell (d[-.w]+) (([^rn)]+)) on ([-.w]+)nSSH-(d[.d]+)-| v/F-Secure SSH Secure Shell/$1/$2; on $3; protocol $4/
+match ssh m|^sshd2[d+]: .*rnSSH-(d[d.]+)-(d[-.w]+) SSH Secure Shell (([^rn)]+))rn| v/F-Secure SSH Secure Shell/$2/protocol $1/
+match ssh m/^SSH-([.d]+)-(d+.d+.[-.w]+)/ v/SSH/$2/protocol $1/
+# Akamai hosted systems tend to run this - found on www.microsoft.com
+match ssh m|^SSH-(d[.d]*)-AKAMAI-In$| v/Akamai-I SSH//protocol $1/
+match ssh m|^SSH-(d[.d]*)-Server-Vn$| v/Akamai-I SSH//protocol $1/
+match ssh m|^SSH-(d[.d]*)-Server-VIn$| v/Akamai-I SSH//protocol $1/
+match ssh m|^SSH-(d[.d]+)-Cisco-(d[.d]+)n$| v/Cisco SSH/$2/protocol $1/
+match ssh m|^SSH-(d[.d]+)-SSH Protocol Compatible Server SCS (d[-.w]+)n| v/NetScreen SCS sshd/$2/protocol $1/
+match ssh m|^SSH-(d[.d]+)-VShell_(d[._d]+) VShellrn$| v/VanDyke VShell/$SUBST(2,"_",".")/protocol $1/
+match ssh m/^SSH-([.d]+)-(d[-.w]+) sshlib: WinSSHD (d[-.w]+)rn/ v/Bitvise WinSSHD/$3/protocol $1/
+# Cisco VPN 3000 Concentrator
+# Cisco VPN Concentrator 3005 - Cisco Systems, Inc./VPN 3000 Concentrator Version 4.0.1.B Jun 20 2003
+match ssh m/^SSH-([.d]+)-OpenSSHn$/ v/OpenSSH//protocol $1/
+match ssh m/^SSH-([.d]+)-([.d]+) Radwaren$/ v/Radware Linkproof SSH/$2/protocol $1/
+match ssh m|^SSH-1.5-Xn| v/Cisco VPN Concentrator SSHd//protocol 1.5/
+softmatch ssh m/^SSH-([.d]+)-/
+# Redhat Linux 7.1 - HAHAHAHAHAHA!!!! I love this service :) 
+match systat m|^USER       PID %CPU %MEM   VSZ  RSS TTY      STAT START   TIME COMMANDn| v/Linux systat///
+# Draytek Vigor 2600 aDSL router
+match telnet m|^xffxfdx18xffxfbx01nrnrPassword: | v/Draytek Vigor aDSL router telnetd///
+# IBM Infoprint 12 printer with JetDirect
+match telnet m|^xffxfcx01rnPlease type [Return] two times, to initialize telnet configurationrnFor HELP type "?"rn> | v/HP JetDirect printer telnetd///
+# IBM High Performace Switch - Model 8275-416, Software version 1.1, Manufacturer IBM068
+match telnet m|^x1b[1;1Hx1b[2Jx1b[8;38Hx1b[1;1Hx1b[2;1H(C) Copyright IBM Corp. 1999x1b[3;1HAll Rights Reserved.| v/IBM switch telnetd///
+match telnet m|^x1b[Hx1b[2JYou have connected to a FirstClass System. Please login...rnUserID: | v/FirstClass messaging system telnetd///
+# Cisco Catalyst management console
+# 3Com 3Com SuperStack II Switch 3300
+match telnet m|^xffxfdx03xffxfbx03xffxfbx01| v|||Usually a Cisco/3com switch|
+match telnet m|^xffxfbx03xffxfbx01rnSun(tm) Advanced Lights Out Manager (d[-.w]+) (v(d+))rnrnPlease login: | v/Sun Advanced Lights Out Manager/$1/on Sun v$2; for remote system control/
+# Epson Stylus Color 900N telnet
+match telnet m|^xffxfbx01xffxfbx01Connected to [-/.+w]+!rnrnPassword: | v/Epson printer telnetd///
+# This one may not technically be considered telnet protocol, but you seem to use it via telnet
+match telnet m|^220 SL4NT viewer service readyrn250 Currently connected channels: | v/Netal SLANT viewer///
+match telnet m|^xffxfbx03xffxfbxffxfbxffxfdxff.*rrFrontDoor (d[-.w]+)/|s v/FrontDoor FIDONet Mailer telnetd/$1//
+match telnet m|^xffxfbx01xffxfbx03rnOKrn$| v/Motorola Vanguard router telnetd///
+match telnet m|^xffxfbx03xffxfdx03xffxfcx06.*nPrecidia Technologiesrn([-.+w]+) Remote ConfigurationrnnPassword? |s v/Precidia serial2ethernet gateway telnetd//model $1/
+match telnet m|^xffxfbx01.*nrWelcome to the Xylan PizzaSwitch! Version (d[-.w]+)nrlogin   : |s v/Xylan PizzaSwitch telnetd/$1//
+# Bay Networks Accelar 1100 (version 2.0.5.5) switch
+match telnet m|^xffxfbx01rnr********************************nrr* Bay Networks,Inc..*(Accelar [-.+w]+).*Software Release (d[-.w]+) |s v/Bay Networks Accelar switch telnetd/$2/$1/
+match telnet m|^xffxfbx01rnr********************************nrr* Nortel Networks,Inc..*nrr* Passport ([-.w]+) .*r* Software Release (d[-.w]+) |s v/Nortel Networks Passport switch telnetd/$2/Passport $1/
+# NCD Thinstar 300 running NCD Software 2.31 build 6
+match telnet m|^xffxfbx03xffxfdx03xffxfbx01WinCE/WBT Command Shell Version (d[-.w]+)rnSerial Number: (w+)  MAC Address: 0000(w+)rnUUID: [-w]+rnPassword: | v/NCD Thinster terminal command shell/$1/Serial# $2; MAC $3/
+# Netopia 4542 aDSL router telnetd
+match telnet m|^xffxfbx01xffxfdx03xffxfbx03x1b[2Jx1b[Hname:| v/Netopia aDSL router telnetd///
+# NetportExpress PRO/100 3 port print server
+match telnet m|^xffxfbx01rnNetportExpress(tm) ([-/.+w]+)rn.*rnrnlogin: | v/Intel NetportExpress print server telnetd//Model $1/
+# 3Com OfficeConnect 812 Router telnetd
+match telnet m|^login: xffxfdx03xffxfbx03xffxfbx01| v/3Com OfficeConnect router telnetd///
+# Nortel Networks Instant Internet 100
+match telnet m|^xffxfbx01rnpassword: | v/Nortel Networks Instant Internet broadband router telnetd///
+# Network Appliance ONTAP 6.3.3 telnet
+match telnet m|^xffxfbx01xffxfdx18xffxfd#| v/Network Appliance Ontap telnetd///
+# Netgear RP114 broadband router
+match telnet m|^xffxfbx03xffxfbx01rnPassword: | v/Netgear broadband router admin telnetd///
+match telnet m|xffxfdx18xffxfbx01x1b[2Jx1b[?7lx1b.*HP ([-.w]+) ProCurve Switch ([-.w]+)rnrFirmware revision ([-.w]+)rnrr| v/HP ProCurve Switch telnetd//Model: $2; Firmware: $3/
+match telnet m|^Check Point FireWall-1 Client Authentication Server running on [-.w]+rnrxffxfbx01xffxfex01xffxfbx03User: | v/Check Point FireWall-1 Client Authenticaton Server///
+# Enterasys XP-8600 running E9.0.5.0
+match telnet m|^xffxfbx03xffxfdx01xffxfdx1fxffxfbx05xffxfd!| v/Enterasys XSR Security Router telnetd///
+# Windows 2000 telnetd
+match telnet m|^xffxfd%xffxfbx01xffxfdx03xffxfdx1fxffxfdxffxfb$| v/Microsoft Windows 2000 telnetd///
+match telnet m|^xffxfbx01xffxfdx03xffxfdx1fxffxfdxffxfbMicrosoft (R) Windows (TM) Version (d[-.w]+) (Build (d+))rnWelcome to Microsoft Telnet Service rnTelnet Server Build (d[-.w]+)nrlogin: | v/Microsoft Windows telnetd/$3/OS version $1 build $2/
+# Windows XP telnetd
+match telnet m|^xffxfd%xffxfbx01xffxfbx03xffxfd'xffxfdx1fxffxfdxffxfb| v/Microsoft Windows XP telnetd///
+# IRIX 6.5.18f telnetd
+match telnet m|^xffxfdx18xffxfd xffxfd#xffxfd$| v/IRIX telnetd/6.X//
+# OS 400 V4R4M0
+# OS/400 V5R1M0
+match telnet m|^xffxfd'xffxfdx18$| v/IBM OS 400 telnetd///
+# JetDirect Model: J4169A Firmware: L.21.11
+match telnet m|^xffxfbx03xffxfbx01x07HP JetDirectrnPassword is not setrn| v/HP JetDirect printer telnetd//No password/
+# HP Jetdirect telnet with password protection
+match telnet m|^xffxfbx03xffxfbx01x07HP JetDirectrnrnEnter username: | v/HP JetDirect printer telnetd///
+# HP MPE/iX 5.5 on HP 3000 telnet service
+match telnet m|^xffxfdx03xffxfbx01xffxfd!| v|HP MPE/iX telnetd|||
+# Brother 1870N Printer
+match telnet m|^x1b[2Jx1b[1;1fxffxfbx01xffxfbx03xffxfdx03| v/Brother printer telnetd///
+# AIX 4.3.3.0
+match telnet m|^xffxfe%xffxfdx18$| v/AIX telnetd///
+match telnet m|^rnEfficient ([-.w ]+) Router (([-.d/]+)) v(d[-.w]+) Readyrnxffxfbx01xffxfbx03xffxfdx01xffxfex01Login: | v/Efficient router telnetd/$3/Model $1 - $2/
+# http://mldonkey.berlios.de/
+# mldonkey-2.5-3 telnet port
+match telnet m|^xffxfdx1fnn***************************************************************************nn                         Welcome to MLdonkey          n| v/MLdonkey multi-network P2P admin port///
+match telnet m|^rnRaptor Firewall Secure Gateway.rn| v/Symantec Raptor firewall secure gateway telnetd///
+match telnet m|^rnSynchronet BBS for Win32  Version (d[-.w]+)rn| v/Synchronet BBS/$1/on Win32/
+match telnet m|^xffxfbx01xffxfbx03rnlogin: $| v/Orinoco WAP telnetd///
+match telnet m|^xffxfdx03xffxfbx01xffxfbx03x1b[1;1Hx1b[2Kx1b[2;1Hx1b[2Kx1b[3;1Hx1b.*Nortel Networks.*BayStack ([-.w]+).*Versions: ([.: w]+)|s v/Nortel Networks telnetd//Baystack $1; Versions: $2/
+match telnet m|^xffxfbx01nrn.*Bay Networks (Bay[-.: w]+)nr|s v/Bay Networks telnetd//$1/
+match telnet m/^Check Point FireWall-1 authenticated Telnet server running on/ v/Check Point Firewall-1 telnetd///
+match telnet m/^rnSpeedStream ([^(rn]+) (.*) v(S+) Readyrnxffxfbx01xffxfbx03xffxfd/ v/SpeedStream $1/$2//
+# SpeedTouch 510 ADSL router - Admin Interface, version 4.0.2.0.0
+match telnet m|^xffxfbx01xffxfbx03xffxfbx01xffxfbx03Username : | v/SpeedTouch DSL router admin interface///
+match telnet m/^rnRaptor Firewall Secure Gateway.rnrnAccess denied.rn/ v/Symantec Raptor Firewall Secure Gateway telnetd//Access Denied/
+match telnet m/^******* System Image Boot *******nrnrVina Technologies (.*) ((d[-.w]+ build d+))nr/ v/Vina Technologies $1 telnetd/$2//
+match telnet m/^xffxfbx01xffxfdx03xffxfbx03x1b[0mx1b[2Jx1b[01;00HrGigalink ([-+ w]+)/ v/Gigalink telnetd//on $1/
+match telnet m/^xffxfbx03xffxfb.*D-Link.*Telnet Console.*Models+: ([-+w]+)/s v/D-Link telnetd//on $1/
+match telnet m|^xffxfbx01x1b[0mx1b[2Jx1b[0mx1b[9;20HCopyright(C) 1995-99 D-Link Systems Inc.x1b[13;30HUser Namex1b[14;30HPasswordx1b[23;10HMAC Address:x1b[8;29H([-.w]+) Console Programx1b[13;41H| v/D-Link switch admin interface//D-Link $1/
+match telnet m/^xffxfax18x01xffxf0xffxfbx01xffxfbx03Ambit Cable RouterrnrnLogin: / v/Ambit Cable Router telnetd///
+match telnet m|^xffxfcx01rnHP JetDirectrnrnPlease type "?" for HELP, or "/" for current settingsrn> $| v/HP JetDirect telnetd///
+match telnet m/^nrVina Technologies (.*) ((d[-.w]+ build d+))/ v/Vina Technologies $1 telnetd/$2//
+match telnet m/^xffxfdx03xffxfbx03xffxfbx01x1b[0mx1b[1;1Hx1b[2JrDr           nr             (DES-.*) Command Line Interfacenrn/ v/D-Link $1 telnetd///
+match telnet m/^xffxfbx01xffxfbx03xffxfcx1fnrnrUser Access VerificationnrnrnrnrnrShell version (dS+).*Maipu Communication Technology Co./ v/Maipu Router//shell v$1/
+match telnet m/^xffxfbx01xffxfbx03xffxfdx03x1b.*Intel Corporation, ([-+. w()]+)/s v/Intel telnetd//on $1/
+match telnet m|^rnFlowPoint/(.*) Readyrn.*xffxfbx01xffxfb| v/Flowpoint telnet//on $1/
+match telnet m/Welcome to Tenor Multipath Switch Telnet Server.*Type: (S+)/s v/Tenor telnetd/$1/on Multipath Switch/
+match telnet m|^xffxfbx01xffxfbx03xffxfdx01x0dx0ax0dx0aCiscox20Systems.*Console/Telnet Access of the ([-. w]+) for Configuration Purposes|s v/Cisco $1 telnetd///
+# Cisco 350 Series Wireless AP 11.05
+match telnet m|^xffxfbx01nrx08x08x08x08x08x08x08x08x08x08x08x08x08x08x08x08x08x08x08x08x08x08x08x08x08x08x08                           x08x08x08x08x08x08x08x08x08x08x08x08x08x08x08| v/Cisco WAP telnetd///
+# Cisco 678 DSL router
+match telnet m|^rnrnUser Access VerificationrnPassword:xffxfbx01$| v/Cisco DSL router telnetd///
+#  Cisco 2900 Catalyst switch, IOS 12.0(5)XU
+# Cisco 3600 router running IOS 12.X
+# Cisco 2600 IOS 12.0
+match telnet m/^xffxfbx01xffxfbx03xffxfdx18xffxfdx1f.*User Access Verificationrnrn(Username|Password): $/s v/Cisco telnetd//IOS 12.X/
+# Cisco Pix 501 PIX IOS 6.3(1) telnet
+match telnet m/^xffxfbx03xffxfbx01xffxfbx03xffxfbx01.*rnUser Access VerificationrnrnPassword: /s v/Cisco telnetd//IOS 6.X/
+# Cisco Catalyst 6509 - WS-C6509 Software, Version NmpSW: 5.5(1)
+match telnet m|^xffxfbx01xffxfbx03xffxfdx01rnrnCisco Systems ConsolernrnrnrnrnEnter password: | v/Cisco Catalyst switch telnetd///
+match telnet m|^xffxfbx01xffxfbx03xffxfdx18xffxfdx1frnrnPassword required, but none setrn| v/Cisco router telnetd//password required but not set/
+match telnet m|^Access not permitted. Closing connection...n$|s v/Cisco catalyst switch telnetd//access denied/
+match telnet m|^xffxfdx18$| v/Cisco microswitch telnetd///
+# OpenBSD 2.3
+# FreeBSD 5.1
+match telnet m|^xffxfd%$| v/BSD-derived telnetd///
+# Solaris 9
+match telnet m|^xffxfdx18xffxfdx1fxffxfd#xffxfd'xffxfd$$| v/Sun Solaris telnetd///
+# Redhat Linux 7.3 telnet
+match telnet m|xffxfdx18xffxfd xffxfd#xffxfd'$| v/Linux telnetd///
+match telnet m|^xffxfbx01nrUser Name : $| v/APC network management card telnetd///
+match telnet m|^xffxfbx01xffxfbx03xffxfdx03nrUser Name : | v|APC telnetd||Power/UPS device|
+# G-Net BB0060 ADSL Modem
+match telnet m|^xffxfbx01xffxfdx03xffxfbx03nr                         *******************nr.*GlobespanVirata Inc., Software Release ([-.w]+)nr|s v/GlobespanVirata telnetd/$1/on broadbrand router/
+# HP-UX B.11.00 A
+match telnet m|^xffxfd$$| v/HP-UX telnetd///
+# Cayman-DSL Model 3220-H, DMT-ADSL (Alcatel) OS version 6.3.0
+match telnet m|^xffxfbx01xffxfbx03xffxfex01nrlogin: $| v/Cayman-DSL router telnetd///
+# Blue Coat Port 80 Security Appliance  Model: Blue Coat SG400  Software Version: SGOS 2.1.6044 Software Release id: 19480 Service Pack 4
+# Maybe I should call this SGOS telnetd instead
+match telnet m|^xffxfbx03xffxfbx01xffxfdx1frnrnUsername: $| v/Blue Coat telnetd///
+match telnet m|^xffxfbx01@ Userid: | v/Shiva LanRover telnetd///
+# Netscreen ScreenOS 4.0.1r1.0 telnetd on a netscreen 5XT running firmware 4.0.1r1.0
+match telnet m|^xffxfdx18xffxfbx01xffxfex01Remote Management Consolernrnlogin: $| v/Netscreen ScreenOS telnetd///
+# Note that openwall telnetd is derived from OpenBSD telnetd
+match telnet m|^xffxfdx18xffxfd xffxfd#xffxfd'xffxfd$$| v|Openwall GNU/*/Linux telnetd|||
+match telnet m|^xffxfcx01rnHP JetDirectrnrnPlease type "?" for HELP, or "/" for current settingsrn> $| v/HP Jet Direct printer telnetd///
+# tinc 1.0.2-2 on Linux
+match tinc m|^0 w+ 17n| v/tinc vpn daemon///
+match time m|^[xc0-xc5]...$|
+# Tiny Personal Firewall 2.0
+match tinyfw m|^x0fnx01x02xc0x0ef7xbbx9bSxfcx86xe4x7fx18xb8x97x06 | v/Tiny Personal Firewall/2.0//
+# Kerio Personal Firewall 4.02 on Windows 2000, 4.0.11 on W2K SP4+ too (port 44xxx)
+match keriopfservice m|^x12x03x04x02| v/Kerio PF 4 Service//maybe 4.0.2-11/
+# Kerio PF 4.0.11 unregistered - GUI process (Port 1027-1200,44xxx? RPC?) on MS W2K SP4+
+match keriopfgui m|^x12rx03x02x9ax20xd0Zx1ex1bxa3*xf2xddxe2(xc3sp&xdaxe4YpxdbETxf9x8ccxc24*Yxbexb3xbaxd6%xf5xb668xadxab>@D<x01<ix80O>xdd>)xdbx18xf55xd1xbax96x1cx17x17x01x01| v/Kerio PF 4 GUI//maybe 4.0.11/
+# Kerio Personal Firewall 2.1.4 on Windows
+# Tiny Personal Firewall 2.0
+# Kerio Personal Firewall, Firewall engine version 2.1.5 Driver version 3.0.0 on WinXP
+match tinyfw m|^x0fnx01x02|  v/Kerio Personal Firewall/2.1.X/or Tiny Personal Firewall/
+match ssl/vmware-auth m|^220 VMware Authentication Daemon Version (d[-.w]+): SSL Requiredrn| v/VMware Authentication Daemon/$1//
+match vnc m|^RFB 003.00(d)n$| v/VNC//protocol 3.$1/
+match vtun m|^VTUN server ver (d[-.w /]+)n|  v/Vtun Virtual Tunnel/$1//
+match vtun m|^VTUN server ver . (d[-.w /]+)n| v/Vtun Virtual Tunnel/$1//
+match winshell m/^Microsoft Windows ((2000)|(XP)|(NT 4.0)) [Version ([d.]+)]rn(C) Copyright 1985-20dd Microsoft Corp.rnrn/ v/Microsoft Windows $1 $5 cmd.exe///
+# CcXstream Media Server 1.0.15 on Linux - Uses XBMSP (X-Box Media Streaming Protocol)
+match xbmsp m|^XBMSP-1.0 1.0 CcXstream Media Server (d[-.w]+)n| v/CcXstream Media Server/$1//
+# XFCE Desktop Version 3.99.4 From Gentoo 1.4 Ebuild on Linux 2.4.6
+match xfce m|^x01@| v/XFCE Desktop///
+match zebra m|^rnHello, this is zebra (version (d[-.w]+)).rnCopyright 1996-20| v/GNU Zebra routing software/$1//
+match zebra m|^rnHello, this is zebra (version (d[-.w]+)).rnCopyright 200d| v/GNU Zebra routing software/$1//
+match pcp m|^x14p..x02x01| v/SGI Performance Co-Pilot///
+match smtp m|^220 SPAM, we hates it.rn| v/Barracuda Spam firewall///
+# 13720/tcp
+match bprd m|^x0eEXIT STATUS 23$| v/Veritas Netbackup///
+# 13782/tcp
+match bpcd m|^gethostbyaddr: [w ]+n$| v/Veritas Netbackup//refused/
+# PostCast SMTP server 2.6.0 ( http://www.postcastserver.com/ )
+match smtp m|^220 PostCast SMTP server.*rn$| v/PostCast SMTP server///
+##############################NEXT PROBE##############################
+Probe TCP GenericLines q|rnrn|
+ports 21,23,43,98,110,113,199,505,540,628,1040,1248,1467,1501,2010,3333,5432,5555,6112,6667-6670,11965,30444
+# bnetd (PvPGN BnetD Mod version 1.5.0) on Debian GNU/Linux (sid)
+match bnetd m|^BOT or Telnet Connection from [127.0.0.1]rnrnEnter your account name and password.rnSorry, there is no guest account.rnrnUsername: | v/PvPGN BnetD Mod/1.5.0//
+match bnetd m|^Username: $| v/bnetd open source Blizzard Battlenet server///
+# bnetd server 0.4.25 on Linux
+# Cisco PIX 501 running PIX IOS 6.3(1)
+match ciscopsdm m|^xc0x01....x03| v/Cisco PIX Secure Database Manager///
+match crossmatchverifier m|^Idlern$| v/Cross Match Technologies Verifier fingerprint capture control port///
+# I think this type of eggdrop banner is only used when customized or such.
+match eggdrop m|^rnNickname.rnSorry, that nickname format is invalid.rn$| v/Eggdrop irc bot console///
+# Alcatel Speedtouch ADSL Router
+match ftp m|^220 Inactivity timer = d+ seconds. Use 'site idle <secs>' to change.rn221 Goodbye (badly formated command seen).  You uploaded 0 and downloaded 0 kbytes.rn221 Goodbye (badly formated command seen).  You uploaded 0 and downloaded 0 kbytes.rn$| v/Alcatel Speedtouch aDSL router ftpd///
+# bftpd 1.0.22 on Linux 2.4
+match ftp m|^220 rn500 Unknown command: ""rn500 Unknown command: ""rn$| v/bftpd///
+# Multitech MultiVoip 410 VoIP gateway
+match ftp m|^220 Service readyrn500 Unsupported commandrn$| v/Multitech MultiVoip 410 VoIP gateway ftpd///
+# NetportExpress PRO/100 3 port print server
+match ftp m|^220 FTP server ready.rn530 access denied.rn| v/Intel NetportExpress print server ftpd///
+# D-Link Print Server internal FTP daemon (Firmware version 1.38) - D-Link Print Server DP-101
+match ftp m|^220 FTP server ready.rn501 Command not supported.rn$| v/D-Link Printer Server ftpd///
+match ftp m|^220 [-.w]+ FTP server ready.rn530 Please login with USER and PASS.rn530 Please login with USER and PASS.rn$| v/Solaris ftpd///
+# vsftpd (Very Secure FTP Daemon) 1.0.0 on linux with custom ftpd_banner
+# We'll have to see if this match is unique enough
+match ftp m|^220 .*rn530 Please login with USER and PASS.rn530 Please login with USER and PASS.rn|s v/vsFTPd///
+match ftp m|^220 [-.w]+ FTP Server ready ...rn530 r  : User not logged in. Please login with USER and PASS first.rn530 r  : User not logged in. Please login with USER and PASS first.rn$| v/Bulletproof ftp server//Windows/
+# BulletProof FTP 2.21 on Windows 2000 Server
+match ftp m|^220 ftprn$| v/Bulletproof ftp server//Windows/
+# WarFTP Daemon 1.70 on Win2K
+match ftp m|^220 [-.+w]+ FTP SERVICE readyrn500 Please enter a command. Dunno how to interperet empty lines...rn500 Please enter a command. Dunno how to interperet empty lines...rn$| v/WarFTPd//Windows/
+# GKrellM System Monitor 2.1.15 on Linux
+match gkrellm m|^<error>nBad connect string!| v/GKrellM System Monitor///
+# Some web servers don't gie a 'Server: ' line for the Get request, but do for this probe.
+match http m|^HTTP/1.1 400 .*rnServer: Microsoft-IIS/(d[-.w]+)rn| v/Microsoft IIS webserver/$1//
+# Icecast version: 1.9+2.0alphasn
+match http m|^HTTP/1.0 401 Authentication RequiredrnWWW-Authenticate: Basic realm="Icecast2 Server"rnrnYou need to authenticatern| v/Icecast streaming media server///
+# Network Flight Recorder v3.2 on Solaris 8 (sparc)
+match http m|^HTTP/1.0 400 Bad requestrnrn$| v/Network Flight Recorder IDS///
+# Cisco 350 Series 802.11 AP
+match http m|^HTTP/1.0 400 Bad RequestrnServer: thttpd/(d[-.w ]+)rn| v/thttpd/$1//
+match icecast m|^HTTP/1.0 200 OKrnServer: icecast/(d[-.w]+)rn| v|Shoutcast/Icecast streaming audio|$1||
+# slident 0.0.19
+match ident m|^0, 0: ERROR: UNKNOWN-ERRORn$| v/slident///
+# mlidentd 1.1 on Linux
+match ident m|^0,0:ERROR:UNKNOWN-ERRORrn$| v/mlidentd///
+# OpenBSD 3.2 identd
+# May apply to Linux too -- need to investigate further.
+match ident m|^0 , 0 : ERROR : UNKNOWN-ERRORrn$| v/OpenBSD identd///
+# FreeBSD 4.8-RC inetd internal identd
+match ident m|^0 , 0 : ERROR : INVALID-PORTrn$| v/FreeBSD identd///
+# pidentd-3.1a19-157
+match ident m|^ : ERROR : UNKNOWN-ERRORrn$| v/pidentd///
+match ident m|^0, 0 : ERROR : X-INVALID-REQUESTrn$| v/Minidentd///
+# http://packages.debian.org/unstable/net/ident2.html
+match ident m|^0 , 0 : ERROR : INVALID-PORTrn0 , 0 : ERROR : INVALID-PORTrn$| v/Ident2///
+# midentd 2.3.1 on Linux
+match ident m|^0, 0 : ERROR : INVALID-PORTrn| v/midentd///
+#midentd 2.1 on Linux 2.4.21
+match ident m|^0,0 : ERROR : INVALID-PORTrn| v/midentd///
+# Broken inetd configuration
+# <27>Dec 19 17:37:37 inetd[28433]: execv /usr/openv/netbackup/bin/bpjava-msvc: No such file or directory
+match inetd m|^<d+>[A-Z][a-z][a-z] +d+ d+:d+:d+ inetd[d+]: execv (/[-.\/w]+): (w[s-w.,]+)$| v/inetd//failed to exec $1: $2/
+# Diverse IRC bot
+match ircbot m|^ rnSorry, that nickname format is invalid.rrn$| v/Diverse IRC bot///
+# Part of Linux net-snmp-5.0.6-17
+match linuxconf m|^500 access denied: Check networking/linuxconf network accessrn$| v/Linuxconf//Access denied/
+# Linuxconf 1.26r4
+match linuxconf m|^500 access denied: Check config/networking/misc/linuxconf network accessrn<p>rnBy default,| v/Linuxconf//Access denied/
+# Netsaint Status Daemon 2.15
+match netsaint m|^Unknown commandn$| v/Netsaint Status Daemon///
+# NSClient - http://nsclient.ready2run.nl/
+match nsclient m|^ERROR:Wrong password$| v/Netsaint Windows Client///
+match omniback m|^HP OpenView OmniBack II ([-.w]+): INET, | v/HP OpenView OmniBack/$1//
+# Mercury/32 3.32 PH Server module on Windows XP
+match ph-addressbook m|^598::Command not recognized.rn598::Command not recognized.rn$| v|Mercury/32 PH addressbook server||Win32|
+match pop3 m|^+OK POP3 [-.+w]+ v(d[-.w]+) server readyrn| v/ipop3d/$1//
+# iopd 2003debian0.0304182231-1
+match pop3 m|^+OK POP3 [[-.w]+] v(200[-.w]+) server readyrn-ERR Null commandrn-ERR Null commandrn| v/ipopd/$1//
+# Solid POP3d 0.15
+match pop3 m|^+OK Solid POP3 server readyrn-ERR unknown commandrn-ERR unknown commandrn$| v/Solid POP3d///
+# OS 400 V4R4M0
+match pop3 m|^+OK POP3 server readyrn-ERR invalid commandrn$| v/IBM OS 400 pop3d///
+# mailgate v3.5.177 on Win2K
+match pop3 m|^+OK pop server readyrn$| v/MailGate pop3d//Windows/
+# Postgres 7.1.3
+match postgresql m|^EInvalid packet length$| v/PostgreSQL DB///
+# postgresql-7.2.3-5.73; linux 2.4.20-18.7 redhat 7.3
+match postgresql m|^EFATAL 1:  invalid length of startup packetn| v/PostgreSQL DB///
+# Postfix qmqpd on Linux 2.4
+match qmqp m|^58:Dnetstring format error while receiving QMQP packet header,$| v/Postfix qmqpd//Quick Mail Queueing Protocol/
+# Ximian Red Carpet Daemon 1.4.4 on RedHat Linux 9.0
+match redcarpet m|^Status: 400 Bad RequestrnContent-Length: 0rnrn| v/Ximian Red Carpet Daemon///
+match smux m|^Ax01x02$| v/Linux SNMP multiplexer///
+# Solaris 9
+match uucp m|^login: Please enter user name: Password: $| v/Solaris uucpd///
+match ups m|^32r $| v/Cyber Power PowerPanelPlus UPS Server//Windows/
+match whois m|^%  No entries found for the selected source(s).n$| v/Merit IRRD whoisd///
+match zebedee m|^x02x01$| v/Zebedee encrypted tunnel///
+match bmc-perform-service m|^SDPACK$| v/BMC Perform Service Daemon///
+# Grisoft AVG antivirus server (distributing virus database updates)
+match http m|HTTP/1.0 404 Not FoundrnServer: GRISOFT-AVG TCP Server/(d[-.w ]+) .*rn| v/Grisoft AVG TCP Server/$1/antivirus updates/
+# Ubicom embedded ( http://www.ubicom.com/home.htm )
+match http m|^HTTP/1.1 400 Bad RequestrnCache-control: no-cachernServer: Ubicom/(d[-.w ]+)rn| v/Ubicom embedded HTTP server/$1//
+##############################NEXT PROBE##############################
+Probe TCP GetRequest q|GET / HTTP/1.0rnrn|
+ports 70,79,80-85,88,113,139,143,280,497,515,540,554,631,783,993,995,1220,1503,2030,3052,3128,3372,3531,3689,5000,5432,5800,5900,6699,7070,8000-8010,8080-8085,8880-8888,9090,9999,10000,10005,11371,13722,15000,40193,4711
+sslports 443
+# Kerio PF 4.0.11 unregistered - Service process (Port 44xxx?) on MS W2K SP4+
+match keriopfservice m|^(HTTP/1.0) 200 OKrnServer: Kerio Personal Firewallrn| v/Kerio PF 4 Service//$1/
+match backupexecra m|^xf6xffxffxffx10$| v/Veritas BackupExec Remote Agent///
+match dantzretrospect m|^xcax04$| v/Dantz Retrospect/6.0//
+match dnet-keyproxy m|^HTTP/1.0 302 FoundrnLocation: http://www.distributed.net/rnrn$| v/Distributed.Net HTTP Keyproxy///
+# Digital UNIX 5.6
+match finger m|^Login name: /         tttIn real life: ???rnrnLogin name: GET       tttIn real life: ???rnrnLogin name: HTTP/1.0  tttIn real life: ???rn$| v/Digital UNIX fingerd///
+# Internet Rex v2.67 Beta 1a
+match finger m|^No such user No such user Nn$| v/Internet Rex finger server///
+# FreeBSD 4.9-STABLE /usr/libexec/fingerd/
+match finger m|^finger: /: no such usernfinger: GET: no such usernfinger: HTTP/1.0: no such usern$| v/FreeBSD fingerd///
+# Bay Networks Micro Annex Comm. Server R10.0
+match finger m|^No such activity.rn$| v/Bay Networks Micro Annex terminal server fingerd///
+# Mercury/32 3.32 Finger Server module on Windows XP
+match finger m|^GET / HTTP/1.0 is not known at this site.rn$| v|Mercury/32 fingerd||Win32|
+# ffingerd 1.28
+match finger m|^That user does not want to be fingered.n$| v/ffingerd///
+# Finger 0.17 from debian linux (which is from Linux netkit I believe)
+# OpenBSD 2.3
+match finger m|^finger: GET: no such user.nfinger: /: no such user.nfinger: HTTP/1.0: no such user.n$| v|BSD/Linux fingerd|||
+# Linux port of in.fingerd from OpenBSD network tools - started with -w to show welcome banner
+match finger m|^rnWelcome to Linux version (d[-.w]+) at [-.w]+ !rnn.*(d+) user.*nrnfinger: GET: no such user.nfinger: /: no such user.nfinger: HTTP/1.0: no such user.n| v/OpenBSD fingerd//ported to Linux; Linux version $1; $2 users logged in/
+# Redhat Linux from finger-server-0.17-9 RPM
+match finger m|^finger: GET: no such user.rnfinger: /: no such user.rnfinger: HTTP/1.0: no such user.rn$| v/Linux fingerd///
+# NetBSD 1.6ZA (berkeley fingerd 8.1 sibling)
+match finger m|^finger: GET: no such usernfinger: /: no such usernfinger: HTTP/1.0: no such usern$| v/NetBSD fingerd///
+# Solaris 9
+match finger m|^Login       Name               TTY         Idle    When    WherernGET                   ???rn/                     ???rnHTTP/1.0              ???rn$| v/Sun Solaris fingerd///
+# mlfingerd 1.1
+match finger m|^Information for user 'GET+20+2F+20HTTP+2F1.0':rnUnknown user.rn$| v/mlfingerd///
+# SGI IRIX 6.5.18f finger
+match finger m|^Login name: GET       tttIn real life: ???rn$| v/SGI IRIX fingerd///
+match gnutella m|^HTTP/1.[01] 404 Not FoundrnServer: gtk-gnutella/(d[-.w]+) (([^)rn]+))rn| v/gtk-gnutella P2P client/$1/$2/
+# LimeWire 3.5.8 on Suse Linux 8.1
+match gnutella m|^HTTP/1.1 406 Not Acceptablern$| v/LimeWire Gnutella P2P client///
+match gnutella m|^HTTP/1.0 200rnServer: Mutellarn| v/Mutella Gnutella P2P client///
+match gnutella m|^HTTP/1.1 404 Not FoundrnServer: giFT-Gnutella/(d[-.w]+)rn| v/GiFT P2P client gnutella module/$1//
+match gopher m|^HTTP/1.0 200 OkrnMIME-Version: 1.0rnServer: GopherWEB/(d[-.w]+)rn| v/Internet Gopher Server//Gopher+ protocol; GopherWeb $1/
+match http m|^HTTP/1.0 401 UnauthorizedrnPragma: no-cachernContent-type: text/htmlrnWWW-Authenticate: Basic realm="Login to the Router Web Configurator"rnrn<html>n  <head>n  <title>401 Unauthorized</title>n  </head>n<body>nn<div align="center">| v/Draytek Vigor aDSL router webadmin///
+match http m|^HTTP/1.1 ddd .*rnServer: webfs/(d[-.w]+)rn| v/WebFS httpd/$1//
+match http m|^HTTP/1.0 200 OKrnConnection: Keep-AlivernContent-Type: text/htmlrnContent-Length: d+rnrn<HTML>n<!-- Copyright IBM Corporation, 1999 -->n<HEAD>n<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=| v/IBM switch webadmin///
+match http m|^HTTP/1.0 ddd .*rnServer: WebCam2000/(d[-.w]+) (([-/.+w]+); www.stratoware.com/webcam2000/)rn| v/Webcam2000 httpd/$1/$2/
+match http m|^HTTP/1.0 404 Not FoundrnDate: .*rnServer: BWS/1.0b3rnrn| v/Corel Paradox relational database web interface/9.X/Embedded BWS 1.0b3/
+match http m|^HTTP/1.0 ddd .*rnDate: .*rnServer: WebSite/(d[-.w]+)rn| v/Deerfield VisNetic WebSite Professional/$1//
+match http m|^HTTP/1.0 dddrnServer: Statistics Server (d[-.w]+)rn| v/DeepMetrix Statistics Server/$1//
+match http m|^HTTP/1.0 400 Bad RequestrnServer: OfficeScan ClientrnContent-Type: text/plainrnAccept-Ranges: bytesrnContent-Length: 4rnrnFail$| v/Trend Micro OfficeScan antivirus update client///
+match http m|^HTTP/1.1 200 OKrnContent-Type: text/htmlrnDate: Tue, 07 Oct 2003 12:26:05 GMTrnAllow: GET, HEADrnServer: Spyglass_MicroServer/(d[-.w]+)rnrn<html>nn<head>nn<title>.*PhaserLink| v/Tektronix Phaser printer webadmin//Ebedded Spyglass MicroServer $1/
+match http m|^HTTP/1.0 401 UnauthorizedrnServer: 3Com/v(d[-.w]+)rnWWW-Authenticate:Basic realm="device"rn| v/3Com switch webadmin/$1//
+match http m|^HTTP/1.0 401 UnauthorizednDate: .*nServer: Acme.Serve/v(d[-.w ]+)nConnection: closenExpires: .*nWWW-Authenticate: Basic realm="PowerChute network shutdown"n|s v/APC Powerchute UPS web management//Embedded Acme.Serv $1/
+match http m|^HTTP/1.0 302 FoundrnLocation: /index.htmrnrn| v/Alcatal Speedtouch aDSL router webadmin///
+match http m|^HTTP/1.0 404 Not FoundrnServer: pks_www/(d[-.w]+)rn| v/OpenPGP public key server/$1//
+match http m|^HTTP/1.0 401 UnauthorizedrnServer: Apache/0.6.5rnPragma: no-cachernContent-type: text/htmlrnWWW-Authenticate: Basic realm="System Setup"rn| v/BenQ AWL wireless router webadmin///
+# Orinoco bg-2000 Access Point
+match http m|^HTTP/1.1 401 UnauthorizedrnServer: Agranat-EmWeb/R5_2_6rnWWW-Authenticate: Basic realm="gateway"rn| v/Orinoco WAP webadmin//Embedded webserver: Agranat-EmWeb 5.2.6/
+# ORiNOCO AP-600
+match http m|^HTTP/1.1 401 UnauthorizedrnServer: Virata-EmWeb/R5_3_0rnWWW-Authenticate: Basic realm="Access-Product"rn| v/Orinoco WAP webadmin//Embedded webserver: Virata-EmWeb 5.3.0/
+match http m|^HTTP/1.0 200 OKnServer: stats.mod/(d[-.w]+)n| v/Eggdrop stats.mod web statistics module/$1//
+match http m|^HTTP/1.1 200 OKrnServer: PPR-httpd/(d[-.w]+)rn| v/PPR print spooling daemon ppradmin/$1//
+match http m|^HTTP/1.1 200 OKrnDate: .*rnServer: RAC_ONE_HTTP (d[-.w]+)rn| v/Dell Embedded Remote Access card webserver/$1//
+match http m|^HTTP/1.0 200 OKrnContent-Type: text/htmlrnrn<HTML>rn<HEAD>rn<TITLE>EpsonNet WebAssist Rev.(d[-.w]+)</TITLE>| v/EpsonNet WebAssist printer configuration/$1//
+match http m|^HTTP/1.0 200 OKrnContent-Type: text/htmlrnrn<HTML><HEAD><META HTTP-EQUIV="Content-type" CONTENT="text/html; charset=iso-8859-1">rn<TITLE>Lexmark ([-/.+w]+)</TITLE>| v/Lexmark printer webadmin//Lexmark $1/
+match http m|^HTTP/1.0 200 OKnServer: III (d[-.w]+)n| v/Innovative Interfaces Innopac httpd/$1//
+match http m|^HTTP/1.0 401 UnauthorizedrnContent-type: text/htmlrnWWW-Authenticate: Basic realm="CISCO_WEB"rn| v/Cisco DSL router webadmin///
+match http m|^HTTP/1.0 ddd .*rnRAKeepAliveHeader: .rn| v/RemotelyAnywhere remote PC management webserver///
+match http m|^HTTP/1.0 ddd .*rnDate: .*rnServer: Ipswitch-IMail/(d[-.w]+)rn| v/IPSwitch IMail web service///
+match http m|^HTTP/1.0 200 OKrnContent-type: text/htmlrnPragma: no-cachernCache-Control: no-cachernrn<html><head><title>Authentication Form</title></head><BODY BGCOLOR="#000000" TEXT="#00FF00"><p><h3 align=left><font face="arial,helvetica">Client Authentication Remote Service</font>| v/Check Point Firewall-1 Client Authentication webserver///
+match http m|^HTTP/1.0 404 Not FoundrnDate: .*rnServer: Check Point SVN foundationrn| v/Check Point Firewall-1 SVN foundation service///
+match http m|^HTTP/1.1 ddd .*rnDate: .*rnServer: HP-UX_Apache-based_Web_Server/(d[-.w]+) (.*)rn| v/HP-UX httpd/$1/Apache derived; $2/
+match http m|^HTTP/1.1 302 MovedrnContent-type: text/htmlrnConnection: closernLocation: /1[012]d{8}/lrnrn<H1>Document| v/Novell NetMail ModWeb webmail///
+match http m/^GIF89axa8-xf7x03x03x03x83x83x83xc4xc4xc4xfex02x02xc9x85cx85|xb5xe2xe2xe2xcaxa2x8exd4RRCCCxdeb"xa5xa5xa5xe7xc5/ v/Tweak XP web advertisement blocker///
+# Management interface for Xerox Phaser 5400, a laser printer. 
+match http m|^HTTP/1.1 200 OKrnContent-Type: text/htmlrnDate: .*rnExpires: .*rnLast-Modified: .*rnPragma: no-cachernServer: Allegro-Software-RomPager/(d[-.w]+)rnrn<HTML>n<!--Copyright (c) Xerox Corporation | v/Xerox printer webadmin//Embedded Allegro-Software-RomPager $1/
+match http m|^HTTP/1.0 302 Moved Temporarilyrnserver: IronPort httpd/(d[-.w]+)rn| v/IronPort mail appliance admin websever/$1//
+match http m|^HTTP/1.1 200 OKrnServer: Virata-EmWeb/R(d[-.w]+)rnContent-Type: text/htmlrnExpires: .*rnCache-Control: no-cachernPragma: no-cachernrnn<html>n<head><title>(CopperJet [-.+w ]+)</title>| v/Allied Data CopperJet aDSL modem//Embedded Virata-EmWeb $1; $2/
+match http m|^HTTP/1.0 ddd .*rnDate: .*nServer: dhttpd/(d[-.w]+)rn| v/dhttpd/$1//
+match http m|^HTTP/1.0 401 UnauthorizedrnServer: Snap Appliance, Inc./(d[-.w]+)rn| v/Snap Appliance storage system webadmin/$1//
+match http m|^HTTP/1.0 200 OKrnPragma: no-cachernContent-Type: text/htmlrnrn<HTML>n<FRAMESET COLS="105,*" FRAMEBORDER=NO BORDER=0nFRAMESPACING=0>n<FRAME SRC="/side.html" SCROLLING=NO>n<FRAME SRC="/startupdata.html">n</FRAMESET>n</HTML>n$| v/Motorola cable modem webadmin///
+match http m|^HTTP/1.0 200 OKnDate: .*nServer: Intel NetportExpressPro/(d[-.w]+)n| v/Intel NetportExpress Pro print server webadmin/$1//
+match http m|^HTTP/1.0 200 OkrnContent-Type: text/html; charset="utf-8"rnrn<HTTP>rn<HEAD>rn  <TITLE>MythTV Status</TITLE>| v/MythTV Linux PVR webadmin///
+match http m|^HTTP/1.0 302 FoundrnLocation: http://[-.+w]+:32ddd/rnrn$| v/Sun Solaris Management Console//Runs Tomcat webserver/
+# 3Com OfficeConnect 812 Router telnetd
+match http m|^HTTP/1.0 401 UnauthorizedrnWWW-Authenticate: Basic realm="OCR-([-.w]+)"rnContent-Type: text/htmlrnServer: Allegro-Software-RomPager/(d[-.w]+)rnrn| v/3Com OfficeConnect Router webadmin//Embedded Allegro-Software-RomPager $2; OfficeConnect OCR-$1/
+match http m|^HTTP/1.0 200 OKrnPragma: no-cachernContent-Type: text/htmlrnrn<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">n.*<META NAME=Copyright CONTENT="Copyright (c) 2003 3Com Corporation. All Rights Reserved.">n.*<META http-equiv="3Cnumber" content="([-.w]+)">n|s v/3Com OfficeConnect router webadmin//3Com` $1/
+match http m|^HTTP/1.0 401 UnauthorizedrnWWW-Authenticate: Basic realm="rnrn<title>401 Unauthorized</title><body><h1>401 Unauthorized</h1></body>| v/Acer Warplink Firewall Router webadmin///
+match http m|^HTTP/1.0 401 UnauthorizedrnServer: httpdrnDate: Fri, 09 Jan 1970 11:48:03 GMTrnWWW-Authenticate: Basic realm="Sitecom WL-([-.w]+)"rn| v/Sitecom webadmin//Sitecom WL-$1 WAP/
+match http m|^HTTP/1.0 200 OKrnDate: .*rnrn<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html><body bgcolor="#C0C0C0" text="#000000" vlink="#800080" link="#0000FF"><P><h1>TempTrax Digital Thermometer</h1>| v/SensaTronics TempTrax Digital Thermometer///
+match http m|^HTTP/1.1 401 UnauthorisedrnServer: Zeus/(d[-.w]+)rn.*WWW-Authenticate: basic realm="Zeus Admin Server"rn|s v/Zeus httpd Admin Server/$SUBST(1,"_",".")//
+match http m|^HTTP/1.1 ddd .*rnServer: Zeus/(d[-.w]+)rn| v/Zeus httpd/$1//
+match http m|^HTTP/1.0 404 File not FoundrnServer: SPiN ChatSystem/(d[-.w]+)rn| v/SPiN web chat system/$1//
+# Netgear FR114P Firewall Router
+match http m|^HTTP/1.0 401 UnauthorizedrnServer: IP_SHARER WEB (d[-.w]+)rnWWW-Authenticate: Basic realm="(FR[-.w+]+)"rn| v/Netgear FR-series firewall router webadmin//Model $2; Embedded webserver: IP_SHARED WEB $1/
+# Netgear FR314 Firewall Router
+match http m|^HTTP/1.0 200 OKrnServer: NETGEAR Firewallrn| v/Netgear FR-series firewall router webadmin///
+# Netgear FVS318 Firewall/Router
+match http m|^HTTP/1.0 200 OKrnServer: NetgearrnContent-Type: text/htmlrnPragma: no-cachernLast Modified: .*rnConnection: closernrn<html>rt<head>rtt<meta http-equiv="content-type" content="text/html;charset=ISO-8859-1">rtt<title>rtttNETGEAR Router r| v/Netgear router webadmin///
+# Netgear RP614 firmware version 4.12
+match http m|^HTTP/1.0 401 UnauthorizedrnWWW-Authenticate: Basic realm="(RPd+)"rnServer: Embedded HTTPD v(d[-.w]+), | v/Netgear router webadmin//Netgear $1; Delta Networks Embedded HTTPd $2/
+# CiscoSecure ACS 3.1 on Windows 2000 Server
+# Cisco Secure ACS for Windows 2000
+match http m|^HTTP/1.0 200 OKrnContent-Type: text/htmlrnContent-length: .*rnrn<html>rn<head>rn<title>CiscoSecure ACS Login</title>| v/Cisco Secure ACS web interface///
+# Pix Device Manager (PDM) version 3.01
+match http m|^HTTP/1.0 401 UnauthorizedrnDate: .*rnContent-Type: text/htmlrnExpires: .*rnWWW-Authenticate: Basic realm="PIX"| v/Cisco PIX Device Manager///
+match http m|^HTTP/1.0 ddd .*rnServer: DHost/(d[-.w]+) HttpStk/(d[-.w]+)rn| v/Novell eDirectory DHOST httpd/$1/HttpStk: $2; used by iMonitor/
+match http m|^HTTP/1.0 ddd .*rnServer: 3ware/(d[-.w]+)rn| v/3Ware web interface/$1/RAID storage/
+match http m|^HTTP/1.0 ddd .*rnServer: Cherokee/(d[-.w]+)rn| v/Cherokee httpd/$1//
+match http m|^HTTP/1.0 200 OKrnServer: HomeSeerrn| v/HomeSeer Home Control Web Interface///
+# Multitech MultiVoip 410 VoIP gateway
+match http m|^HTTP/1.1 200 OKrnServer: RTXCweb Software (d[-.w]+)rnDate: .*rnContent-type: text/htmlrnrn<html>rn<head>rn<META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">rn<META HTTP-EQUIV="EXPIRES" CONTENT="-1">rn<script language = "Javascript">rnvar title_string = " v [Firmware - [w ]+]| v/Multitech MultiVoip VoIP gateway web interface//Embedded webserver: RTXCweb $1/
+# NetComm NB1300 ADSL Modem/Router
+match http m|^HTTP/1.1 401 UnauthorizedrnServer: WindWeb/(d[-.w]+)rnConnection: closernWWW-Authenticate: Basic realm="([-./w ]+)"rnContent-Type: text/htmlrnrnHasbani Web Server| v/WindWeb embedded webserver/$1/As on NetComm DSL modems; Realm: $2; Calls itself Hasbani Web Server/
+match http m|^HTTP/1.0 200 OKrnServer: SimpleServer:WWW/(d[-.w]+)rn| v/AnalogX SimpleServer httpd/$1/Windows/
+# Xitami v2.4d9 Windows
+match http m|^HTTP/1.0 ddd .*rnContent-Length: d+rnX-Powered-By: ([-/.w ]+)rnContent-Type: .*rnServer: Xitamirn| v/Xitami httpd//$1/
+match http m|^HTTP/1.1 200 OKrnDate: .*rnServer: CANON HTTP Server Ver(d[-.w ]+)rn| v/Canon printer web interface/$1//
+match http m|^HTTP/1.1 500 Server ErrorrnConnection: closernContent-Length: d+rnDate: .*rnServer: Radio UserLand/(d[.w ]+)-([-.w ]+)rnrn| v/Radio Userland blog server/$1/platform: $2/
+match http m|^HTTP/1.1 302 Moved TemporarilyrnPragma: no-cachernLocation: /servlet/nodeinfo/rnExpires: .*rnCache-Control: post-check=0, pre-check=0rnConnection: closernContent-type: rnServer: Fred (d[-.w]+) (build (d+)) HTTP Servletsrnrn| v/Freenet Fred anonymous P2P/$1 build $2//
+match http m|^HTTP/1.0 200 OkrnServer: diva_httpdrn| v/Eicon Diva ISDN card configuration server///
+match http m|^HTTP/1.0 ddd .*rnServer: Resin/(d[-.w]+)rn| v/Caucho Resin JSP engine/$1//
+match http m|^HTTP/1.0 ddd .*rnMIME-Version: 1.0rnServer: linuxconf/(d[-.w]+)rn| v/Linuxconf web configuration server/$1//
+match http m|^HTTP/1.0 ddd .*rnDate: .*rnServer: TinyWeb/(d[-.w]+)rn| v/Tinyweb httpd/$1/on Windows/
+match http m|^HTTP/1.0 ddd .*rnDate: .*rnServer: WebSitePro/(d[-.w]+)rn| v/O'Reilly WebSite Pro/$1//
+match http m|^HTTP/1.0 ddd .*rnServer: Lucent Security Management Admin Server rn| v/Lucent Security Management Admin Server//Lucent VPN Firewall/
+match http m|^HTTP/1.0 ddd .*rnServer: thttpd/(d[-.w]+) (w+)rn| v/thttpd/$1 $2//
+match http m|^HTTP/1.1 .*rnDate: .*rnServer: FirstClass/(d[-.w]+)rn| v/FirstClass webserver/$1//
+match http m|^HTTP/1.1 400 Bad requestrnServer: Citrix Web PN Serverrn| v/Citrix Metafrme ICA Browser///
+match http m|^HTTP/1.1 ddd .*rnServer: HP-ChaiServer/(d[-.w]+)rnContent-length: 0rnrn|s v/HP JetDirect printer webadmin//HP-ChaiServer $1/
+# mldonkey-2.5-3 http port on Linux 2.4.21
+match http m|^HTTP/1.0 200 OKrnServer: MLdonkeyrn.*rnrn<html>n<head>nn<title>MLdonkey: Web Interface</title>n|s v/MLdonkey multi-network P2P web interface///
+# Docupoint Discovery 3.0(Apache) on Windows 2000 Professional
+match http m|^<html>r<head><title>Docupoint Discovery</title>r<META HTTP-EQUIV="Content-Type" CONTENT="text/html; CHARSET=UTF-8">r| v/Docupoint Discovery search engine///
+match http m|^HTTP/1.0 200 OKrn.*rnrn<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">n<html><head><title>BitTorrent download info</title></head>n<body>n<h3>BitTorrent download info</h3>n<ul>n<li><strong>tracker version:</strong> (d[-.w]+)</li>|s v/BitTorrent P2P tracker/$1/bttrack.py/
+match http m|^HTTP/1.1 ddd .*rnServer: eMulern.*<title>eMule (d[-.w]+) |s v/eMule P2P/$1//
+# Network Associates EPO 3.0
+match http m|^HTTP/1.0 200 OKrnServer: Agent-ListenServer-HttpSvr/1.0rn.*<ComputerName>([-.w]+)</ComputerName>|s v/Network Associates ePolicy Orchestrator//Computername: $1/
+match http m|^HTTP/1.0 403 ForbiddenrnServer: Agent-ListenServer-HttpSvr/1.0rn| v/Network Associates ePolicy Orchestrator///
+match http m|^HTTP/1.1 ddd .*rnServer: Debut/(d[-.w]+)rn| v|Brother printer webadmin||Embedded server: Debut $1|
+match http m|^HTTP/1.0 ddd .*rnServer: kpfrn| v/KDE Public Fileserver///
+match http m|^HTTP/1.1 200 OKrnServer: Netscape-FastTrack/(d[-.w]+)rn| v/Sun Iplanet webserver/$1//
+match http m|^HTTP/1.0 200 OKrnDate: .*rnServer: dwhttpd/(d[-.w]+) (([^rn)]+))rnContent-type: text/htmlrnrn  n  t<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">n  <HTML>n    <HEAD>n      n      <TITLE>AnswerBook2: Personal Library</TITLE>n| v/Sun AnswerBook2 webserver/$1/$2/
+match http m|^HTTP/1.0 ddd .*rnServer: enCoreXpress/(d[-.w]+)rn|s v|enCoreXpress MOO||http://lingua.utdallas.edu/encore|
+# Lispweb 2.0 Allegro Common Lisp.
+match http m|^HTTP/1.0 ddd .*nMime-Version: .*nServer: LispWeb (d[-.w]+) (acl)n| v/Lispweb httpd/$1//
+# World Client for MDaemon (www.altn.com) on Windows 2000
+match http m|^HTTP/1.0 ddd .*rnServer: WDaemon/(d[-.w]+)rn| v/Alt-N MDaemon World Client webmail/$1//
+# pop3proxy web interface from spambayes 1.0a5 on Linux
+match http m|^HTTP/1.1 ddd .*rnConnection: closernContent-Type: text/htmlrnDate: .*rnrn<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">rn<html>rn<head>rn<title id="title">Home</title>rn<meta content="no-cache" http-equiv="Pragma"/>rn<meta content="no-cache" http-equiv="Cache"/>rn| v/Spambayes pop3proxy web interface///
+match http m|^HTTP/1.[01] ddd .*rnServer: Zope/(Zope (d[-.w]+) (([^)]+)), ([^r]+)rn|s v/Zope application server/$1/$2; $3/
+# Oracle XML Database - SuSe Linux 8.1 Personal, Linux 2.4.19, Oracle9i Database
+match http m|^HTTP/1.1 ddd .*rnServer: Oracle XML DB/(Oracle[w]+ Enterprise Edition Release) (d[-.w]+) |s v/Oracle XML DB webserver/$2/$1/
+match http m|^HTTP/1.1 ddd .*rnDate: .*rnServer: Oracle9iAS ((d[-.w]+)) Containers for J2EErn| v/Oracle 9iAS J2EE webserver/$1//
+match http m|^HTTP/1.1 ddd .*rnDate: .*rnAllow: .*rnServer: Oracle9iAS-Web-Cache/(d[-.w]+)rn| v/Oracle 9iAS Web Cache/$1//
+# ntop 2.1.56
+match http m|^HTTP/1.0 ddd .*nServer: ntop/(d[-.w]+) (([-.w]+))n|s v/Ntop web interface/$1/platform: $2/
+match http m|^HTTP/1.0 ddd .*nServer: ntop/(d[-.w]+) ([^)r]+)rn|s v/Ntop web interface/$1//
+# Ntop 2.1.3
+match http m|HTTP/1.0 ddd .*nDate: .*nCache-Control: .*nConnection: .*nServer: ntop/(d[-.w]+) ([-.w ]+) (([-.w]+))n| v/Ntop web interface/$1/$2; platform: $3/
+match http m|^HTTP/1.1 ddd .*rnServer: Apt-proxy (d[-.w]+)rn|s v/Debian Apt-proxy/$1//
+match http m|^HTTP/1.0 404 NON-EXISTENT BACKENDrnrn$| v/Debian Apt-proxy//Broken: no backend/
+match http m|^HTTP/1.0 ddd .*rnServer: mini_httpd/(d[-.w]+) | v/Mini_httpd/$1//
+# HP ProCurve Switch 2650 / Firmware revision H.07.32
+match http m|^HTTP/1.1 401 UnauthorizedrnServer: eHTTP v(d[-.w]+)rnConnection: closernWWW-Authenticate: Basic realm="HP ([-.w]+)"rnrn| v/HP webadmin//HP $2; embedded eHTTP $1/
+match http m|^HTTP/1.0 200 OKrnServer: eHTTP v(d[-.w]+)rnConnection: closernContent-Type: text/htmlrnContent-Length: d+rnrn<html> n<head>n    <title> n    HP ProCurve Switch (d[-.w]+) n| v/HP ProCurve Switch webadmin//ProCurve $2; embedded eHTTP $1/
+match http m|^HTTP/1.1 ddd .*rnServer: Sun-ONE-Application-Server/(d[-.w]+)rn| v/SunONE Application Server/$1//
+match http m|^HTTP/1.1 ddd .*rnServer: SunONE WebServer (d[-.w]+)rn| v/SunONE WebServer/$1//
+match http m|^HTTP/1.1 ddd .*rnDate: .*rnServer: IBM_HTTP_Server/(d[-.w]+) +(Apache/)?(d[-.w]+) (([^rn]+))rn|i v/IBM HTTP Server/$1/Derived from Apache $3; $4/
+match http m|^HTTP/1.1 ddd .*rnDate: .*rnServer: IBM_HTTP_Server/(d[-.w]+) +(Apache/)?(d[-.w]+)rn|i v/IBM HTTP Server/$1/Derived from Apache $3/
+# D-Link DWL-1000AP webadmin
+match http m|^HTTP/1.0 200 OKrnServer: PSIWBL/(d[-.w]+)rnDate: .*Title: wwwrnrn<HTML>n <HEAD>n   <meta http-equiv="Refresh" content="0; url=/startup/startup.shtml">n </HEAD>n <BODY>n </BODY>n</HTML>$|s v/D-Link web admin server//Embedded webserver: PSIWBL $1/
+# D-Link DWL-900AP+ WAP
+match http m|^HTTP/1.0 401 UnauthorizedrnServer: Embedded HTTP Server (d[-.w]+) *rnWWW-Authenticate: Basic realm="DWL-([-+.w]+)"rn| v/D-Link web admin server//Embedded HTTP Server $1; D-Link DWL-$2/
+# D-Link DWL-1000AP Wireless Access Point
+match http m|^HTTP/1.0 ddd .*rnServer: PSIWBL/(d[-.w]+)rnDate: .*rnWWW-Authenticate: Basic realm="Enter Password (Leave User Name Empty)"rn| v/D-Link web admin server//Embedded webserver: PSIWBL $1/
+match http m|^HTTP/1.0 ddd .*rnDate: .*rnServer: WhatsUp_Gold/(d[-.w]+)rn| v/IPswitch Whats Up Gold/$1//
+match http m|^HTTP/1.1 401 UnauthorizedrnWWW-Authenticate: Basic realm="(MR[-.w]+)"rnContent-Type: text/htmlrnServer: ZyXEL-RomPager/(d[-.w]+)rnrn| v|NetGear webadmin||NetGear $1 WAP/Router; Embedded webserver: ZyXEL-RomPager $2|
+match http m|^HTTP/1.1 401 UnauthorizedrnWWW-Authenticate: Basic realm="(RP[-.w]+)"rnContent-Type: text/htmlrnServer: ZyXEL-RomPager/(d[-.w]+)rnrn| v|NetGear webadmin||NetGear $1 router; Embedded webserver: ZyXEL-RomPager $2|
+# Netgear MR814 wireless router remote administration, Firmware 4.13 Aug 20 2003
+match http m|^HTTP/1.0 401 UnauthorizedrnWWW-Authenticate: Basic realm="(MR[-.+w]+)"rnServer: Embedded HTTPD v(d[-.w]+), (.*)rn| v/NetGear MR-series WAP//$1; Embedded HTTPD $2, $3/
+match http m|^HTTP/1.1 401 UnauthorizedrnWWW-Authenticate: Basic realm="Prestige ([-.w ]+)"rnContent-Type: text/htmlrnServer: ZyXEL-RomPager/(d[-.w ]+)rnrn| v|ZyXEL Prestige webadmin|$2|Prestige model $1|
+match http m|^HTTP/1.1 401 UnauthorizedrnWWW-Authenticate: Basic realm="Prestige ([-.w ]+)"rnContent-Type: text/htmlrnServer: RomPager/(d[-.w ]+) ([-./w]+)rnrn| v|ZyXEL Prestige webadmin|$2|Prestige model $1; $3|
+match http m|^HTTP/1.0 ddd .*rnServer: Roxen/(d[-.w]+)rn|s v/Roxen webserver/$1//
+# A-link (Avaks) Hasbani Web Server on RoadRunner 44b ADSL Router
+match http m|^HTTP/1.1 403 ForbiddenrnServer: WindWeb/(d[-.w]+)rnConnection: closernWWW-Authenticate: Basic realm="Home Gateway"rnContent-Type: text/htmlrnrnHasbani Web Server| v/A-link Hasbani webadmin//Runs WindWeb $1 embedded httpd; Often a DSL router/
+# Sambar Server V5.3 on Windows NT
+match http m|^HTTP/1.1 ddd .*rnDate: .*rnServer: SAMBARrn| v/Sambar webserver///
+match http m|^HTTP/1.1 .*rnDate: .*rnServer: aEGiS_nanoweb/(d[-.w]+) (([^)]+))rn| v/AEGiS Nanoweb httpd/$1/$2/
+match http m|^HTTP/1.1 404 Not FoundrnDate: .*rnServer: Unknown/0.0 UPnP/1.0 Virata-EmWeb/([-.w]+)rn| v/ReplayTV web interface//runs Virata-EmWeb $1/
+match http m|^HTTP/1.0 ddd .*rnServer: WebLogic WebLogic Server (d[-.w]+( SPd+)?) +www|s v/WebLogic applications server/$1//
+# Samba 3.0.0rc4-Debian
+match http m|^HTTP/1.0 401 Authorization RequiredrnWWW-Authenticate: Basic realm="SWAT"rn| v/Samba SWAT administration server///
+match http m|^HTTP/1.0 200 OKrnConnection: closernDate: .*rnExpires: .*rnContent-type: text/htmlrnrn<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">n<HTML>n<HEAD>n<TITLE>Samba Web Administration Tool</TITLE>| v/Samba SWAT administration server///
+match http m|^HTTP/1.0 ddd .*rnServer: icecast/(d[-.w]+)rn| v/Icecast streaming media server/$1//
+match http m|^HTTP/1.0 200 OKrnServer: HP-Web-Server-(d[-.w]+)rn.*<!-- framework.ini ([A-Z]:\[-.w \]+)-->|s v/HP Web Jetwebadmin/$1/framework.ini: $2/
+match http m|^HTTP/1.1 ddd .*rnDate: .*rnServer: HP Web Jetadmin/(d[-.w]+) (.*)rn| v/HP Web Jetadmin print server/$1/$2/
+match http m|^HTTP/1.1 ddd .*rnServer: HP-Web-JetAdmin-(d[-.w]+)rn| v/HP Web Jetadmin print server/$1//
+match http m|^HTTP/1.0 ddd .*rnServer: Tomcat Web Server/(d[-.w ]+) ( ([^)]+) )rn|s v/Apache Tomcat webserver/$1/$2/
+match http m|^HTTP/1.0 ddd .*rnServer: Tomcat Web Server/(d[-.w ]+)rnrn|s v/Apache Tomcat webserver/$1//
+match http m|^HTTP/1.0 ddd .*rnServlet-Engine: Tomcat Web Server/(d[-.w]+) (([^)]+))rn|s v/Apache Tomcat webserver/$1/$2/
+match 3dm-http m|^HTTP/1.0 200 OKrnServer: 3ware/(d[-.w]+)rn.*<title>3ware 3DM - No remote access</title>|s v/3Ware 3DM Raid Daemon/$1/Access denied/
+match http m|^HTTP/1.0 ddd .*rnServer: publicfile| v/publicfile httpd///
+match http m|^HTTP/1.[01].*Server: Apache/(d+.d+.[-.w]+) ([^rn]+)|s v/Apache httpd/$1/$2/
+match http m|^HTTP/1.1 ddd .*rnServer: Apache/(d[-.w]+)rn.*X-Powered-By: ([^rn]+)rn|s v/Apache httpd/$1/$2/
+match http m|^HTTP/1.1 ddd .*rnServer: Apache/(d[-.w]+)rn|s v/Apache httpd/$1//
+# apache 1.3.26-0woody3 or Apache 2.0.45
+match http m|^HTTP/1.[01] ddd.*rnDate: .*rnServer: Apachern| v/Apache httpd///
+match http m|^HTTP/1.[01] ddd.*rnDate: .*rnServer: Apache +(([^rn)]+))rn| v/Apache httpd//$1/
+match http m|^HTTP/1.1 ddd .*rnDate: .*rnServer: IBM_HTTP_Server/(d[-.w]+) (Apache/.*)rn| v/IBM HTTP Server/$1/Based on $2/
+match http m|^HTTP/1.1 ddd .*rnDate: .*rnServer: Apache-AdvancedExtranetServer/(d[-.w]+) (Mandrake Linux/[-.w]+) (.*)rn| v/Apache Advanced Extranet Server httpd/$1/Mandrake Linux; $2/
+match http m|^HTTP/1.1 ddd .*rnDate: .*rnServer: Apache-AdvancedExtranetServer/(d[-.w]+) (Mandrake Linux/[-.w]+)rn| v/Apache Advanced Extranet Server httpd/$1/Mandrake Linux/
+match http m|^HTTP/1.1 ddd .*rnDate: .*rnServer: Apache-AdvancedExtranetServer/(d[-.w]+) (Linux-Mandrake/[-.w]+)rn| v/Apache Advanced Extranet Server httpd/$1/Mandrake Linux/
+match http m|^HTTP/1.1 ddd .*rnDate: .*rnServer: Apache-AdvancedExtranetServer/(d[-.w]+)rn| v/Apache Advanced Extranet Server httpd/$1/Mandrake Linux/
+match http m|^HTTP/1.[10] ddd.*rnDate:.*rnServer: Stronghold/([-.w]+) Apache/([-.w]+)| v/Apache Stronghold httpd/$1/based on Apache $2/
+match http m|^HTTP/1.1 ddd .*rnServer: Apache Tomcat/(d[-.w]+)|s v/Apache Tomcat/$1//
+match http m|^HTTP/1.1 ddd.*rnServer: Apache[- ]Coyote/(d[-d.]+)rn|s v|Apache Tomcat/Coyote JSP engine|$1||
+match http m|^HTTP/1.1.*rnServer: Netscape-Enterprise/([-.w]+)rn| v/Netscape Enterprise httpd/$1//
+# Citrix NFuse 2.0 on MS IIS 5.0
+match http m|^HTTP/1.[01].*rnServer: Microsoft-IIS/([-.w]+)rn.*rnContent-Location: http://[^/]+/nfuse.htmrn.*rn---- NFuse ([-.w]+) (Build |s v/Citrix NFuse/$2/Microsoft IIS $1/
+match http m|^HTTP/1.[01].*rnServer: Microsoft-IIS/([-.w]+)rn|s v/Microsoft IIS webserver/$1//
+match http m|^HTTP/1.0 200 OKrnDate: .+rnServer: Tomcat/([-.w]+)rnContent-Type: text/htmlrnContent-Length: d+rnServlet-Engine: Tomcat/[-.w]+ (Java ([-.w]+); SunOS ([-.w]+) (w+); java.vendor=Sun Microsystems Inc.)rn| v/Solaris management console server//SunOS $3 $4; Java $2; Tomcat $1/
+match http m|^HTTP/1.1 200 OKrn.+Server: CommuniGatePro/([-.w]+)rn|s v/CommuniGate Pro httpd/$1//
+match http m|^HTTP/1.0 ddd .*rnDate: .*rnServer: DSS ([-.w]+) Admin Server/([-.w]+)| v/DarwinStreamingServer/$1/Admin Server $2/
+match http m|^HTTP/1.0 ddd .*rnDate: .*rnServer: QTSS (d[-.w]+) Admin Server/(d[-.w]+)rn| v/Apple QTSS Admin Server/$2/from QTSS $2/
+match http m|^HTTP/1.0 200 OKrnServer: fnord/(d[-.w]+)rn| v/Fnord httpd/$1//
+match http m|^HTTP/1.0 404 Not FoundrnContent-Type: text/htmlrnConnection: closernrn<title>Not Found</title>This host is not served here.$| v/Fnord httpd///
+match http m|^HTTP/1.0 ddd .*rnServer: MiniServ/0.01rn|s v/Webmin httpd///
+match http m|^HTTP/1.1 200 OKrnServer: NetWare-Enterprise-Web-Server/([-.w]+)rn| v/Novell Netware enterprise web server/$1//
+match http m|^HTTP/1.1 302 Object Moved TemporarilyrnServer: NetWare HTTP Stackrn| v/Novell Netware HTTP Stack//HTTPSTK.NLM/
+match http m|^HTTP/1.0 ddd .*rnServer: HTTPd-WASD/([-.w]+) OpenVMS/VAXrn| v|HTTPd-WASD|$1|on OpenVMS/VAX)|
+match http m|^HTTP/1.1 ddd .*rnServer: Lotus-Domino/Release-(d[-.w]+)rn| v/Lotus Domino httpd/$1//
+match http m|^HTTP/1.1 ddd .*rnServer: Lotus-Domino/(d[-.w]+)rn| v/Lotus Domino httpd/$1//
+match http m|^HTTP/1.1 ddd .*rnServer: Lotus-Domino(/0)?rn| v/Lotus Domino httpd///
+# G-Net BB0060 ADSL Modem (I'm not sure this is GlobespanVirata, but that is
+# what the telnetd on this device said).
+match http m|^HTTP/1.1 302 Document FollowsrnLocation: /hag/pages/home.ssirnrn$| v/GlobespanVirata httpd//on broadband router/
+match http m|^HTTP/1.0 200 OKrnServer:HTTP/1.0rn.*<title>Hewlett Packard</title>|s v/HP Jetdirect httpd///
+match http m|^HTTP/1.0 401 UnauthorizedrnServer: EHTTP/([.d]+)rnWWW-Authenticate: Basic realm="HP ([-.w]+)"rn| v/HP printer EHTTP admin server/$1/HP $2 printer/
+match http m|^HTTP/1.1 ddd .*rnServer: Virata-EmWeb/([-.w]+)rn.*rnrnn<!--nFile name: index.htmlnnThis is the 'parent' file that calls the individual child frames. nThis is the file that is first accessed when the user types http://<ipaddress> nin the browser toolbar. nnThe UI Architecture consists of a total of 4 frames. This file calls 3 high-level |s v/HP LaserJet printer webadmin//Virata-EmWeb embedded server $1/
+match http m|^HTTP/1.0 d{3}.*rnServer: CompaqHTTPServer/([.w]+)rn|s v/Compaq Insight Manager/$1//
+match http m|^HTTP/1.1 401 Authorization RequiredrnWWW-Authenticate: Basic realm="Linksys ([-.A-Zd/ ]+)"rn| v/Linksys router web admin server//device model $1/
+match http m|^HTTP/1.1 ddd .*rnServer: Insight Manager (d)rnrn|s v/Compaq Insite Manager/$1//
+match http m|^HTTP/1.1 200 OKrnContent-Length: d+rnConnection: closernPragma: no-cachernCache-Control: no-cache, no-store, must-revalidaternExpires: 0rnContent-Type: text/htmlrnrn| v/GNU Httptunnel///
+# Blue Coat Port 80 Security Appliance Model: Blue Coat SG400 Software Version: SGOS 2.1.6044 Software Release id: 19480 Service Pack 4
+match http m|^HTTP/1.0 301 Moved PermanentlyrnLocation: /Secure/Local/console/index.htmrnrn$| v/Blue Coat Security Appliance HTTP admin interface///
+match http m|^HTTP/1.0 400 Bad RequestrnServer: AkamaiGHostrn| v|AkamaiGHost||Akamai's HTTP Acceleration/Mirror service|
+match http m|^HTTP/1.0 ddd .*rnServer: Netscape-Enterprise/([-.w]+)rn| v/Netscape Enterprise webserver/$1//
+match http m|^HTTP/1.1 ddd .*rnServer: Netscape-Enterprise/([-. w]+)rn| v/Netscape Enterprise webserver/$1//
+match http m|^HTTP/1.0 ddd .*nDate: .*nServer: NCSA/(1.d)n| v/NCSA httpd/$1//
+match http m|^HTTP/1.0 ddd .*rnServer: Netscape-FastTrack/(d[-.w]+)rn| v/Netscape FastTrack web server/$1//
+match http m|^HTTP/1.1 ddd .*rnServer: (Oracle[-.w/]+) Oracle HTTP Server ([-.w]+)|s v/Oracle HTTP Server/$1/$2/
+match http m|^HTTP/1.1 ddd .*rnServer: Oracle HTTP Server Powered by Apachern|s v/Oracle HTTP Server Powered by Apache///
+match http m|^HTTP/1.1 ddd .*rnServer: Oracle HTTP Server Powered by Apache/([-.w]+)rn|s v/Oracle HTTP Server Powered by Apache/$1//
+match http m|^HTTP/1.0 401 UnauthorizedrnServer: Embedded HTTP Server (d[.d]+)rnWWW-Authenticate: Basic realm="([-+.w]+)"rnConnection:| v/D-Link Embedded HTTP Server/$1/on D-Link $2/
+# iCal 3.6
+match http m|^HTTP/1.1 200 OKrnDate: .*rnMIME-Version: 1.0rnServer: Wapapi/1.1rnContent-Type: text/htmlrnContent-Length: d+rnrn<html>rn<head><title>iCal Tutorial:  Introduction</title></head>| v/Brown Bear iCal web calendar///
+match http m|^HTTP/1.1 401 UnauthorizedrnDate: .*rnServer: (Virata-EmWeb/R6_0_1)rnWWW-Authenticate: Basic realm="Administration Tools"rnrn401 Unauthorizedrn$| v/Netscreen administrative web server//runs $1/
+# Phaser860 Printer
+match http m|^HTTP/1.1 404 Not FoundrnDate: .*rnAllow: GET, HEADrnServer: Spyglass_MicroServer/(d[-.w]+)rnContent-Type: text/htmlrnContent-Length: d+rnrn<HTML><HEAD><TITLE>Not Found</TITLE></HEAD>rn<BODY>The requested URL was not found.</BODY></HTML>rn| v/Spyglass MicroServer embedded webserver/$1//
+# Cisco Catalyst 3500-XL switch IOS 12.0(5)XU
+match http m|^HTTP/1.0 401 UnauthorizedrnDate: .*rnContent-type: text/htmlrnExpires: .*rnWWW-Authenticate: Basic realm="level 15 access"rnrn<HEAD><TITLE>Authorization Required</TITLE></HEAD><BODY><H1>Authorization Required</H1>Browser not authentication-capable or authentication failed.</BODY>rnrn$| v/Cisco IOS administrative webserver///
+# Cisco 828 G.SHDSL
+match http m|^HTTP/1.0 200 OKrnDate: .*rnServer: cisco-IOS/(d[-.w ]+) HTTP-server/(d[-().w ]+)rn| v/Cisco IOS administrative webserver/$2/IOS $1/
+# Xerox Document Centre (DocuCentre) 425
+match http m|^HTTP/1.1 200 OKrnContent-Length: d+rnContent-Type: text/htmlrnDate: .*rnAllow: GET, HEADrnServer: Xerox_MicroServer/([-.w]+)rnExpires: .*rnCache-Control: no-cachernrn<HTML>n<HEAD>n<TITLE>([-.+ w]+)</TITLE>| v/Xerox MicroServer httpd/$1/on $2/
+match http m|^HTTP/1.1 200 OKrnContent-Length: d+rnContent-Type: text/htmlrnDate: .*rnAllow: GET, HEADrnServer: Xerox_MicroServer/([-.w]+)rn| v|Xerox MicroServer httpd|$1|usually a printer/copier|
+match http m|^HTTP/1.1 200 OKrnContent-Type: text/htmlrnDate: .*rnAllow: GET, HEADrnServer: Spyglass_MicroServer/(d[-.w]+)rnLast-Modified: .*rnExpires: .*rnPragma: no-cachernrnn<html> n<head>n   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">n   <meta name="keywords" content="printer; embedded web server; int| v/Spyglass MicroServer/$1/embedded in printer/
+match http m|^HTTP/1.0 500 Internal Server ErrorrnServer: Cougar (d[-.w]+)rnrn$| v/Microsoft Windows Media Server/$1//
+match http m|^HTTP/1.0 200 OKrnContent-Type: video/x-ms-asfrnCache-Control: max-age=0, no-cachernServer: Cougar/(d[-.w]+)rn| v/Microsoft Windows Media Server/$1//
+match http m|^HTTP/1.[01] ddd .*Server: NetApp/(d[-.w]+)rn|s v/NetApp filer httpd/$1//
+match http m|^HTTP/1.0 200 OKrnServer: RapidLogic/(d[.d]+)rnMIME-version: 1.0rnContent-type: text/htmlrnrn<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Frameset//EN"rnttt"http://www.w3.org/TR/REC-html40/frameset.dtd">rn<HTML>rn<HEAD>rnt<TITLE>Netopia Router Web </TITLE>| v/Netopia RapidLogic admin server/$1//
+match http m|^HTTP/1.1 200 OKrnServer: WebSTAR/(d[-.()w]+) ID/| v/WebSTAR httpd/$1//
+match http m|^HTTP/1.1 401 UnauthorizedrnServer: Agranat-EmWeb/R5_2_6rnWWW-Authenticate: Basic realm="accessPoint"rnrn401 Unauthorizedrn$| v/Orinoco AP-200 webadmin//Embedded Agrant-EmWeb R5_2_6/
+match http m|^HTTP/1.0 404 NO_STREAM_FOUNDrnConnection: closernrn$| v/Chain Cast P2P streaming service///
+match http m|^HTTP/1.0 400 Bad RequestrnServer: Rex/(9.0.0.d+)rn| v|Chain Cast support service|Rex/$1||
+match http m|^HTTP/1.0 ddd .*rnDate: .*rnServer: Boa/(d[-.w]+)rn| v/Boa HTTPd/$1//
+match http m|^HTTP/1.0 ddd .*rnServer: (d[-.w]+)rn.*<title>GNUMP3d |s v/GNUMP3d streaming server/$1//
+match http m|^HTTP/1.1 ddd .*rnDate: .*rnServer: Jetty/(d[-.w]+) (([^)]+))rn| v/Jetty httpd/$1/$2/
+# No more HTTP softmatch because many services that I don't think are
+# best classified 'http' use http-like semantics (for example UPnP,
+# some https servers, etc).  Maybe I should make softmatch allow
+# future services that start with the service name, and relable all of
+# those.  Shrug.  For now it is gone.
+# softmatch http m|^HTTP/1.[01] ddd|
+match http m|^HTTP/1.1 ddd .*rnServer: WebSphere Application Server/(.+)rn| v/IBM WebSphere Application Server/$1//
+match http m|^HTTP/1.[01] ddd .*rnServer: JRun Web Serverrn| v/JRun Web Server///
+match http m|^401 Access deniedrnWWW-Authenticate: Negotiate rnContent-length: 0rnrn| v/Microsoft IIS 5.0 WebDAV//access denied/
+match http m|^HTTP/1.[01] ddd .*rnServer: RomPager/([-.w/ ]+)rn|s v/Embedded Allegro RomPager webserver/$1/ZyXEL ZyWALL 2/
+match http m|^HTTP/1.1 ddd .*rnServer: IDSL MailGate (d[-.w]+)rn| v/MailGate web proxy/$1//
+# While this response looks like a web admin port, I think the same port is used for the primary
+# proxy functionality.  This is version 3.0 final on Linux.
+match http-proxy m|^HTTP/1.1 401 UnauthorizedrnConnection: closedrnContent-Length: d+rnWWW-Authenticate: Basic realm="WebWasher configuration"rn| v/WebWasher filtering proxy///
+# MiddleMan filtering proxy server v1.5.2
+# Middleman 1.8.3
+match http-proxy m|^HTTP/1.1 404 Not FoundrnContent-Type: text/htmlrnContent-Length: 463rnConnection: closernProxy-Connection: closernrn<html><head><title>File not found</title></head><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">n<body text="#000000" bgcolor="#99AABB"| v/Middleman filtering web proxy///
+match http-proxy m|^HTTP/1.0 ddd .*rnServer: WWWOFFLE/(d[-.w]+)rn| v/WWWOFFLE caching webproxy/$1//
+match http-proxy m|^HTTP/1.1 400 Host Not FoundrnContent-type: text/htmlrnConnection: closernrn<html><head><title>The Proxomitron Reveals...</title>| v/Proxomitron universal web filter///
+match http-proxy m|^HTTP/1.0 400 Bad RequestrnDate: .*rnrn<html><body>.*<font color="#FF0000">Proxy</font><font color="#0000FF">+</font> (d[-.w]+) (Build #(d+)), Date: |s v/Fortech Proxy+/$1 Build $2//
+match http-proxy m|^HTTP/1.0 ddd .*rnServer: Jana-Server/(d[-.w]+)rn| v/JanaServer webproxy/$1//
+match http-proxy m|^HTTP/1.0 400 Bad RequestnContent-Type: text/htmlnn<HTML><HEAD><TITLE>DansGuardian - | v/DansGuardian HTTP proxy///
+match http-proxy m|^HTTP/1.0 400 Bad RequestrnServer: FreeProxy/(d[-.w]+)rn| v/FreeProxy/$1//
+# EZproxy for Linux 2.2d GA (2003-09-01) - http://www.usefulutilities.com
+match http-proxy m|HTTP/1.0 ddd .*rnServer: EZproxyrn|s v/EZproxy web proxy///
+# http://bfilter.sourceforge.net/
+match http-proxy m|^HTTP/1.0 400 Bad Requestrn.*rnrn<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">rn<html>rn<head>rn  <title>BFilter Error</title>|s v/Bfilter webproxy///
+match http-proxy m|^HTTP/1.0 ddd .*rnServer: tinyproxy/(d[-.w]+)rn| v/Tinyproxy/$1//
+# MS ISA Server 2000 enterprise edition on windows 2000 advanced server
+match http-proxy m|^HTTP/1.1 502 Proxy Error ( The Uniform Resource Locator (URL) does not use a recognized protocol. Either the protocol is not supported or the request was not typed correctly. Confirm that a valid protocol is in use (for example, HTTP for a Web request).  )rnVia:1.1| v/Microsoft ISA Server http proxy///
+# Privoxy 3.0.0 Filtering Web Proxy - http://www.privoxy.org
+match http-proxy m|^HTTP/1.0 400 Invalid header received from browserrnrn$| v|Junkbuster/Privoxy webproxy|||
+match http-proxy m|^HTTP/1.0 400 Invalid header received from browsernn| v/Junkbuster webproxy///
+match http-proxy m|^HTTP/1.0 ddd .*Server: NetCache (NetApp/(d[-.w]+))rn|s v/NetApp NetCache proxy/$1//
+# Squid 2.5.STABLE3 on NetBSD 1.6ZA
+match http-proxy m|^HTTP/1.0 ddd .*rnServer: [sS]quid/([-.w]+)rn| v/Squid webproxy/$1//
+# Blue Coat Port 80 Security Appliance  Model: Blue Coat SG400 Software Version: SGOS 2.1.6044 Software Release id: 19480 Service Pack 4
+match http-proxy m|^HTTP/1.1 504 Gateway Time-outrnConnection: closernCache-Control: no-cachernPragma: no-cachernContent-Length: 2976rnContent-Type: text/htmlrnrn<DIV class=Section1> ntt<P class=MsoNormal| v/Blue Coat Security Appliance http proxy///
+match http-proxy m|^HTTP/1.0 200 OKrnServer: MS-MFC-HttpSvr/1.0rnDate: Wed, 13 Aug 2003 01:58:26 GMTrnrn<html><h1>http://| v/Surfcontrol SuperScout Web Filter//Windows/
+match http-proxy m|^HTTP/1.0 400 Cache Detected ErrorrnDate: .*rnContent-Type: text/htmlrnVia: 1.0 [-.w]+ (NetCache NetApp/([-.w]+))rnrn| v/NetApp NetCache web proxy/$1//
+# gidentd 0.4.5 on Linux 2.4.X
+match ident m|^0, 0 : ERROR : INVALID-PORTrn$| v/gidentd///
+match ident m|^GET / HTTP/1.0 : USERID : UNIX : ([-.w]+)rn : USERID : UNIX : [-.w]+rn| v/Nullidentd//Claimed user: $1/
+match ident m|^GET / HTTP/1.0 : USERID : UNIX : ([-.w]+)rn$| v/Liedentd//Claimed user: $1/
+# pidentd 2.81
+match ident m|^0 , 0 : ERROR : X-INVALID-REQUESTrn$| v/pidentd///
+# pidentd 3.1a25 on Linux 2.4.20 (SuSE 8.2)
+match ident m|^GET : ERROR : UNKNOWN-ERRORrn$| v/pidentd///
+match ident m|^0, 0 : ERROR : INVALID-AUTH-REQ-INFO : CAPABILITY=USER-INTERACTION : AUTH-MECH=KEBEROS_V4rn$| v/Stanford PC-leland identd///
+# fair-identd-20000201
+# pidentd-2.8.5-3
+match ident m|^0 , 0 : ERROR : UNKNOWN-ERRORrn$| v/pidentd//could be fair-identd/
+# identd 1.1 on Linux 2.4.21
+# linux-identd 1.2 - http://www.fukt.bth.se/~per/identd
+match ident m|^GET / HTTP/1.0 : ERROR : INVALID-PORTrn : ERROR : INVALID-PORTrn$| v/Linux-identd///
+# uw-imap 2003debian0.0304182231-1
+match imap m|^* OK [CAPABILITY IMAP4REV1 X-NETSCAPE LOGIN-REFERRALS STARTTLS LOGINDISABLED] [[-.w]+] IMAP4rev1 (200[-.w]+) at .*rnGET BAD Command unrecognized/login please: /rn* BAD Null commandrn| v/UW-Imap///
+match imap m|^* OK [[-.+w]+] IMAP4rev1 v1(d[-.w]+) server readyrn| v/UW-Imap/1$1//
+match imap m|^* OK [-.+w]+ IMAP4rev1 v1(d[-.w]+) server readyrn| v/UW-Imap/1$1//
+# gnu/mailutils imap4d 0.3.2 on Linux
+match imap m|^* OK IMAP4rev1rnGET BAD  Invalid commandrn* BAD  Null commandrn$| v/GNU Mailutils imapd///
+# Cyrus IMAP 2.1.14
+match imaps m|^* BYE Fatal error: tls_start_servertls() failedrn$| v/Cyrus imapd///
+# Server: CUPS/1.1
+match ipp m|^HTTP/1.0.*Server: CUPS/(S+)|s v/CUPS $1///
+match ipp m|^lpd [@[-.w]+]: Host name for your address ([:.d]+) is not knownn$| v/CUPS///
+match irc m|^:Default-Chat-Community 421 * GET :Unknown commandrn| v/Microsoft Exchange 2000 Server Chat Service///
+# Jabber 1.4.2
+match jabber m|^<stream:error>Invalid XML</stream:error>$| v/Jabber instant messaging server///
+match kazaa-http m|^HTTP/1.0 404 Not Foundr?nX-Kazaa-Username: ([-.+w]+)rnX-Kazaa-Network: ([-.w]+)rn| v/KaZaA P2P client//username: $1; network: $2/
+match kazaa-peerpoint m|^HTTP/1.0 404 Not Foundnrn$| v/KaZaA P2P client Peer Point Manager///
+match msdtc m|^.....$|s v/Microsoft Distributed Transaction Coordinator///
+match msdtc m|^ERRORn$|s v/Microsoft Distributed Transaction Coordinator//error/
+# MLDonkey 2.5
+match napster m|^1INVALID REQUEST$| v/MLdonkey multi-network P2P client///
+match napster m|^1$| v/Lopster Napster P2P client///
+match netbios-ssn m/^x83x01x82|x8f$/
+match netwareip m|^xfbxffxfexffxfbxffxfexffxfbxffxfexff$| v|Novell Netware/IP|||
+match ntop-http m|^HTTP/1.0 401 Unauthorized to access the documentnWWW-Authenticate: Basic realm="ntop HTTP server"n| v/Ntop web interface///
+match omninames m|^GIOPx01x01x06$| v/omniORB omniNames//Corba naming service/
+# Oracle MTS Recovery Service 9.2.0.1 on Windows 2000 Professional
+match oracle-mts m|^HTTP/1.0 200 OKrnContent-length: 7rnrnunknown$| v/Oracle MTS Recovery Service///
+match ssl/pop3 m|^-ERR [SYS/PERM] Fatal error: tls_start_servertls() failedrn$| v/Cyrus pop3sd///
+# Postgresql-server-7.3.2-3
+match postgresql m|^EFATAL:  invalid length of startup packetn$| v/PostgreSQL///
+# Netware 6 NetWare/IP
+match rendezvous m|^HTTP/1.1 400 Bad RequestrnDate: .*rnDAAP-Server: iTunes/(d[-.w]+) ((.*))rn| v/Apple iTunes/$1/on $2/
+match rtsp m|^RTSP/1.0 400 Bad RequestrnServer: DSS/([-.w]+) [(vd+)]-(w+)rn| v/DarwinStreamingServer/$1/$2 on $3/
+match rtsp m|^RTSP/1.0 400 Bad RequestrnServer: QTSS/(d[d.]+ [vd+]-Win32)rnCseq: rn| v/Apple QuickTime Streaming Server/$1//
+match rtsp m|^RTSP/1.0 400 Bad RequestrnServer: QTSS/(d[-.w]+) (Build/([d.]+); Platform/([-.w]+))rnCseq: rnConnection: Closernrn$| v/Apple QuickTime Streaming Server/$1 build $2/Platform: $3/
+match rtsp m|^RTSP/1.0 505 Protocol Version Not SupportedrnDate: .*rnServer: WMServer/(d[-.w]+)rnrn$| v/Microsoft Windows Media Server/$1//
+match slimp3 m|^GET %2f HTTP%2f1.0n$| v|SliMP3 MP3 player||http://www.slimdevices.com|
+# spamd 2.20-1woody
+match spamd m|^SPAMD/1.0 76 Bad header line: GET / HTTP/1.0rrn| v/SpamAssassin spamd///
+# Windows XP 8/2003
+match upnp m|^HTTP/1.1 400 Bad Requestrnrn$| v/Microsoft Windows UPnP///
+match upnp m|^HTTP/1.0 ddd .*rnDate: .*rnConnection: closernServer: Microsoft-Windows-NT/(d[-.w]+) UPnP/(d[-.w]+) UPnP-Device-Host/(d[-.w]+)rn| v/Microsoft UPnP/$2/WindowsNT Vers: $1; UPnP Device Host: $3/
+# UUCP 1.06.2 on Linux 2.4.X
+# Taylor UUCP 1.06.2 on Slackware
+match uucp m|^login: Password:$| v/Taylor uucpd///
+# Veritas Netbackup client v.3.4
+# Veritas Netbackup 4.5 Java listener
+match netbackup m|^1000      2n43nunexpected message receivedn$| v/Veritas Netbackup java listener///
+# Veritas Backup Exec 9.0 on Windows
+match backupexec m|^x80$x01[x3F-x4B]...x05x02x03| v/Veritas Backup Exec/9.0//
+# RealVNC 4.0b4
+match vnc-http m|^HTTP/1.1 200 OKrnServer: RealVNC/(d[-.w]+)rn.*<APPLET CODE=vncviewer/VNCViewer.class ARCHIVE=vncviewer.jarrn        WIDTH=(d+) HEIGHT=(d+)>rn<PARAM name="port" value="(d+)">rn</APPLET>|s v/RealVNC/$1/Resolution $2x$3; VNC TCP port: $4/
+# TightVNC Server version 1.2.2 HTTP on Windows 2000 SP2
+match vnc-http m|^HTTP/1.0 200 OKnn<HTML><TITLE>TightVNC desktop [([-.w]+)]</TITLE>n<APPLET CODE=vncviewer.class ARCHIVE=vncviewer.jar WIDTH=(d+) HEIGHT=(d+)>n<param name=PORT value=(d+)>| v/TightVNC/1.2.2/Host: $1; Resolution $2x$3; VNC TCP port: $4/
+# Tightvnc-1.2.3
+match vnc-http m|^HTTP/1.0 404 Not foundnn<HEAD><TITLE>File Not Found</TITLE></HEAD>n<BODY><H1>File Not Found</H1></BODY>n$| v/TightVNC///
+# Tightvnc 1.2.3
+match vnc-http m|^HTTP/1.0 200 OKnn<HTML><TITLE>TightVNC desktop [([-.w]+)]</TITLE>n<APPLET CODE=VncViewer.class ARCHIVE=VncViewer.jar WIDTH=(d+) HEIGHT=(d+)>n<param name=PORT value=(d+)>| v/TightVNC/1.2.3/User: $1; Resolution $2x$3; VNC TCP port: $4/
+# TightVNC 1.2.6
+match vnc-http m|^HTTP/1.0 200 OKnn<HTML>n  <HEAD><TITLE>TightVNC desktop [[-.w]+]| v/TightVNC///
+# TightVNC 1.2.8
+match vnc-http m|^HTTP/1.0 200 OKrnrn<!-- n     index.vnc - default HTML page for TightVNC Java viewer applet, to ben     used with Xvnc. On any file ending in .vnc, the HTTP server embedded inn     Xvnc will substitute the following variables when preceded by a dollar:n     USER, DESKTOP, DISPLAY, APPLETWIDTH, APPLETHEIGHT, WIDTH, HEIGHT, PORT,n.*<TITLE>n(w+)'s X desktop.*<APPLET CODE=VncViewer.class ARCHIVE=VncViewer.jarn        WIDTH=(d+) HEIGHT=(d+)>n<param name=PORT value=(d+)>nn</APPLET>|s v/TightVNC/1.2.8/User: $1; Resolution $2x$3; VNC TCP port: $4/
+# WinVNC 3.3.7 Build Mar 5 2003
+match vnc-http m|^HTTP/1.0 200 OKrnrn<HTML><TITLE>VNC desktop [([-.w]+)]</TITLE>n<APPLET CODE=vncviewer.class ARCHIVE=vncviewer.jar WIDTH=(d+) HEIGHT=(d+)>n<param name=PORT value=(d+)| v/WinVNC/3.3.7/Server: $1; Resolution $2x$3; VNC TCP port: $4/
+# WinVNC 3.3.3
+# Tight VNC 1.5.2
+match vnc-http m|^HTTP/1.0 200 OKnn<HTML><TITLE>VNC desktop [([-.w]+)]</TITLE>n<APPLET CODE=vncviewer.class ARCHIVE=vncviewer.jar WIDTH=(d+) HEIGHT=(d+)>n<param name=PORT value=(d+)></APPLET></HTML>n$| v/WinVNC//Server: $1; Resolution $2x$3; VNC TCP port: $4; May be standard or TightVNC/
+# Ultr@VNC Win32 v1.0.9 - HTTP
+match vnc-http m|^HTTP/1.0 200 OKnn<HTML>n  <HEAD><TITLE>Ultr@VNC Desktop [[-.w]+] ------- Ultr@VNC Home Page is  http://ultravnc.sf.net -------</TITLE></HEAD>n  <BODY>n  <SPAN style='position: absolute; top:0px;left:0px'>n    <APPLET CODE=VncViewer.class ARCHIVE=VncViewer.jar WIDTH=(d+) HEIGHT=(d+)>n      <PARAM NAME=PORT VALUE=(d+)>n      <PARAM NAME=ENCODING VALUE=Tight>n    </APPLET>  </SPAN>n  </BODY>n| v/Ultr@VNC//Resolution $1x$2; VNC TCP port: $3/
+match xml-rpc m|^HTTP/1.0 400 Bad RequestrnServer: Apache XML-RPC (d[-.w ]+)rnrnMethod GET not implemented (try POST)$| v/Apache XML-RPC/$1//
+match wsmserver m|^Language received from client: GETnSetlocale: Cn$| v/AIX Web-based System Manager///
+match http m|^HTTP/1.0x20250x20Okrn.*rnrn.*<title>PowerMTA monitoring</title>|s v/Port25 PowerMTA web monitor///
+# Kerio MailServer 5.7.9, 5.7.10
+match http m|^HTTP/1.1 302 RedirectedrnConnection: closernContent-Length: 0rnLocation: /loginrnrn$| v/Kerio MailServer Webmail///
+match http m|^HTTP/1.0x20250x20Okrn.*rnrn.*<title>PowerMTA monitoring</title>|s v/Port25 PowerMTA web monitor///
+# Dell OpenManage Version 3.5.0 on MS Windows 2000 server / PowerEdge 6400/700
+match http m|^HTTP/1.1 200 OKrnConnection: ClosernContent-Type: text/html; charset=UTF-8rnrn<html>rn    <head>rn        <script language="javascript">rntttttif| v/Dell Openmanage Server Administrator//PowerEdge/
+# ASPI server (www.aspi.cz) on Solaris 6666/tcp
+match aspi m|^HTTP/1.0 404 Not FoundrnDate: .*rnServer: ByllSoftware Gurda/([d.]+)rn| v/ASPI server/$1//
+match sunscreen-adm m|^x01Tx03x01x1e;Error: incompatible with administration server (version (d[-.w ]*))ncx01$| v/SunScreen Remote Administration server/$1//
+##############################NEXT PROBE##############################
+Probe TCP HTTPOptions q|OPTIONS / HTTP/1.0rnrn|
+ports 80,5232,6000
+# IRIX 6.5.18f Distributed GL Daemon dgld
+match dgld m|^OPTI$| v/IRIX Distributed GL Daemon///
+# Webmaster Conferenceroom 1.8.9.1 IRC Server
+match irc m|^:[-.w]+ 421 * OPTIONS :Unknown commandrn| v/Webmaster Conferenceroom IRC server///
+#  cgi-httpd from shttpd-0.53 on FreeBSD
+match http m|^HTTP/1.0 501 method not implementedrnServer: cgi-httpdrn| v/shttpd cgi-httpd///
+match http m|^HTTP/1.1 ddd .*rnServer: WebSphere Application Server/(.+)rn| v/IBM WebSphere Application Server/$1//
+match http m|^HTTP/1.1 ddd .*rnServer: Oracle HTTP Server Powered by Apachern|s v/Oracle HTTP Server Powered by Apache///
+match http m|^HTTP/1.1 ddd .*rnServer: webfs/(d[-.w]+)rn| v/WebFS httpd/$1//
+# HP OpenView ITO agent (probably version 7.25) on Windows, port 381
+match http m|^HTTP/1.1 ddd .*rnserver: BBC d[-.w]+; com.hp.openview.Coda d[-.w]+rnrn| v/HP OpenView ITO agent - Coda///
+# Zero One Technology ( http://www.01tech.com/ ) print servers embedded HTTP service
+match http m|^HTTP/1.dx20200x20OKrnDate:x20.*rnMIME-version:x201.drnServer:x20ZOT-PS-(d+)/(d[-.w]+)rn| v/Zero One Technology print server model $1 HTTP server/$2//
+##############################NEXT PROBE##############################
+Probe TCP RTSPRequest q|OPTIONS / RTSP/1.0rnrn|
+match rtsp m|^RTSP/1.0 200 OKrnCSeq: 0rnDate: .*rnServer: RealServer Version (d[-.w]+) (win32)rn| v/Realserver RTSP/$1/win32/
+match rtsp m|^RTSP/1.0 200 OKrn.*Server: RealMedia EncoderServer Version (d[-.w]+) (win32)rn|s v/RealMedia EncoderServer/$1/win32/
+match rtsp m|^RTSP/1.0 200 OKrn.*Server: RealServer Version (d[-.w]+) (([-.+w]+))rn|s v/RealOne Server/$1/platform: $2/
+# APC PowerChute Business Edition Agent 6.1.0.0 on Windows 2000 Server
+match powerchute m|^RTSP/1.0 400 Bad requestrnContent-type: text/htmlrnrn| v/APC PowerChute Agent///
+match msdtc m|^ERRORn$|s v/Microsoft Distributed Transaction Coordinator//error/
+# HP OpenView ITO agent (probably version 7.25) on Windows, port 383
+match http m|^HTTP/1.1 ddd .*rnserver: BBC d[-.w]+; com.hp.openview.bbc.LLBserver d[-.w]+rnrn|s v/HP OpenView ITO agent - LLB server///
+# This probe sends an RPC "Null command" to the port for service
+# 100000 (portmapper).
+# Some of these numbers are abitrary (such as ID).  I could consider
+# adding an R escape in the string logic to provide a random byte.
+# This would make IDS detection and such a bit harder.  On the other
+# hand, that would make the response a little harder to recognize too.
+##############################NEXT PROBE##############################
+Probe TCP RPCCheck q|x80x28x72xFEx1Dx13x02x01x86xA0x01x97x7C|
+ports 81,111,199,514,544,1433,4045,32750-32810,38978
+# Microsoft SQLServer 6.5 on WinNT 4.0 SP6a
+# Microsoft SQL Server 6.5 on WinNT 4.0
+match ms-sql-s m|^x04x01C..xaa/x0fxa2x01x0e.. Login failedrnx14Microsoft SQL Serverxfdxfdx02$| v/Microsoft SQLServer/6.5//
+match rpc m|^x80x18x72xFEx1Dx13x01x01|
+match rpc m|^x80x20x72xFEx1Dx13x01x02|
+# Vmware ESX 1.5.x Client Agent for Linux -- WAIT - I think this is erronous and is actually smux
+# HP-UX 11 SNMP Unix Multiplexer (smux)
+match smux m|^Ax01x02$| v/HP-UX smux//SNMP Unix Multiplexer/
+# Network Appliance ONTAP 6.3.3 shell
+match shell m|^x01Permission denied.n$| v/Network Appliance Ontap rshd///
+# HP-UX 11 Kerberized 'rsh' (v5)
+match kshell m|^x01remshd: connect: Connection refusedn$| v/HP-UX kerberized rsh///
+# Tumbleweed SecureTransport 4.1.1 Transaction Manager Non-Secure Port on Solaris
+match securetransport m|^xdexadxbexefx04xffx1fem.requestparserparser.InvError| v/Tumbleweed SecureTransport Transaction Manager Non-Secure Port///
+##############################NEXT PROBE##############################
+Probe UDP RPCCheck q|x72xFEx1Dx13x02x01x86xA0x01x97x7C|
+ports 88,111,517,518,4045,32750-32810,38978
+match rpc m|^x72xFEx1Dx13x01x01|
+match rpc m|^x72xFEx1Dx13x01x02|
+# OpenAFS 1.2.10 on Linux 2.4.22
+match kerberos-sec m|^x04nx04code = 4: packet version number unknown| v/OpenAFS///
+# talk-server-0.17 (linux), ports 517-518/udp
+match talk m|^x01xfex05| v/Talk server///
+# Mandrake Linux 9.2, xinetd 2.3.11 chargen
+match chargen m|NOPQRSTUVWXYZ[\]^_`abcdefghijklm|
+##############################NEXT PROBE##############################
+Probe UDP DNSVersionBindReq q|x06x01x01x07versionx04bindx10x03|
+ports 53,2967
+# Allow 3-12 character version numbers
+match domain m|x07versionx04bind.*[x03-x14]([-w._ ]{3,20})$|s v/ISC Bind/$1//
+match domain m|x07versionx04bind.*[x03-x14]BIND ([-w._]{3,20})$|s v/ISC Bind/$1//
+# Tinydns 1.05
+match domain m|^x06x81x81x01x07versionx04bindx10x03$| v/TinyDNS///
+# Microsoft DNS Windows 2000, SP4
+match domain m|^x06x81x04x01x07versionx04bindx10x03$| v/Microsoft DNS///
+# MyDNS 0.10.0 on Linux
+match domain m|^x06x81x04$| v/MyDNS///
+# Symantec Antivirus (rtvscan.exe)
+match symantec-av m|^x06x01x01x10..........$| v/Symantec rtvscan antivirus///
+# pdnsd 1.1.8b1
+match domain m|^x06x81x84x01x07versionx04bindx10x03$| v/pdnsd///
+##############################NEXT PROBE##############################
+Probe TCP DNSVersionBindReq q|x1Ex06x01x01x07versionx04bindx10x03|
+ports 53,512,513,543,544,1521,2105,2967,6543
+match domain m|x07versionx04bind.*[x03-x14]([-w._ ]{3,20})$|s v/ISC Bind/$1//
+match domain m|x07versionx04bind.*[x03-x14]BIND ([-w._]{3,20})$|s v/ISC Bind/$1//
+# ISC Bind 9.1.3
+match domain m|x07versionx04bindx10x03xc0x0cx10x03x01| v/ISC Bind///
+# pdnsd 1.1.7a, 1.1.8b1
+# http://www.phys.uu.nl/~rombouts/pdnsd.html
+match domain m|^x1ex06x81x84x01x07versionx04bindx10x03$| v/pdnsd///
+# Windows 2000 SP4
+match domain m|^x1ex06x81x04x01x07versionx04bindx10x03$| v/Microsoft DNS///
+# Novell 5.1 DNS Server
+# Bind 4.9.7-REL on OpenBSD
+match domain m|^x1ex06x81x82x01x07versionx04bindx10x03$| v/ISC Bind/4.X//
+# PowerDNS 2.9.6 on FreeBSD
+# PowerDNS 2.9.8 Linux
+match domain m|^.x06x85x01x01x07versionx04bindx10x03xc0x0cx10x01x05..Served by POWERDNS (d[-.w]+) |s v/PowerDNS/$1//
+# Symantec Enterprise Firewall 6.5.2 DNS proxy on Win2K
+match domain m|^x1ex06x81x85x01x07versionx04bindx10x03$| v/Symantec Enterprise Firewall DNS proxy///
+match exec m|^x01Login incorrect.n$|
+# HP-UX B.11.00 A
+match exec m|^x01rexecd: Login incorrect.n$| v/HP-UX rexecd///
+match exec m|^x01rexecd: [-d]+ The login is not correct.n| v/AIX rexecd///
+# Digital UNIX V4.0F login
+match login m|^x01Permission denied: Error 0$| v/Digital UNIX login///
+# RedHat 7.3 - Oracle TNS Listener Oracle 8.1.7
+# Oracle 8.1.6.1.0 on Linux 2.2.X
+match oracle-tns m|^x1cx04x01X| v/Oracle Listener///
+# OpenBSD 2.3
+# Solaris 9
+match rlogin m|^x01rlogind: Permission denied.rn$|
+# HP-UX 11 Kerberized rlogin
+match klogin m|^x01rlogind: Login Incorrect.rn$| v/HP-UX kerberized rlogin///
+# Solaris Kerberos authenticated login
+match klogin m|^x01rlogind: Kerberos authentication failed.rn| v/Solaris kerberized rlogin///
+# Solaris Kerberos authenticated remote shell
+match kshell m|^x01rshd: Authentication failed: Bad sendauth version was sentn| v/Solaris kerberised rsh///
+match ssc-agent m|^x1ex06t$| v/Novell Netware ssc-agent///
+# http://www.apcupsd.com/ - apcupsd 3.8.5-1.3 on Linux 2.4.X
+match apcnisd m|^x11Invalid commandn$| v/apcupsd///
+match klogin m|^x01krlogind: Kerberos Authentication Failed.rn| v/AIX kerberized rlogin///
+match kshell m|^x01rshd: [-d]+ The host name for your address is not known.n| v/AIX (kerberized?) rshd///
+# 13724/tcp
+match vnetd m|^1$| v/Veritas Netbackup Network Utility///
+# DNS Server status request: http://www.crynwr.com/crynwr/rfc1035/rfc1035.html
+##############################NEXT PROBE##############################
+Probe UDP DNSStatusRequest q|x10|
+ports 53,135
+match domain m|^x90x04|
+# This one below came from 2 tested Windows XP boxes
+match msrpc m|^x04x06x10|
+# DNS Server status request: http://www.crynwr.com/crynwr/rfc1035/rfc1035.html
+##############################NEXT PROBE##############################
+Probe TCP DNSStatusRequest q|x0Cx10|
+ports 53,6050
+match domain m|^x0Cx90x04|
+# ARCserve Client Agent v4.0d for Solaris 2.x(Running on SunOS 5.8Generic_108528-13 sun4u)
+match arcserve m|^s$| v/ARCserve Client Agent//backup software/
+##############################NEXT PROBE##############################
+Probe UDP NBTStat q|x80xf0x10x01x20x43x4bAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAx21x01|
+ports 137
+# NBT Response starts with a header:  
+# The following fields are each 2 bytes: transaction ID; Flags; question count; answer count; name service count; additional record count
+# Next comes 34 bytes NUL-terminaed name
+# then comes 2 byte fields: question type; question clss
+# 4 byte TTL
+# 2 byte rdata length
+# 1 byte number of names
+### -- End of header
+# Next comes the given number of nbnames - each are a 15 byte name (space padded) followed by a one byte service type, and then 16 BIT flags
+### -- End of name table - finally comes the footer:
+# 48 - Adapter address (eg MAC addy)
+# 8 bit fields: major version; minor version
+# 16 bit fields: duration; frmps received; frmps transmitted; iframe receive errors; transmit aborts
+# 32 bit fields: trasnmitted; received
+# The remaining fields are all 16-bits: iframe transmit errors; number of receive buffers; tl_timeouts; tl_timeouts; free ncbs; ncbs; 
+#                                       max_ncbs; number of transmit buffers; max datagram; pending sessions; max sessions; packet_sessions
+# I'm not convinced that these next 4 work on a very wide variety of
+# machines.  I think most of the real matching comes in the next block.
+match netbios-ns m|^x80xf0x84x01 CKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA!x01...(w{1,15}) *x04(w{1,15}) *x84w{1,15} *x03x04w{1,15} *x04w{1,15} *x1ex84w{1,15} *x1dx04x01x02__MSBROWSE__x02x01x84(w{1,15}) *x03|s v/Microsoft Windows XP netbios-ssn//host: $1 workgroup: $2 user: $3/
+match netbios-ns m|^x80xf0x84x01 CKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA!x01...(w{1,15}) *x04(w{1,15}) *x84w{1,15} *x03x04w{1,15} *x04w{1,15} *x1ex84w{1,15} *x1dx04x01x02__MSBROWSE__x02x01x84|s v/Microsoft Windows XP netbios-ssn//host: $1 workgroup: $2/
+match netbios-ns m|^x80xf0x84x01 CKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA!x01...(w{1,15}) *x04(w{1,15}) *x84w{1,15} *x03x04w{1,15} *x04(w{1,15}) *x03x04w{1,15} *x1ex84|s v/Microsoft Windows XP netbios-ssn//host: $1 workgroup: $2 user: $3/
+match netbios-ns m|^x80xf0x84x01 CKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA!x01...(w{1,15}) *x04(w{1,15}) *x84w{1,15} *x03x04w{1,15} *x04w{1,15} *x1ex84|s v/Microsoft Windows XP netbios-ssn//host: $1 workgroup: $2/
+# It would be really nice if we could get username and/or OS
+# information from this.  But it is quite hard to parse out the proper
+# information unambiguously, especially with just regular expressions.
+# But it certainly would be nice to get more info:
+#
+# nbtstat
+#
+match netbios-ns m|^x80xf0x84x01 CKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA!x01..([w-]{1,15}) *D.*([w-]{1,15}) *xc4|s v/Microsoft Windows netbios-ssn//host: $1 workgroup: $2/
+match netbios-ns m|^x80xf0x84x01 CKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA!x01..([w-]{1,15}) *D([w-]{1,15}) *xc4|s v/Microsoft Windows netbios-ssn//host: $1 workgroup: $2/
+match netbios-ns m|^x80xf0x84x01 CKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA!x01...*([w-]{1,15}) *D.*([w-]{1,15}) *xc4|s v/Microsoft Windows netbios-ssn//host: $1 workgroup: $2/
+match netbios-ns m|^x80xf0x84x01 CKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA!x01...*([w-]{1,15}) *D([w-]{1,15}) *xc4|s v/Microsoft Windows netbios-ssn//host: $1 workgroup: $2/
+# Windows NT 4.0 SP6a
+match netbios-ns m|^x80xf0x84x01 CKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA!x01...([w-]{1,15}).*4([w-]{1,15}) *x84|s v/Microsoft Windows NT netbios-ssn//host: $1 workgroup: $2/
+#
+# Samba has a version too
+# nmbd version 2.2.7 on Linux 2.4.20
+match netbios-ns m|^x80xf0x84x01 CKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA!x01...([w-]{1,15}).*x04([w-]{1,15}) *x1ex84|s v/Samba nmbd//host: $1 workgroup: $2/
+##############################NEXT PROBE##############################
+Probe UDP Help q|helprnrn|
+ports 7,13,37
+match chargen m|@ABCDEFGHIJKLMNOPQRSTUVWXYZ|
+match echo m|^helprnrn$|
+# Solaris 8, 9
+match daytime m|^[A-Z][a-z]{2} [A-Z][a-z]{2} +d{1,2} +dd:dd:dd 20ddnr| v/Sun Solaris daytime///
+# Mandrake Linux 9.2, xinetd daytime
+match daytime m|^[0-3]d [A-Z][A-Z][A-Z] 20dd dd:dd:dd S+rn|
+# Will last until 0xC5FFFFFF, in April 2005 - need to shift in advance.
+match time m|^[xc0-xc5]...$|
+# Solaris Internet Name Server (42/udp), see ien116.txt
+match nameserver m|^helprnrnx20CKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA!x01| v/Solaris Internet Name Server//IEN 116/
+match nameserver m|^x03x03x02$| v/Solaris Internet Name Server//IEN 116/
+match nameserver m|^x06x01x01x03x03x02$| v/Solaris Internet Name Server//IEN 116/
+##############################NEXT PROBE##############################
+Probe TCP Help q|HELPrn|
+ports 1,7,21,25,79,113,2401,2627
+sslports 465
+# CVSD (cvs chrooting service for pserver) cvsd 0.9.18
+# CVS 1.11.5 pserver
+match cvspserver m|^cvs [pserver aborted]: bad auth protocol start: HELPrnn$| v/cvs pserver///
+# Concurrent Versions System (CVS) 1.10.7 (client/server)
+match cvspserver m|^cvs-pserver [pserver aborted]: bad auth protocol start: HELPrnn| v/cvs pserver///
+match echo m|^HELPrn$|
+# ProFTPD 1.2.5
+match ftp m|^220 [-.w]+ FTP server ready.rn214-The following commands are recognized (* =>'s unimplemented).rn USER    PASS    ACCT*   CWD     XCWD    CDUP    XCUP    SMNT*   rn QUIT    REIN*   PORT    PASV    TYPE    STRU    MODE    RETR    rn STOR    STOU*   APPE    ALLO*   REST    RNFR    RNTO    ABOR    rn DELE    MDTM    RMD     XRMD    MKD     XMKD    PWD     XPWD    rn SIZE    LIST    | v/ProFTPD/1.2.5//
+# ProFTPD 1.2.6
+match ftp m|^220 [-.w]+ FTP server ready.rn214-The following commands are recognized (* =>'s unimplemented).rn214-USER    PASS    ACCT*   CWD     XCWD    CDUP    XCUP    SMNT*   rn214-QUIT    REIN*   PORT    PASV    EPRT    EPSV    TYPE    STRU    rn214-MODE    RETR    STOR    STOU    APPE    ALLO*   REST    RNFR    rn214-RNTO    ABOR    DELE    MDTM    RMD     XRMD    MKD     XMKD| v/ProFTPD/1.2.6//
+match ftp m|^220 ([-.w]+ )?FTP [sS]erver ready.?rn214-The following commands are recognized (* =>'s unimplemented).rn214-USER    PASS    ACCT*   CWD     XCWD    CDUP    XCUP    SMNT*   rn214-QUIT    REIN*   PORT    PASV    EPRT    EPSV    TYPE    STRU    rn214-MODE    RETR    STOR    STOU    APPE    ALLO*   REST    RNFR    rn214-RNTO    ABOR    DELE    MDTM    RMD     XRMD    MKD     XMKD| v/ProFTPD/1.2.6//
+# ProFTPD 1.2.8
+# proftpd 1.2.9 rc1
+match ftp m@^220 .*rn214-The following commands are recognized (* =>'s unimplemented).rn(214-| )USER    PASS    ACCT*   CWD     XCWD    CDUP    XCUP    SMNT*   rn(214-| )QUIT    REIN*   PORT    PASV    TYPE    STRU    MODE    RETR    rn(214-| )STOR    STOU    APPE    ALLO*   REST    RNFR    RNTO    ABOR    rn(214-| )DELE    MDTM    RMD     XRMD    MKD     XMKD    PWD     XPWD    rn(214-| )SIZE@ v/ProFTPD/1.2.8 - 1.2.9//
+# proftpd 1.2.9rc1 on linux 2.4.19
+match ftp m|220 localhost FTP server readyrn214-The following commands are recognized (* =>'s unimplemented).rn214-USER    PASS    ACCT*   CWD     XCWD    CDUP    XCUP    SMNT*   rn214-QUIT    REIN*   PORT    PASV    TYPE    STRU    MODE    RETR    rn214-STOR    STOU    APPE    ALLO*   REST    RNFR    RNTO    ABOR    rn214-DELE| v/ProFTPD/1.2.9rc1//
+# Solaris 8 ftpd
+match ftp m|^220 [-.+w]+ FTP server (.*) ready.rn214-The following commands are recognized:rn   USER    EPRT    STRU    MAIL*   ALLO    CWD     STAT*   XRMD rn   PASS    LPRT    MODE    MSND*   REST*   XCWD    HELP    PWD rn   ACCT*   EPSV    RETR    MSOM*   RNFR    LIST    NOOP    XPWD rn   REIN*   LPSV    STOR    MSAM*   RNTO    NLST    MKD     CDUP rn| v/Sun Solaris ftpd///
+# Phaser860 printer
+match ftp m|^220 FTP server ready.rn214- The following commands are recognized (* =>'s unimplemented).rn   USER    PORT    STOR    MSAM*   RNTO*   NLST*   MKD*    CDUP*   EPLF*rn   PASS    PASV*   APPE*   MRSQ*   ABOR    SITE*   XMKD*   XCUP*rn   ACCT*   TYPE    MLFL*   MRCP*   DELE    SYST    RMD*    STOU rn   SMNT*   STRU    MAIL*   ALLO*   CWD*    STAT    XRMD*   SIZE*rn   REIN*   MODE    MSND*   REST*   XC| v/Phaser printer ftpd///
+# bsd-ftpd 0.3.3 (port of OpenBSD ftp server) on Linux 2.4.20
+match ftp m|^220 [-.w]+ FTP server ready.rn214- The following commands are recognized (* =>'s unimplemented).rn   USER    PORT    TYPE    MLFL*   MRCP*   DELE    SYST    RMD     STOU rn   PASS    LPRT    STRU    MAIL*   ALLO    CWD     STAT    XRMD    SIZE rn   ACCT*   EPRT    MODE    MSND*   REST    XCWD    HELP    PWD     MDTM rn   SMNT*   PASV    RETR    MSOM*   RNFR    LIST    NOOP    XPWD r| v/bsd-ftpd//available on Linux/
+# Rhinosoft Serv-U FTP v.4.1 build 4.1.0.0 on Windows XP
+match ftp m|^220 .*rn214- The following commands are recognized (* => unimplemented).rn   USER    PORT    RETR    ALLO    DELE    SITE    XMKD    CDUP    FEATrn   PASS    PASV    STOR    REST    CWD     STAT    RMD     XCUP    OPTSrn   ACCT    TYPE    APPE    RNFR    XCWD    HELP    XRMD    STOU    AUTHrn   REIN    STRU    SMNT    RNTO    LIST    NOOP    PWD     SIZE    PBSZrn| v/Rhinosoft Serv-U FTP///
+# pure-ftpd 1.0.12 on Linux 2.4
+match ftp m|^220[- ]FTP server ready.rn.*214 Pure-FTPd - http://pureftpd.org/?rn|s v/Pure-FTPd///
+# BulletProof FTP server 2.15 on Windows XP
+match ftp m|^220 .*rn530 Please login with USER and PASS first.rn$| v/BulletProof FTPd//Windows/
+# SGI IRIX 6.5.18f ftpd
+match ftp m|^220 [-.w]+ FTP server ready.rn214- The following commands are recognized (* =>'s unimplemented).rn   USER    PORT    STOR    MSAM*   RNTO    NLST    MKD     CDUP rn   PASS    PASV    APPE    MRSQ*   ABOR    SITE    XMKD    XCUP rn   ACCT*   TYPE    MLFL*   MRCP*   DELE    SYST    RMD     STOU rn   SMNT*   STRU    MAIL*   ALLO    CWD     STAT    XRMD    SIZE rn   REIN*   MODE    MSND*   REST    XCWD    HELP    PWD     MDTM rn   QUIT    RETR    MSOM*   RNFR    LIST    NOOP    XPWD rn214 Direct comments to | v/SGI IRIX ftpd///
+match finger m|^iFinger v(d[-.w]+)nn| v/IcculusFinger/$1//
+match ident m|^HELP : USERID : UNIX : trilluserrn$| v/Trillian identd///
+# Internet Rex v2.29
+match ident m|^d+, d+ : USERID : UNIX : [-.@w]+rn| v/Internet Rex identd///
+# Symantec Enterprise Firewall 6.5.2 SMTP proxy on Windows 2000
+match smtp m|^220 [-.+w]+ Generic SMTP handlerrn214 Help not supported by this implementationrn$| v/Symantec Enterprise Firewall smtp proxy///
+# Lotus Notes Domino 6.1 smtp server on Win2K
+match smtp m|^220 Welcome to [-.+w]+ ESMTP Server at .*rn214-Enter one of the following commands:rn214-HELO EHLO MAIL RCPT DATA RSET NOOP QUITrn214 HELP VRFY EXPN STARTTLS rn$| v/Lotus Notes Domino smtpd///
+# Exim 3.33 on FreeBSD
+match smtp m|^220 ESMTPrn214-Commands supported:rn214-    HELO EHLO MAIL RCPT DATA ETRNrn214     NOOP QUIT RSET HELP rn$| v/Exim smtpd/3.33//
+# Exim 4.22 with SSL compiled in (STARTTLS) custom banner (runtime configuration option) and VRFY and
+# EXPN also disabled in config file
+match stmp m|^220 [-/.+w]+ ESMTPrn214-Commands supported:rn214 AUTH STARTTLS HELO EHLO MAIL RCPT DATA NOOP QUIT RSET HELPrn| v/Exim smtpd///
+# Exim 4.20 on Astaro Security Linux gateway/proxy/firewall/router.
+match smtp m|^220 [-.w]+ ESMTP ready.rn214-Commands supported:rn214 AUTH STARTTLS HELO EHLO MAIL RCPT DATA NOOP QUIT RSET HELPrn$| v/Exim smtpd/4.20//
+# Exim 4.0 with exiscan patch and banner removed - Linux 2.1.19 - 2.2.25
+match smtp m|^220 .*SMTP Ready. Expected Helo with a valid domain.rn214-Commands supported:rn214 AUTH HELO EHLO MAIL RCPT DATA NOOP QUIT RSET HELPrn| v/Exim smtpd/4.0//
+match smtp m|^220 .* ESMTP ?rn214[- ]qmail home page: http://pobox.com/~djb/qmail.html| v/qmail smtpd///
+match smtp m|^220 .* ESMTP ?rn214[- ]qmail home page: http://pobox.com/~djb/qmail.htmlrn214[- ]qmail-ldap patch home page: http://www.nrg4u.comrn| v/qmail-ldap smtpd///
+match smtp m|^220 [-.w]+ ESMTPrn214 netqmail home page: http://qmail.org/netqmailrn| v/netqmail smtpd/1.04//
+# VirusBuster MailShield for SMTP. Version 1.15.030 on Linux 2.4
+match smtp m|^220 [-.w]+ SMTP version 1.00;rn214 We strongly advise you to study of the RFC821...rn$| v/VirusBuster MailShield for SMTP///
+# Postfix 1.1.11.0-woody3
+# Postfix 1.1.7-2
+match smtp m|^220 [-.w]+ ESMTP Postfixrn$| v/Postfix smtpd/1.X//
+# Postfix 1.1.12, 1.1.13, 2.0.9, 2.0.16
+match smtp m|^220 .*rn502 Error: command not implementedrn$| v/Postfix smtpd///
+# Courier ESMTP courier-0.42.0-1.7.3
+match smtp m|^220 [-.w]+ ESMTPrn502 ESMTP command errorrn$| v/Courier smtpd///
+match smtp m|^220 [-.w]+ ESMTP Sendmail ([^;]{3,50})| v/Sendmail smtpd/$1//
+match smtp m|220.*214-2.0.0 This is sendmail version ([-+.w]+)rn214-2.0.0 Topics:rn214-2.0.0|s v/Sendmail smtpd/$1//
+match smtp m|^220.* Sendmail (d[-.w]+) -- HELP not implementedrn|s v/Sendmail/$1//
+match tcpmux m|^(sgi_[-.w]+rn([-.w]+rn)*)$| v/SGI IRIX tcpmux//Available services: $SUBST(1, "rn", ",")/
+# Written in 1986.  More info at 
+# http://ftp.rge.com/pub/X/X11R5/contrib/xwebster.README
+match webster m/^DICTIONARY server protocol:rnrnContact name is/ v/Webster dictionary server///
+##############################NEXT PROBE##############################
+Probe TCP SSLSessionReq q|x16x03Sx01Ox03?Gxd7xf7xba,xeexeaxb2`~xf3xfdx82{xb9xd5x96xc8wx9bxe6xc4xdb<=xdboxefx10n(x16x13x0afx05x04edcba`x15x12x09x14x11x08x06x03x01|
+ports 427,443,444,548,636,1241,2000,8009
+# Apple Filing Protocol (AFP) over TCP on Mac OS X 10.1.5
+match afp m|^x01x03xffxffxecQx01.....x80xfb.([-.w]+)[^-.w].*tMacintoshx05x06AFPX03x06AFP2.2x0eAFPVersion 2.1x0eAFPVersion 2.0x0eAFPVersion 1.1.tDHCAST128|s v/Apple AFP//name: $1; protocol 2.2; Mac OS X 10.1.*/
+match afp m|^x01x03xffxffxecQx01.....x83xfb.([-.w]+)[^-.w].*tMacintoshx06x06AFP3.1x06AFPX03x06AFP2.2x0eAFPVersion 2.1x0eAFPVersion 2.0x0eAFPVersion 1.1x04tDHCAST128| v/Apple AFP//name: $1; protocol 3.1; Mac OS X 10.2.*;/
+# OpenSSL/0.9.7aa
+match ssl m|^x16x03Jx02Fx03| v/OpenSSL///
+# Microsoft-IIS/5.0 - note that OpenSSL must go above this one because this is more general
+match ssl m|^x16x03..x02Fx03|s v/Microsoft IIS SSL///
+# Novell Netware 6 Enterprise Web server 5.1 https
+# Novell Netware Ldap over SSL or enterprise web server 5.1 over SSL
+match ssl m|^x16x03:x02x006x03| v/Novell Netware SSL///
+# Cisco IDS 4.1 Appliance
+match ssl m|^x16x03*x02&x03xd10:xbd\x8exe3x15x1cx0fZxe4x04x87x07xc0x82xa9xd4x0ex9c1LXkxd1xd2x0bx1axc6/pnx16x03x026x0bx022| v/Cisco IDS SSL///
+# Nessus server sometimes gives this answer
+match ssl m|^x15x03x02x02($| v/Nessus security scanner///
+# Other Nessus instances look like this:
+match ssl m|^x16x03x01Jx02Fx03x01?| v/Nessus security scanner///
+# PGP Corporation Keyserver Web Console 7.0 - custom Apache 1.3
+# PGP LDAPS Keyserver 8.X
+match ssl m|^x16x03+x02'x03...?|s v/PGP Corporation product SSL///
+# Unreal IRCd SSL
+# RemotelyAnywhere
+match ssl m|^x16x03*x02&x03?| 
+# Timbuktu Pro 6.0.3 on Mac OS X 10.2.6
+match svrloc m|^x02x02x12x02enx02$| v/Apple slpd///
+# SMB Negotiate Protocol
+##############################NEXT PROBE##############################
+Probe TCP SMBProgNeg q|xa4xffx53x4dx42x72x08x01x40x40x06x01x81x02PC NETWORK PROGRAM 1.0x02MICROSOFT NETWORKS 1.03x02MICROSOFT NETWORKS 3.0x02LANMAN1.0x02LM1.2X002x02Sambax02NT LANMAN 1.0x02NT LM 0.12|
+ports 42,88,135,139,445,1031,1112,5555,5600,27000
+match flexlm m|^W.-60.......................|s v/FlexLM license manager///
+# Windows 2000 Server Kerberos
+# Windows Server 2003 kerberos
+match kerberos-sec m/^$/ v/Microsoft Windows kerberos-sec///
+# Windows XP SP1
+match microsoft-ds m|^.xffSMBrx88x01@@x06x01x11x07.nx01x04x11x01xfdxe3| v/Microsoft Windows XP microsoft-ds///
+match microsoft-ds m|^.xffSMBrx88x01@@x06x01x11x07.2x01x04Ax01xfdxf3| v/Microsoft Windows 2000 microsoft-ds///
+# Microsoft Windows 2003
+match microsoft-ds m|^.xffSMBrx88x01@@x06x01x11x07.2x01x04.x01xfdxf3x01|s v/Microsoft Windows 2003 microsoft-ds///
+# Microsoft Windows 2000 Server
+# Microsoft Windows 2000 Server SP4
+match microsoft-ds m|^.xffSMBrx88x01@@x06x01x11x07.[}2]x01x04Ax01xfd[xe3xf3]|s v/Microsoft Windows 2000 microsoft-ds///
+# Microsoft Windows XP SP1
+# Windows 2000
+match msrpc m|^x05rx03x10x18x08x01@x04x01x05$| v/Microsoft Windows msrpc///
+# Windows 2000 Advanced Server c:winntsystem32Mstask.exe
+match mstask m|^x05rx03x10x18x08x01@x04x01x05...|s v/Microsoft mstask//task server - c:winntsystem32Mstask.exe/
+# Microsoft Windows 2000
+# samba-2.2.7-5.8.0 on RedHat 8
+# samba-2.2.7a-8.9.0 on Red Hat Linux 7.x
+match netbios-ssn m|^.xffSMBrx88x01@x06x01x11x06.*W([-.w]+)$|s v/Samba smbd//workgroup: $1/
+# Samba 2.999+3.0.alpha21-5 on Linux
+# Samba 3.0.0rc4-Debian
+match netbios-ssn m+^.xffSMBrx88x01.@x06x01x11x06.*([^]|([^-A-Z0-9]))(([-w]){2,50})+s v/Samba smbd/3.X/workgroup: $P(3)/
+# Samba 2.2.8a on Linux 2.4.20
+match netbios-ssn m|^x83x01x81$| v/Samba smbd///
+# DAVE 4.1 enhanced windows networks services for Mac on Mac OS X
+match netbios-ssn m|^.xffSMBrx02Yx98x01.@x06x01x07|s v/Thursby DAVE Windows filesharing//Runs on Macintosh systems/
+# Windows 98
+match netbios-ssn m|^x83x01x8f$| v/Microsoft Windows 98 netbios-ssn///
+# Netware might just be using Samba?
+match netbios-ssn m|^MxffSMBrx80x01@x06x01x11x07x032x01xffxffx01x84xdeux07x01x02x80xaaxa0x83{kxc3x01xa4x01x08x08x8axffpxd3x1d?xdbl$| v/Netware 6 SMB Services///
+# Network Appliance ONTAP 6.3.3 netbios-ssn
+match netbios-ssn m/^.xffSMBrx98x01@x06x01x11x07.*([^]|([^-A-Z0-9]))(([-w]){2,50})/s v/Network Appliance Ontap smbd//workgroup: $P(3)/
+# HP OpenView Storage Data Protector A.05.10 on Windows 2000
+# Hewlett Packard Omniback 4.1 on Windows NT
+match omniback m|^.xffxfe1x005 x07x01[x001x002:x001] x07x02[x002x000x000x003] |s v/HP OpenView Omniback//Windows version/
+# HP OpenView Storage Data Protector A.05.10 on Linux
+match omniback m|^.15 x07x01[12:1] x07x02[2003] x07x0510d+ INET |s v|HP OpenView Omniback/Data Protector||UNIX version|
+match serversettingsd m|^x004mainx01x0cx0cquitxffxffxffxffcrpt$| v/Apple serversettingsd administration daemon//Mac OS X/
+match symantec-esm m|^x01#$| v/Symantec Enterprise Security Manager///
+# Windows 2000 Server Wins name resolution service
+# Windows NT 4.0 Wins
+match wins m|^x1exffSxadx80x01x07xe9x01x81x02| v/Microsoft Windows Wins///
+match sap-its m|^x0cx01x03x071x071Content-Type:x20x20text/html;x20charset=Windows-1250rnrn<!--rnx20Thisx20pagex20wasx20createdx20byx20thex20rnx20SAPx20Internetx20Transactionx20Serverx20(ITS,x20Versionx20,x20Buildx20,x20Virtualx20Serverx20)rn| v/SAP Internet Transaction Server///
+# From xlsclients
+##############################NEXT PROBE##############################
+Probe TCP X11Probe q|x6Cx0B|
+ports 497,5302,6000-6020,7100,8000
+# retroclient 6.5.108 on Linux
+match dantzretrospect m|^xcax04x02($| v/Dantz Retrospect backup client///
+match font-service m|^x02x06@x0cpx17X Consortiumx01nx01x05......$|s v/Sun Solaris fs.auto///
+match font-service m|^x02x0e *.x19The XFree86 Project[-.w() ]+..x01nx01x05......|s v/XFree86 X Font Server///
+match networkaudio m|^x19x02x02x07Protocol version mismatch$| v|Network Audio System|||
+match networkaudio m|^x19x02x02x07Protocol version mismatch/$| v|Network Audio System|||
+match X11 m|^x01x0bHnx19..xffxff?x01x16xffxffx01x04x01x01  x08....Sun Microsystems, Inc.x01x01|s v/XSun Solaris X11 server///
+match X11 m|^x2Dx0Bx0C| v///access denied/
+# I think the below means access denied (no authentication protocol 
+# specified?) or is it a problem w/my probe that I should fix?
+match X11 m|^x16x0bx06No protocol specifiedx0a..$|s v///access denied/
+match X11 m|^x01x0b....x02.*The XFree86 Project, Inc|s v/XFree86//open/
+match X11 m|^x01x0b.....x02..xffxffx1fx01.xffxffx01x07  x08xff....Gentoo Linux (XFree86 (d[^)]+))|s v/XFree86/$1/Gentoo Linux/
+match X11 m|^x01x0b.....x02..xffxffx1fx01.xffxffx01.*Mandrake Linux (XFree86 (d[^)]+))|s v/XFree86/$1/Mandrake Linux/
+match X11 m|^x01x0b.....x02..xffxffx1fx01.xffxffx01.*Mandrake Linux (XFree86 (d[^)]+))?x01x01|s v/XFree86/$1/Mandrake Linux/
+match X11 m|^x01x0bx4CxA0xE0x63x02| v///open/
+# StarNet X-Win32 v5.4 on Windows XP
+match X11 m|^x01x0bx009...xffxff?x01x1cxffxffx01x07x01x01x08x10x08....StarNet Communications Corp.x01x01|s v/StarNet X-Win32///
+match X11 m|^x01x0b=x01xc0x06xffxff?.*DECWINDOWS Digital Equipment Corporation Digital UNIX V(d[-.w]+)x01x01|s v/Digital UNIX X-Window/$1/Version is X Server and not of Digital UNIX/
+# tightvnc 1.2.3 Xvnc
+# Tightvnc 3.3.3 Xvnc
+match X11 m|^x01x0b%x04rx80.xffxff?x01x1bxffxffx01x02  x08xff...x08AT&T Laboratories Cambridge| v/Xvnc///
+# Exceed X server for Win32 8.0.0.0
+match X11 m|^x01x0bx00...@.xffxff?x01.xffxffx01x04x01x01x08 x08xfe..AHummingbird Ltd.x01x01 .x07x08x08 .x07x0cx0c .x07x18  .x07. xffxffxff| v/Hummingbird Exceed X server/8.X//
+match X11 m|^x01x0b.....xffxff?x01.xffxffx01x04x01x01x08 x08xfe..AHummingbird Communications Ltd.x01x01 ...x08x08 ...x0cx0c ...x18  .... xffxffxff|s v/Hummingbird Exceed X server/7.X//
+# HP MC/ServiceGuard for Linux A.11.14.02
+match X11 m|^x01x0c$| v|HP MC/ServiceGuard|||
+match X11 m|^x01x0b%x19x01xffxff?x01x12xffxffx01x02  x08xfexbax1dFLabtam Europe Ltd.x01x01| v/Labtam X-WinPro///
+match omninames m|^GIOPx01x01x06$| v/omniORB omniNames//Corba naming service/
+##############################NEXT PROBE##############################
+# ftp://ftp.rfc-editor.org/in-notes/rfc1179.txt
+Probe TCP LPDString q|x01defaultn|
+ports 515
+match printer m|^$|
+match printer m|^default: unknown printern$| v/Solaris lpd///
+# Redhat Linux 7.3 LPRng-3.8.9
+match printer m|^x01no connect permissionsn$| v/LPRng///
+# Microsoft Windows 2000 serverr LPD
+match printer m|^x01x01$| v/Microsoft lpd///
+# Blackbox Terminal Server (IOLAN v4.03.00 a CDi)
+# Chase IOLAN terminal server lpd
+# Bay Networks MicroAnnex XL  Comm. Server R10.0
+match printer m|^x01$|
+match printer m|^[-.w]+: lpsched: unknown printern$| v/SGI IRIX lprsrv///
+# Ldap bind request, version 2, null DN, AUTH_TYPE simple, null password
+##############################NEXT PROBE##############################
+Probe TCP LDAPBindReq q|x30x0cx02x01x01x60x07x02x01x02x04x80|
+ports 256,257,389,3892
+sslports 636
+match fw1-secureremote m|^[AQ][^]| v/Checkpoint Firewall1 SecureRemote///
+match fw1-log m|^t51000000[^]|  v/Checkpoint Firewall1 logging service///
+# OpenLDAP 2.0.15 on RH Linux 7.3
+match ldap m|^0%x02x01x01a nx010x04x04x19anonymous bind disallowed$| v/OpenLDAP//access denied/
+# OpenLDAP 2.1.22 - doesn't by default allow LDAPv2 request
+match ldap m|^02x02x01x01a-nx01x02x04x04&requested protocol version not allowed$| v/OpenLDAP/2.1.X//
+# Netware 6
+# Macintosh 8
+# Win 2000 Advanced server.
+match ldap m|^0x0cx02x01x01ax07nx01x04x04| v///Anonymous bind OK/
+# MS Windows Win2K SP4 AD server
+match ldap m|^0x84x10x02x01x01ax84x07nx01x04x04$| v/Microsoft LDAP server///
+# PGP Corporation PGP Keyserver 7.0 (relabeled Freeware PGP Keyserver 2.5.8)
+#  PGP LDAP Server 8.x
+match ldap m|^0x17x02x01x01ax12nx01x04x04x0bPGPError #0$| v/PGP Corp. PGP Keyserver///
+# OctetString VDE Enterprise Edition on Linux 2.4
+match ldap m|^0x0ex02x01x01atnx01x04x04x87$| v/OctetString VDE directory service///
+##############################NEXT PROBE##############################
+Probe TCP LANDesk-RC q|x54x4ex4dx50x04x54x4ex4dx45x04|
+ports 1761
+# With Host and User currently logged in
+match landesk-rc m|^TNMP.TNME.USER.x08x04x08.{9}Rx03Wxffxff.xfd..x02x01x04...xb5x01xbbDesktop Manager (d.d)x02x04x01x02x01W+([-w]+)([-w]+)$| v/LANDesk RC/$1/Host: $2 User: $3)/
+# With just hostname
+match landesk-rc m|^TNMP.TNME.USER.x08x04x08.{9}Rx03Wxffxff.xfd..x02x01x04...xb5x01xbbDesktop Manager (d.d)x02x04x01x02x01W+(w+)$| v/LANDesk RC/$1/Host: $2/
+# Being Controled w/ User
+match landesk-rc m|^TNMP.TNME.USER.x08x04x08.{9}Rx03Wxffxff.xfd..x02x01x04...xb5x01xbbDesktop Manager (d.d)x02x04x01x02x01W+([w.:]+)W+(w+)(w+)$| v/LANDesk RC/$1/Host: $3 User: $4 Controler: $2/
+# Being Controled w/o User
+#match landesk-rc m|^TNMP.TNME.USER.x08x04x08.{9}Rx03Wxffxff.xfd..x02x01x04...xb5x01xbbDesktop Manager (d.d)x02x04x01x02x01W+([w.:]+)W+(w+)(w+){2,3}$| v/LANDesk RC/$1/Host: $3 Controler: $2/
+match landesk-rc m|^TNMP.TNME.USER.x08x04x08.{9}Rx03Wxffxff.xfd..x02x01x04...xb5x01xbbDesktop Manager (d.d)x02x04x01x02x01W+([w.:]+)W+(w+)|s v/LANDesk RC/$1/Host: $3 Controler: $2/
+match landesk-rc m|^TNMPx16TNMEx80xfexff..([w.]+):(d)$| v/LANDesk RC//Busy, From $1 on port 176$2/
+##############################NEXT PROBE##############################
+Probe TCP TerminalServer q|x03x0bx06xe0|
+ports 515,3389
+# x03 is queue status command for LPD service.  Should be terminated
+# by n, but apparently some dumb lpds allow .  For now I will keep
+# 515 in the common ports line, I suppose
+match printer m/^no entriesn$/ v/Xerox LPD///
+# Windows 2000 Server
+# Windows 2000 Advanced Server
+# Windows XP Professional
+match microsoft-rdp m|^x03x0bx06xd0x12.$|s v|Microsoft Terminal Service|||
+match microsoft-rdp m|^x03x17x08x02Z~x0bx05x05@x06x08x91Jx02X$| v/Microsoft Terminal Service//Used with Netmeeting, Remote Desktop, Remote Assistance/
+match teleconference m|^x03x11x08x02..}x08x03xdfx14x01x01$|s v/Microsoft NetMeeting Remote Desktop Service///
+# Netware Create Connection Service request
+##############################NEXT PROBE##############################
+Probe TCP NCP q|x44x6dx64x54x17x01x11x11xffx01xffx13|
+ports 524
+# Netware 5 and 6
+# NCP "OK" reply
+match ncp m|^x74x4ex63x50x10x33x33| v/Novell Netware NCP///
+##############################NEXT PROBE##############################
+Probe TCP NotesRPC q|x3Ax00x00x00x2Fx00x00x00x02x00x00x40x02x0Fx00x01x00x3Dx05x00x00x00x00x00x00x00x00x00x00x00x00x2Fx00x00x00x00x00x00x00x00x00x40x1Fx00x00x00x00x00x00x00x00x00x00x00x00x00x00x00x00x00|
+ports 1352
+#match lotusnotes m|^`Ux03@x02x0fx05x009x05.....x03x02/x12|s
+# Lotus Domino (r) Server (Release 5.0.8 for Windows/32
+# Lotus Notes domino 5.0.11
+# Lotus Server 6.0.1
+# Lotus Domino (r) Server (Release 6.0.1CF1 for Windows/32
+match lotusnotes m|^..x03@x02x0f.*x03x02/.@x1f.*CN=([-.w ]+)/O=([-.w ]+)[^-.w ]|s v/Lotus Domino server//CN=$1;Org=$2/
+##############################NEXT PROBE##############################
+Probe UDP Sqlping q|x02|
+ports 1434
+match ms-sql-m m|^x05..ServerName;([w-]+);InstanceName;[w-]+;IsClustered;w{2,3};Version;([d.]+);np;.+;tcp;(d{1,5});| v/Microsoft SQL Server/$2/ServerName: $1; TCPPort: $3/
+match ms-sql-m m|^x05..ServerName;([w-]+);InstanceName;[w-]+;IsClustered;w{2,3};Version;([d.]+);tcp;(d{1,5});np;(.+);$| v/Microsoft SQL Server/$2/ServerName: $1; TCPPort: $3/
+##############################NEXT PROBE##############################
+Probe UDP NTPRequest q|xe3x00x04xfax00x01x00x00x00x01x00x00x00x00x00x00x00x00x00x00x00x00x00x00x00x00x00x00x00x00x00x00x00x00x00x00x00x00x00x00xc5x4fx23x4bx71xb1x52xf3|
+ports 123
+match ntp m|^$[x01-x0f]..............................................$|s  v/NTP/v4//
+match ntp m|^xe4..............................................$|s  v/NTP/v4/unsynchronized/
+# Solaris Internet Name Server (42/udp), see ien116.txt
+match nameserver m|^helprnrnx20CKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA!x01| v/Solaris Internet Name Server//IEN 116/
+##############################NEXT PROBE##############################
+Probe UDP SNMPv1public q|0x82/x02x01x04x06publicxa0x82x20x02x04x4cx33xa7x56x02x01x02x01x30x82x10x30x82x0cx06x08x2bx06x01x02x01x01x05x05|
+ports 161
+match snmp m|^0.x02x01x04x06publicxa2| v/SNMPv1 server//public/
+##############################NEXT PROBE##############################
+Probe TCP WMSRequest q|x01xfdxcexfax0bxb0xa0MMSx14x12x01x03xf0xf0xf0xf0x0bx04x1cx03NSPlayer/9.0.0.2980; {0000AA00-0A00-00a0-AA0A-0000A0AA0AA0}xe0x6dxdfx5f|
+ports 1549,1755
+match shivahose m|^x02x06$| v///Shiva network modem access/
+#WMS 4.1.0.3927
+match wms m|^x01.xcexfax0bxb0.MMS .{7}.{9}x01x04xf0xf0xf0xf0x0bx04x1cx03xf0?x01x01x80.....x00(d).x00(d).x00(d).x00(d)x00(d)x00(d)x00(d)|s v/Microsoft Windows Media Service/$1.$2.$3.$4$5$6$7//
+match wms m|^x01.xcexfax0bxb0.MMS .{7}.{9}x01x04xf0xf0xf0xf0x0bx04x1cx03xf0?x01x01x80.....x00(d).x00(d)x00(d).x00(d)x00(d).x00(d)x00(d)x00(d)x00(d)|s v/Microsoft Windows Media Service/$1.$2$3.$4$5.$6$7$8$9//
+##############################NEXT PROBE##############################
+Probe TCP oracle-tns q|Zx01x016x01,x08x7FxFFx7Fx08x01 :4xE6x01(CONNECT_DATA=(COMMAND=version))|
+ports 1521,1522,1525,1574
+match oracle-tns m|^.x02.*TNSLSNR for ([-.+/ w]{2,20}): Version ([-d.]+) - Production|s v/Oracle DB Listener/$2 (for $1)//
+##############################NEXT PROBE##############################
+Probe UDP xdmcp q|x01x02x01|
+ports 177
+match xdmcp m/^x01x05...(.+).(.+)/ v/XDMCP/host $1 willing/Status: $2/
+match xdmcp m/^x01x06...(.+).(.+)/ v/XDMCP/host $1 unwilling/Status: $2/
+### do not slow down the scan
+#Probe TCP mydoom q|x0dx0d|
+#ports 3127-3198
+#match mydoom m|x04x5b| v/MyDoom virus backdoor/v012604//
+#Probe TCP WWWOFFLEctrlstat q|WWWOFFLE STATUSrn|
+#ports 8081
+#match http-proxy-ctrl m|^WWWOFFLE Server Statusn-*nVersion *: (d.*)n| v/WWWOFFLE proxy control/$1//

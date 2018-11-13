@@ -1,0 +1,3 @@
+class Waf(object):
+    pass
+
